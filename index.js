@@ -11,6 +11,27 @@ var key;
 var scale;
 var complexity;
 var timeSignature;
+var index=0;
+
+function kick() {
+    var audio = new Audio('bassy_kick.wav');
+    audio.play();
+}
+
+function cymbal(){
+    var audio = new Audio('new_cymbal.wav');
+    audio.play();
+}
+
+function snare(){
+    var audio = new Audio('cage_snare.wav');
+    audio.play();
+}
+
+function hat(){
+    var audio = new Audio('man_hat.wav');
+    audio.play();
+}
 
 function guitar() { //one note of guitar playing
     var o = c.createOscillator();
