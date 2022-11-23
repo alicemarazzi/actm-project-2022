@@ -5,13 +5,21 @@ cmp.connect(c.destination);
 var bs = c.createBufferSource();
 bs.loop = true;
 
-var BPM;
-var style;
+var BPM = 60;
+/*var style;
 var key;
 var scale;
-var complexity;
-var timeSignature;
+var complexity;*/
+var timeSignatureNum = 4;
+var timeSignatureDen = 4;
 var index=0;
+var notes;
+var sub;
+var refreshIntervalId = 0;
+
+function createTimeSignatureDen(time) {
+    timeSignatureDen = time;
+}
 
 function kick() {
     var audio = new Audio('bassy_kick.wav');
