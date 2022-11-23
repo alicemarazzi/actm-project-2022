@@ -1,7 +1,7 @@
 var c = new AudioContext();
 var cmp = c.createDynamicsCompressor();
 cmp.connect(c.destination);
-var a = c.createAnalyser();
+// var a = c.createAnalyser();
 var bs = c.createBufferSource();
 bs.loop = true;
 
@@ -23,7 +23,7 @@ function cymbal(){
     audio.play();
 }
 
-function snare(){
+/*function snare(){
     var audio = new Audio('cage_snare.wav');
     audio.play();
 }
@@ -31,9 +31,9 @@ function snare(){
 function hat(){
     var audio = new Audio('man_hat.wav');
     audio.play();
-}
+}*/
 
-function guitar() { //one note of guitar playing
+/*function guitar() { //one note of guitar playing
     var o = c.createOscillator();
     var g = c.createGain();
 
@@ -47,7 +47,7 @@ function guitar() { //one note of guitar playing
         if (Math.abs(sample) < 0.3) {
             bufferData[i] = 1.3*sample;
         } else {
-            bufferData[i] = 1*3*0.3*Math.sign(sample);
+            bufferData[i] = 3*0.3*Math.sign(sample);
         }
 
     }
@@ -68,11 +68,35 @@ function guitar() { //one note of guitar playing
     g.gain.setValueAtTime(1, c.currentTime);
     g.gain.linearRampToValueAtTime(0, c.currentTime+0.1);
 
-}
+}*/
 
-function play(BPM){
-    //setInterval(cymbal, 60000/BPM)
-    var pattern1 = Math.floor(Math.random()*14)
+function play() {
+
+    if (refreshIntervalId){
+        clearInterval(refreshIntervalId);
+        refreshIntervalId = 0;
+    }
+    else {
+        sub = Math.ceil(Math.random() * 7);
+        if (sub % 7 == 0) {
+            sub = 28;
+        } else if (sub % 5 == 0) {
+            sub = 40;
+        } else if (sub % 3 == 0) {
+            sub = 24;
+        } else if (sub % 2 == 0) {
+            sub = 16;
+        } else if (sub == 1) {
+            sub = 16;
+        }
+
+        notes = timeSignatureNum * sub / timeSignatureDen;
+        var pattern = Math.floor(Math.random() * Math.pow(2, notes));
+        refreshIntervalId = setInterval(render, 60000 / (BPM * sub / 4), pattern)
+    }
+
+    // VECCHIA VERSIONE
+    /*var pattern1 = Math.floor(Math.random()*14)
     var pattern2 = Math.floor(Math.random()*14)
     var pattern3 = Math.floor(Math.random()*14)
     var pattern4 = Math.floor(Math.random()*14)
@@ -80,7 +104,8 @@ function play(BPM){
     console.log(pattern2)
     console.log(pattern3)
     console.log(pattern4)
-    setInterval(render, 60000/(BPM*4), pattern1, pattern2, pattern3, pattern4)
+    setInterval(render, 60000/(BPM*4), pattern1, pattern2, pattern3, pattern4)*/
+
     //setInterval(kick_pattern, c.currentTime+4*60000/BPM, pattern1)
     //setTimeout(function(){setInterval(kick_pattern, 4*60000/BPM, pattern2)}, c.currentTime+60000/BPM)
     //setTimeout(function(){setInterval(kick_pattern, 4*60000/BPM, pattern3)}, c.currentTime+2*60000/BPM)
@@ -88,7 +113,37 @@ function play(BPM){
 
 }
 
-function render(pattern1, pattern2, pattern3, pattern4){
+/*function toggleOn (e) {
+    play();
+    e.target.classList.toggle("redOn");
+}
+var st = document.getElementById("start");
+st.onclick = toggleOn;*/
+
+start.onclick = toggleOn;
+
+function toggleOn (e) {
+    play();
+    e.target.classList.toggle("redOn");
+}
+
+function render(pattern){
+    let patternBinary = pattern.toString(2);
+
+    if (patternBinary.charAt(index) - '0'){
+        kick();
+    }
+    if(index%(sub/4)==0){
+        cymbal();
+    }
+
+    index++;
+    if (index>=notes){
+        index=0;
+    }
+}
+
+/* function render(pattern1, pattern2, pattern3, pattern4){
     var pattern
     if (index<4) {pattern=pattern1}
     else if (index >= 4 && index<8) {pattern=pattern2}
@@ -124,4 +179,4 @@ function render(pattern1, pattern2, pattern3, pattern4){
     }
     index++;
     if (index==15){index=0}
-}
+}*/
