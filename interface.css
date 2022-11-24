@@ -23,14 +23,16 @@
 }
 
 .BPM {
-    left: 50%;
+    left: 40%;
     bottom: 5%;
-    transform: translate(-50%, -50%);
+    position: absolute;
+    display: inline-block;
 }
 
 .Complexity {
     bottom: 5%;
     right: 5%;
+    position: absolute;
 }
 
 .Style {
@@ -38,14 +40,33 @@
     left: 5%;
 }
 
-.TimeSignatureNum {
-    top: 5%;
+.TSTitle {
+    top: 7%;
     right: 5%;
+    position: absolute;
+}
+
+.TimeSignatureNum {
+    top: 10%;
+    right: 5%;
+    position: absolute;
+    border-radius: 5%;
+    display: inline-block;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.TimeSignatureDen {
+    top: 15%;
+    right: 5%;
+    position: absolute;
+    border-radius: 5%;
+    display: inline-block;
 }
 
 .Key {
     bottom: 5%;
     left: 5%;
+    position: absolute;
 }
 
 #canvas {
@@ -97,6 +118,21 @@
 
 }
 
+.slider {
+    width: 100%; /* Full-width */
+    height: 25px; /* Specified height */
+    background: white;
+    outline: none; /* Remove outline */
+    opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+}
+
 /* PROVA MENU A TENDINA */
 /* Dropdown Button */
 /*.dropbtn {*/
@@ -106,16 +142,6 @@
 /*    font-size: 16px;*/
 /*    border: none;*/
 /*}*/
-
-/* The container <div> - needed to position the dropdown content */
-.TimeSignatureDen {
-    top: 15%;
-    right: 5%;
-    position: absolute;
-    border-radius: 5%;
-    /*cursor: pointer;*/
-    display: inline-block;
-}
 
 /*!* Dropdown Content (Hidden by Default) *!*/
 /*.dropdown-content {*/
