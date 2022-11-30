@@ -17,10 +17,28 @@ var notes;
 var sub;
 var refreshIntervalId = 0;
 var intensityIndex = 0;
+var complexity;
 
-function createTimeSignatureDen(time) {
-    timeSignatureDen = time;
+function createTimeSignatureNum() {
+    timeSignatureNum = parseInt(document.getElementById('timesignum').value);
 }
+
+function createTimeSignatureDen() {
+    timeSignatureDen = parseInt(document.getElementById('timesigden').value);
+}
+
+function changeBPM() {
+    BPM = parseInt(document.getElementById('bpmvalue').value);
+}
+
+function changeComplexity() {
+    console.log(parseInt(document.getElementById('complex').value));
+}
+
+function changeKey() {
+    key = document.getElementById('keyselected').value;
+}
+
 
 function kick() {
     var audio = new Audio('bassy_kick.wav');

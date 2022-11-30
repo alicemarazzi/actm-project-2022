@@ -12,19 +12,27 @@
 
     <canvas id="canvas"> </canvas>
 
-    <h1 id = "title"> ACTM PROJECT 2022 </h1>
+    <h1 id = "title" style="font-family: Menlo"> ACTM PROJECT 2022 </h1>
 
     <button id = "start" class = "green" onclick="play()"> </button>
 
     <div class = "BPM">
         <label for="bpmvalue" style="font-family: Menlo">Choose a BPM:</label>
-        <textarea id="bpmvalue" name="freeform" rows="1" cols="3" style="font-family: Menlo">60</textarea>
+        <textarea id="bpmvalue" name="freeform" rows="1" cols="3" style="font-family: Menlo" value="120" oninput="changeBPM()">120</textarea>
     </div>
 
     <div class = "Complexity" style="font-family: Menlo"> Complexity:
         <div class="slidecontainer">
-            <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+            <input type="range" min="1" max="5" value="3" class="slider" id="complex" onchange="changeComplexity()">
+            <datalist id="cmarks">
+                <option value="1" label="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </datalist>
         </div>
+        <label>Qui inseriremo i valori</label>
     </div>
 
     <div class = "Style box"> </div>
@@ -48,16 +56,16 @@
 
     <div class = "TimeSignatureNum">
         <label for="timesignum" style="font-family: Menlo">Choose a numerator:</label>
-        <textarea id="timesignum" name="freeform" rows="1" cols="3" style="font-family: Menlo">4</textarea>
+        <textarea id="timesignum" name="freeform" rows="1" cols="3" style="font-family: Menlo" value="4" oninput="createTimeSignatureNum()">4</textarea>
     </div>
 
     <div class = "TimeSignatureDen">
         <label for="timesigden" style="font-family: Menlo">Choose a denominator:</label>
-        <select name="denominator" id="timesigden">
-            <option value="2" onselect="createTimeSignatureDen(2)">2</option>
-            <option value="4" selected onselect="createTimeSignatureDen(4)">4</option>
-            <option value="8" onselect="createTimeSignatureDen(8)">8</option>
-            <option value="16" onselect="createTimeSignatureDen(16)">16</option>
+        <select name="denominator" id="timesigden" onchange="createTimeSignatureDen()">
+            <option value="2">2</option>
+            <option value="4" selected>4</option>
+            <option value="8">8</option>
+            <option value="16">16</option>
         </select>
     </div>
 
