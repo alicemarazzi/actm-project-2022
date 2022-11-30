@@ -6,10 +6,10 @@ var bs = c.createBufferSource();
 bs.loop = true;
 
 var BPM = 120;
-/*var style;
+// var style;
 var key;
-var scale;
-var complexity;*/
+// var scale;
+// var complexity;
 var timeSignatureNum = 4;
 var timeSignatureDen = 4;
 var index=0;
