@@ -10,21 +10,27 @@ var BPM = 120;
 var key;
 // var scale;
 // var complexity;
-var timeSignatureNum = 4;
-var timeSignatureDen = 4;
+var timeSignatureNum = new Array(4);
+var timeSignatureDen = new Array(4);
+timeSignatureNum[0] = 4;
+timeSignatureDen[0] = 4;
 var index=0;
-var notes;
-var sub;
+var notes = new Array(4).fill(0);
+var sub = new Array(4).fill(0);
 var refreshIntervalId = 0;
-var intensityIndex = 0;
-var complexity;
+var complexity = 4;
+var measureIndex = 0;
+var pattern = new Array(4).fill(0);
+var accentPatternMap = new Map();
+var accentIndex=0;
+var count=0;
 
 function createTimeSignatureNum() {
-    timeSignatureNum = parseInt(document.getElementById('timesignum').value);
+    timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
 }
 
 function createTimeSignatureDen() {
-    timeSignatureDen = parseInt(document.getElementById('timesigden').value);
+    timeSignatureDen[0] = parseInt(document.getElementById('timesigden').value);
 }
 
 function changeBPM() {
@@ -50,7 +56,6 @@ function cymbal(){
     var audio = new Audio('new_cymbal.wav');
     volume(audio);
     audio.play();
-    intensityIndex++;
 }
 
 function snare(){
@@ -64,113 +69,106 @@ function guitar(){
     audio.play();
 }
 
+function hat(){
+    var audio = new Audio('man_hat.wav');
+    volume(audio);
+    audio.play();
+}
+
 function volume(audio){
-    if (intensityIndex==0){
-        audio.volume=1;
+    if (accentIndex==accentPatternMap.get(measureIndex)[count]){ //if the note being played is an accented one
+        audio.volume=1;                                                               // we set the volume to 1
     }
-    else if (intensityIndex==Math.ceil(timeSignatureDen/(timeSignatureNum*4))){
+    else{                                                                             //otherwise we set it to 0.5
         audio.volume=0.5;
     }
-    else if (intensityIndex==Math.ceil(timeSignatureDen/(timeSignatureNum*2))){
-        audio.volume=0.8;
-    }
-    else if (intensityIndex==Math.ceil(timeSignatureDen/timeSignatureNum)){
-        audio.volume=0.3;
-    }
 }
-/*function hat(){
-    var audio = new Audio('man_hat.wav');
-    audio.play();
-}*/
-
-/*function guitar() { //one note of guitar playing
-    var o = c.createOscillator();
-    var g = c.createGain();
-
-    var wnBuffer = c.createBuffer(1,
-        c.sampleRate, c.sampleRate);
-
-    var bufferData = wnBuffer.getChannelData(0);
-
-    for(let i=0;i<bufferData.length;i++) {
-        var sample = Math.sin(i/10);
-        if (Math.abs(sample) < 0.3) {
-            bufferData[i] = 1.3*sample;
-        } else {
-            bufferData[i] = 3*0.3*Math.sign(sample);
-        }
-
-    }
-
-    bs.buffer = wnBuffer;
-    bs.connect(a);
-
-    o.connect(a);
-    a.connect(g)
-    g.connect(c.destination);
-
-    o.frequency.value = 0;
-    o.connect(g);
-    o.start();
-    g.connect(cmp);
-    c.resume();
-    o.frequency.setValueAtTime(440, c.currentTime);
-    g.gain.setValueAtTime(1, c.currentTime);
-    g.gain.linearRampToValueAtTime(0, c.currentTime+0.1);
-
-}*/
 
 function play() {
 
-    if (refreshIntervalId){
+    if (refreshIntervalId) {
         clearInterval(refreshIntervalId);
         refreshIntervalId = 0;
-        index=0;
-        intensityIndex=0;
-    }
-    else {
-        sub = Math.ceil(Math.random() * 7);
-        if (sub % 7 == 0) {
-            sub = 14;
-        } else if (sub % 5 == 0) {
-            sub = 10;
-        } else if (sub % 3 == 0) {
-            sub = 12;
-        } else if (sub % 2 == 0) {
-            sub = 16;
-        } else if (sub == 1) {
-            sub = 8;
-        }
-
-        notes = timeSignatureNum * sub / timeSignatureDen;
-        var pattern = Math.floor(Math.random() * Math.pow(2, notes));
+        index = 0;
+    } else {
+        setInterval(update, complexity*60000/BPM*timeSignatureNum[measureIndex]/timeSignatureDen[measureIndex])
         refreshIntervalId = setInterval(render, 240000 / (BPM * sub), pattern)
     }
 
-    // VECCHIA VERSIONE
-    /*var pattern1 = Math.floor(Math.random()*14)
-    var pattern2 = Math.floor(Math.random()*14)
-    var pattern3 = Math.floor(Math.random()*14)
-    var pattern4 = Math.floor(Math.random()*14)
-    console.log(pattern1)
-    console.log(pattern2)
-    console.log(pattern3)
-    console.log(pattern4)
-    setInterval(render, 60000/(BPM*4), pattern1, pattern2, pattern3, pattern4)*/
-
-    //setInterval(kick_pattern, c.currentTime+4*60000/BPM, pattern1)
-    //setTimeout(function(){setInterval(kick_pattern, 4*60000/BPM, pattern2)}, c.currentTime+60000/BPM)
-    //setTimeout(function(){setInterval(kick_pattern, 4*60000/BPM, pattern3)}, c.currentTime+2*60000/BPM)
-    //setTimeout(function(){setInterval(kick_pattern, 4*60000/BPM, pattern4)}, c.currentTime+3*60000/BPM)
-
 }
 
-/*function toggleOn (e) {
-    play();
-    e.target.classList.toggle("redOn");
+function update(){
+
+    if (measureIndex!=0){
+        //timeSignatureNum[measureIndex]
+    }
+
+    if (sub[measureIndex]==0) { //determines the subdivision for each measure
+        sub[measureIndex] = Math.ceil(Math.random() * 7);
+        if (sub[measureIndex] % 7 == 0) {
+            sub[measureIndex] = 14;
+        } else if (sub[measureIndex] % 5 == 0) {
+            sub[measureIndex] = 10;
+        } else if (sub[measureIndex] % 3 == 0) {
+            sub[measureIndex] = 12;
+        } else if (sub[measureIndex] % 2 == 0) {
+            sub[measureIndex] = 16;
+        } else if (sub[measureIndex] == 1) {
+            sub[measureIndex] = 8;
+        }
+    }
+
+    if (notes[measureIndex]==0){ //determines the number of notes and the pattern for eache measure
+        notes[measureIndex] = timeSignatureNum[measureIndex] * sub / timeSignatureDen[measureIndex];
+        pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes));
+    }
+
+    if (!accentPatternMap.get(measureIndex)) {
+        var sum=0;
+        var accentPattern = new Array(Math.ceil(timeSignatureNum/2));
+
+        for (let i=0; i<Math.ceil(timeSignatureNum/2); i++) {
+
+            // Aggiunge un valore tra 2 e 3 alla posizione i-esima
+            accentPattern[i] = Math.round(Math.random() + 2);
+            sum += accentPattern[i];
+
+            // Controlla che la somma rimanga minore del totale, altrimenti entra nell'if
+            if (sum > timeSignatureNum) {
+
+                // Elimina l'ultimo elemento
+                sum -= accentPattern[i];
+
+                // Prova a sommare 2 a sum e se risulta uguale al totale, inserisce 2 in ultima posizione ed esce dal ciclo
+                if(sum+2 == timeSignatureNum) {
+                    accentPattern[i] = 2;
+                    i = Math.ceil(timeSignatureNum/2);
+                } else {
+                    // Caso in cui anche sommando 2 andiamo oltre il totale e andiamo a modificare il penultimo elemento
+                    sum-= accentPattern[i-1];
+
+                    // Se è uguale a 3 inseriamo 2
+                    if(accentPattern[i-1] == 3) {
+                        accentPattern[i-1] = 2;
+                        sum += 2;
+                    } else {
+                        // Se è uguale a 2 inseriamo 3
+                        accentPattern[i-1] = 3;
+                        sum += 3;
+                    }
+
+                    // Facciamo ripartire il conteggio da i-1
+                    i = i-1;
+                }
+            }
+
+            if (sum==timeSignatureNum){
+                i=Math.floor(timeSignatureNum/2);
+            }
+        }
+        accentPatternMap.set(measureIndex, accentPattern);
+    }
 }
-var st = document.getElementById("start");
-st.onclick = toggleOn;*/
 
 start.onclick = toggleOn;
 
@@ -182,58 +180,38 @@ function toggleOn (e) {
 function render(pattern){
     let patternBinary = pattern.toString(2);
 
-    if (patternBinary.charAt(index) - '0' && intensityIndex!=3){
+    if (patternBinary.charAt(index) - '0'){
+
         kick();
         guitar();
-    }
-    if(index%(sub/4)==0){
-        cymbal();
-        if (intensityIndex==3){
-            snare();
-        }
+
     }
 
+    if (index==0 || accentIndex==accentPatternMap.get(measureIndex)[count]){
+        cymbal();
+        count++;
+    }
+
+    /*if(index%(sub/4)==0){
+
+        cymbal();
+
+    }*/
+
     index++;
+
+    if ((index)%(sub/timeSignatureDen)){
+        accentIndex++;
+    }
+
     if (index>=notes){
+
         index=0;
-        intensityIndex=0;
+        count=0;
+        measureIndex++;
+        if (measureIndex==4){
+            measureIndex=0;
+        }
+
     }
 }
-
-/* function render(pattern1, pattern2, pattern3, pattern4){
-    var pattern
-    if (index<4) {pattern=pattern1}
-    else if (index >= 4 && index<8) {pattern=pattern2}
-    else if (index >= 8 && index<12) {pattern=pattern3}
-    else { pattern=pattern4 }
-    sixteenth = index%4
-    switch(sixteenth) {
-        case 0:
-            cymbal()
-            if (pattern==0 || pattern==4 || pattern==5 || pattern==6 || pattern==10 ||  pattern==11 || pattern==13){
-                kick()
-                //guitar()
-            }
-            break;
-        case 1:
-            if (pattern==1 || pattern==4 || pattern==7 || pattern==8 || pattern==10 ||  pattern==11 || pattern==13){
-                kick()
-                //guitar()
-            }
-            break;
-        case 2:
-            if (pattern==2 || pattern==5 || pattern==7 || pattern==9 || pattern==10 ||  pattern==12 || pattern==13){
-                kick()
-                //guitar()
-            }
-            break;
-        case 3:
-            if (pattern==3 || pattern==6 || pattern==8 || pattern==9 || pattern==11 ||  pattern==12 || pattern==13){
-                kick()
-                //guitar()
-            }
-            break;
-    }
-    index++;
-    if (index==15){index=0}
-}*/
