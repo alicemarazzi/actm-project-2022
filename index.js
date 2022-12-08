@@ -181,9 +181,22 @@ st.onclick = toggleOn;*/
 
 start.onclick = toggleOn;
 
-function toggleOn (e) {
+function toggleOn(e) {
     play();
-    e.target.classList.toggle("redOn");
+
+    if(e.target.parentElement.classList.contains("green")) {
+        e.target.parentElement.classList.toggle("redOn");
+    } else {
+        e.target.classList.toggle("redOn");
+
+    }
+
+    if(document.getElementById("StartStop").innerHTML == "START") {
+        document.getElementById("StartStop").innerHTML = "STOP";
+    } else {
+        document.getElementById("StartStop").innerHTML = "START";
+    }
+
 }
 
 function render(pattern){
