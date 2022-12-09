@@ -87,6 +87,9 @@ function volume(audio) {
 function play() {
 
     if (refreshIntervalIdb) {
+
+        document.getElementById("some-div-id").innerHTML = "";
+
         clearInterval(refreshIntervalId);
         clearInterval(refreshIntervalIdb)
         refreshIntervalId = 0;
@@ -96,9 +99,11 @@ function play() {
         accentIndex = 0;
         count = 0;
     } else {
+
+        createStave();
+
         refreshIntervalIdb = setInterval(update, 600/BPM*timeSignatureNum[measureIndex]/timeSignatureDen[measureIndex])
     }
-
 }
 
 function update(){
@@ -278,7 +283,7 @@ function createStave() {
 // Create a stave of width 400 at position x10, y40 on the SVG.
     var stave = new VF.Stave(10, 40, 400);
 
-    stave.addClef("treble").addTimeSignature(timeSignatureNum + "/" + timeSignatureDen);
+    stave.addClef("treble").addTimeSignature(timeSignatureNum[measureIndex] + "/" + timeSignatureDen[measureIndex]);
     stave.setContext(context).draw();
 // Add a clef and time signature.
 // stave.addClef("treble").addTimeSignature("4/4");
