@@ -129,7 +129,7 @@ function update(){
         pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
     }
 
-    if (!accentPatternMap.get(measureIndex)) {
+    if (!accentPatternMap.get(measureIndex+"")) {
         var sum=0;
         var accentPattern = new Array(Math.ceil(timeSignatureNum[0]/2));
 
@@ -140,15 +140,15 @@ function update(){
             sum += accentPattern[i];
 
             // Controlla che la somma rimanga minore del totale, altrimenti entra nell'if
-            if (sum > timeSignatureNum) {
+            if (sum > timeSignatureNum[measureIndex]) {
 
                 // Elimina l'ultimo elemento
                 sum -= accentPattern[i];
 
                 // Prova a sommare 2 a sum e se risulta uguale al totale, inserisce 2 in ultima posizione ed esce dal ciclo
-                if(sum+2 == timeSignatureNum) {
+                if(sum+2 == timeSignatureNum[measureIndex]) {
                     accentPattern[i] = 2;
-                    i = Math.ceil(timeSignatureNum/2);
+                    i = Math.ceil(timeSignatureNum[measureIndex]/2);
                 } else {
                     // Caso in cui anche sommando 2 andiamo oltre il totale e andiamo a modificare il penultimo elemento
                     sum-= accentPattern[i-1];
@@ -168,8 +168,8 @@ function update(){
                 }
             }
 
-            if (sum==timeSignatureNum){
-                i=Math.floor(timeSignatureNum/2);
+            if (sum==timeSignatureNum[measureIndex]){
+                i=Math.floor(timeSignatureNum[measureIndex]/2);
             }
         }
         accentPatternMap.set(measureIndex+"", accentPattern);
@@ -196,6 +196,9 @@ function render(){
         guitar();
 
     }
+    console.log("sub=", sub[measureIndex])
+    console.log("accentIndex=", accentIndex);
+    console.log("accentPattern=", accentPatternMap.get(measureIndex+"")[count]);
 
     if (index==0 || accentIndex==accentPatternMap.get(measureIndex+"")[count]){
         cymbal();
