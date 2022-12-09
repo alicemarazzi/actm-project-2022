@@ -95,7 +95,6 @@ function play() {
         measureIndex = 0;
         accentIndex = 0;
         count = 0;
-        count = 0;
     } else {
         refreshIntervalIdb = setInterval(update, 600/BPM*timeSignatureNum[measureIndex]/timeSignatureDen[measureIndex])
     }
@@ -200,10 +199,10 @@ function toggleOn(e) {
 
 }
 
-function render(){
+function render() {
     let patternBinary = pattern[measureIndex].toString(2);
 
-    if (patternBinary.charAt(index) - '0'){
+    if (patternBinary.charAt(index) - '0') {
 
         kick();
         guitar();
@@ -211,14 +210,14 @@ function render(){
     }
     console.log("sub=", sub[measureIndex])
     console.log("accentIndex=", accentIndex);
-    console.log("accentPattern=", accentPatternMap.get(measureIndex+"")[count]);
+    console.log("accentPattern=", accentPatternMap.get(measureIndex + "")[count]);
 
-    if (index==0 || accentIndex==accentPatternMap.get(measureIndex+"")[count]){
+    if (index == 0 || accentIndex == accentPatternMap.get(measureIndex + "")[count]) {
         cymbal();
-        if (index!=0){
+        if (index != 0) {
             count++;
         }
-        accentIndex=0;
+        accentIndex = 0;
     }
 
     /*if(index%(sub/4)==0){
@@ -229,18 +228,20 @@ function render(){
 
     index++;
 
-    if ((index/sub[measureIndex])%(1/timeSignatureDen[measureIndex])==0){
+    if ((index / sub[measureIndex]) % (1 / timeSignatureDen[measureIndex]) == 0) {
         accentIndex++;
     }
 
-    if (index>=notes[measureIndex]){
+    if (index >= notes[measureIndex]) {
 
-        index=0;
-        count=0;
+        index = 0;
+        count = 0;
         measureIndex++;
-        if (measureIndex==4){
-            measureIndex=0;
+        if (measureIndex == 4) {
+            measureIndex = 0;
         }
+    }
+}
 
 VF = Vex.Flow;
 
@@ -285,40 +286,3 @@ function createStave() {
 // Set the context of the stave our previous exposed context and execute the method draw !
 // stave.setContext(context).draw();
 }
-/* function render(pattern1, pattern2, pattern3, pattern4){
-    var pattern
-    if (index<4) {pattern=pattern1}
-    else if (index >= 4 && index<8) {pattern=pattern2}
-    else if (index >= 8 && index<12) {pattern=pattern3}
-    else { pattern=pattern4 }
-    sixteenth = index%4
-    switch(sixteenth) {
-        case 0:
-            cymbal()
-            if (pattern==0 || pattern==4 || pattern==5 || pattern==6 || pattern==10 ||  pattern==11 || pattern==13){
-                kick()
-                //guitar()
-            }
-            break;
-        case 1:
-            if (pattern==1 || pattern==4 || pattern==7 || pattern==8 || pattern==10 ||  pattern==11 || pattern==13){
-                kick()
-                //guitar()
-            }
-            break;
-        case 2:
-            if (pattern==2 || pattern==5 || pattern==7 || pattern==9 || pattern==10 ||  pattern==12 || pattern==13){
-                kick()
-                //guitar()
-            }
-            break;
-        case 3:
-            if (pattern==3 || pattern==6 || pattern==8 || pattern==9 || pattern==11 ||  pattern==12 || pattern==13){
-                kick()
-                //guitar()
-            }
-            break;
-    }
-    index++;
-    if (index==15){index=0}
-}*/
