@@ -182,9 +182,22 @@ function update(){
 
 start.onclick = toggleOn;
 
-function toggleOn (e) {
+function toggleOn(e) {
     play();
-    e.target.classList.toggle("redOn");
+
+    if(e.target.parentElement.classList.contains("green")) {
+        e.target.parentElement.classList.toggle("redOn");
+    } else {
+        e.target.classList.toggle("redOn");
+
+    }
+
+    if(document.getElementById("StartStop").innerHTML == "START") {
+        document.getElementById("StartStop").innerHTML = "STOP";
+    } else {
+        document.getElementById("StartStop").innerHTML = "START";
+    }
+
 }
 
 function render(){
@@ -229,5 +242,83 @@ function render(){
             measureIndex=0;
         }
 
-    }
+VF = Vex.Flow;
+
+
+function createStave() {
+// We created an object to store the information about the workspace
+    var WorkspaceInformation = {
+        // The div in which you're going to work
+        div: document.getElementById("some-div-id"),
+        // Vex creates a svg with specific dimensions
+        canvasWidth: 500,
+        canvasHeight: 500
+    };
+
+// Create a renderer with SVG
+    var renderer = new VF.Renderer(
+        WorkspaceInformation.div,
+        VF.Renderer.Backends.SVG
+    );
+
+// Use the renderer to give the dimensions to the SVG
+    renderer.resize(WorkspaceInformation.canvasWidth, WorkspaceInformation.canvasHeight);
+
+// Expose the context of the renderer
+    var context = renderer.getContext();
+
+// And give some style to our SVG
+    context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
+
+
+    /**
+     * Creating a new stave
+     */
+// Create a stave of width 400 at position x10, y40 on the SVG.
+    var stave = new VF.Stave(10, 40, 400);
+
+    stave.addClef("treble").addTimeSignature(timeSignatureNum + "/" + timeSignatureDen);
+    stave.setContext(context).draw();
+// Add a clef and time signature.
+// stave.addClef("treble").addTimeSignature("4/4");
+//stave.addClef("treble").addTimeSignature(timeSignatureNum + "/" + timeSignatureDen);
+// Set the context of the stave our previous exposed context and execute the method draw !
+// stave.setContext(context).draw();
 }
+/* function render(pattern1, pattern2, pattern3, pattern4){
+    var pattern
+    if (index<4) {pattern=pattern1}
+    else if (index >= 4 && index<8) {pattern=pattern2}
+    else if (index >= 8 && index<12) {pattern=pattern3}
+    else { pattern=pattern4 }
+    sixteenth = index%4
+    switch(sixteenth) {
+        case 0:
+            cymbal()
+            if (pattern==0 || pattern==4 || pattern==5 || pattern==6 || pattern==10 ||  pattern==11 || pattern==13){
+                kick()
+                //guitar()
+            }
+            break;
+        case 1:
+            if (pattern==1 || pattern==4 || pattern==7 || pattern==8 || pattern==10 ||  pattern==11 || pattern==13){
+                kick()
+                //guitar()
+            }
+            break;
+        case 2:
+            if (pattern==2 || pattern==5 || pattern==7 || pattern==9 || pattern==10 ||  pattern==12 || pattern==13){
+                kick()
+                //guitar()
+            }
+            break;
+        case 3:
+            if (pattern==3 || pattern==6 || pattern==8 || pattern==9 || pattern==11 ||  pattern==12 || pattern==13){
+                kick()
+                //guitar()
+            }
+            break;
+    }
+    index++;
+    if (index==15){index=0}
+}*/
