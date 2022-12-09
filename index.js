@@ -18,6 +18,7 @@ var index=0;
 var notes = new Array(4).fill(0);
 var sub = new Array(4).fill(0);
 var refreshIntervalId = 0;
+var refreshIntervalIdb = 0;
 var complexity = 4;
 var measureIndex = 0;
 var pattern = new Array(4).fill(0);
@@ -54,7 +55,6 @@ function kick() {
 
 function cymbal(){
     var audio = new Audio('new_cymbal.wav');
-    volume(audio);
     audio.play();
 }
 
@@ -75,8 +75,8 @@ function hat(){
     audio.play();
 }
 
-function volume(audio){
-    if (accentIndex==accentPatternMap.get(measureIndex)[count]){ //if the note being played is an accented one
+function volume(audio) {
+    if (accentIndex==accentPatternMap.get(measureIndex+"")[count]){ //if the note being played is an accented one
         audio.volume=1;                                                               // we set the volume to 1
     }
     else{                                                                             //otherwise we set it to 0.5
@@ -86,13 +86,18 @@ function volume(audio){
 
 function play() {
 
-    if (refreshIntervalId) {
+    if (refreshIntervalIdb) {
         clearInterval(refreshIntervalId);
+        clearInterval(refreshIntervalIdb)
         refreshIntervalId = 0;
+        refreshIntervalIdb = 0;
         index = 0;
+        measureIndex = 0;
+        accentIndex = 0;
+        count = 0;
+        count = 0;
     } else {
-        setInterval(update, complexity*60000/BPM*timeSignatureNum[measureIndex]/timeSignatureDen[measureIndex])
-        refreshIntervalId = setInterval(render, 240000 / (BPM * sub), pattern)
+        refreshIntervalIdb = setInterval(update, 600/BPM*timeSignatureNum[measureIndex]/timeSignatureDen[measureIndex])
     }
 
 }
@@ -100,7 +105,8 @@ function play() {
 function update(){
 
     if (measureIndex!=0){
-        //timeSignatureNum[measureIndex]
+        timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex-1]
+        timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex-1]
     }
 
     if (sub[measureIndex]==0) { //determines the subdivision for each measure
@@ -118,16 +124,16 @@ function update(){
         }
     }
 
-    if (notes[measureIndex]==0){ //determines the number of notes and the pattern for eache measure
-        notes[measureIndex] = timeSignatureNum[measureIndex] * sub / timeSignatureDen[measureIndex];
-        pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes));
+    if (notes[measureIndex]==0){ //determines the number of notes and the pattern for each measure
+        notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
+        pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
     }
 
     if (!accentPatternMap.get(measureIndex)) {
         var sum=0;
-        var accentPattern = new Array(Math.ceil(timeSignatureNum/2));
+        var accentPattern = new Array(Math.ceil(timeSignatureNum[0]/2));
 
-        for (let i=0; i<Math.ceil(timeSignatureNum/2); i++) {
+        for (let i=0; i<Math.ceil(timeSignatureNum[measureIndex]/2); i++) {
 
             // Aggiunge un valore tra 2 e 3 alla posizione i-esima
             accentPattern[i] = Math.round(Math.random() + 2);
@@ -166,7 +172,11 @@ function update(){
                 i=Math.floor(timeSignatureNum/2);
             }
         }
-        accentPatternMap.set(measureIndex, accentPattern);
+        accentPatternMap.set(measureIndex+"", accentPattern);
+
+    }
+    if (refreshIntervalId==0){
+        refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]))
     }
 }
 
@@ -177,8 +187,8 @@ function toggleOn (e) {
     e.target.classList.toggle("redOn");
 }
 
-function render(pattern){
-    let patternBinary = pattern.toString(2);
+function render(){
+    let patternBinary = pattern[measureIndex].toString(2);
 
     if (patternBinary.charAt(index) - '0'){
 
@@ -187,9 +197,12 @@ function render(pattern){
 
     }
 
-    if (index==0 || accentIndex==accentPatternMap.get(measureIndex)[count]){
+    if (index==0 || accentIndex==accentPatternMap.get(measureIndex+"")[count]){
         cymbal();
-        count++;
+        if (index!=0){
+            count++;
+        }
+        accentIndex=0;
     }
 
     /*if(index%(sub/4)==0){
@@ -200,11 +213,11 @@ function render(pattern){
 
     index++;
 
-    if ((index)%(sub/timeSignatureDen)){
+    if ((index/sub[measureIndex])%(1/timeSignatureDen[measureIndex])==0){
         accentIndex++;
     }
 
-    if (index>=notes){
+    if (index>=notes[measureIndex]){
 
         index=0;
         count=0;
