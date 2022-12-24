@@ -9,17 +9,16 @@ var BPM = 120;
 // var style;
 var key;
 // var scale;
-// var complexity;
 var timeSignatureNum = new Array(4);
 var timeSignatureDen = new Array(4);
 timeSignatureNum[0] = 4;
 timeSignatureDen[0] = 4;
 var index=0;
 var notes = new Array(4).fill(0);
-var sub = new Array(4).fill(0);
+var sub = 0;
 var refreshIntervalId = 0;
 var refreshIntervalIdb = 0;
-var complexity = 4;
+var complexity = 2;
 var measureIndex = 0;
 var pattern = new Array(4).fill(0);
 var accentPatternMap = new Map();
@@ -108,79 +107,159 @@ function play() {
 
 function update(){
 
-    if (measureIndex!=0){
-        timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex-1]
-        timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex-1]
-    }
 
-    if (sub[measureIndex]==0) { //determines the subdivision for each measure
-        sub[measureIndex] = Math.ceil(Math.random() * 7);
-        if (sub[measureIndex] % 7 == 0) {
-            sub[measureIndex] = 14;
-        } else if (sub[measureIndex] % 5 == 0) {
-            sub[measureIndex] = 10;
-        } else if (sub[measureIndex] % 3 == 0) {
-            sub[measureIndex] = 12;
-        } else if (sub[measureIndex] % 2 == 0) {
-            sub[measureIndex] = 16;
-        } else if (sub[measureIndex] == 1) {
-            sub[measureIndex] = 8;
+
+
+    if (sub==0) { //determines the subdivision
+        sub = Math.ceil(Math.random() * 7);
+        if (sub % 7 == 0) {
+            sub = 14;
+        } else if (sub % 5 == 0) {
+            sub = 10;
+        } else if (sub % 3 == 0) {
+            sub = 12;
+        } else if (sub % 2 == 0) {
+            sub = 16;
+        } else if (sub == 1) {
+            sub = 8;
         }
-    }
-
-    if (notes[measureIndex]==0){ //determines the number of notes and the pattern for each measure
-        notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
-        pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
     }
 
     if (!accentPatternMap.get(measureIndex+"")) {
-        var sum=0;
-        var accentPattern = new Array(Math.ceil(timeSignatureNum[0]/2));
+        if (measureIndex==0){
+            var sum=0;
+            var accentPattern = new Array(Math.ceil(timeSignatureNum[0]/2));
 
-        for (let i=0; i<Math.ceil(timeSignatureNum[measureIndex]/2); i++) {
+            for (let i=0; i<Math.ceil(timeSignatureNum[measureIndex]/2); i++) {
 
-            // Aggiunge un valore tra 2 e 3 alla posizione i-esima
-            accentPattern[i] = Math.round(Math.random() + 2);
-            sum += accentPattern[i];
+                // Aggiunge un valore tra 2 e 3 alla posizione i-esima
+                accentPattern[i] = Math.round(Math.random() + 2);
+                sum += accentPattern[i];
 
-            // Controlla che la somma rimanga minore del totale, altrimenti entra nell'if
-            if (sum > timeSignatureNum[measureIndex]) {
+                // Controlla che la somma rimanga minore del totale, altrimenti entra nell'if
+                if (sum > timeSignatureNum[measureIndex]) {
 
-                // Elimina l'ultimo elemento
-                sum -= accentPattern[i];
+                    // Elimina l'ultimo elemento
+                    sum -= accentPattern[i];
 
-                // Prova a sommare 2 a sum e se risulta uguale al totale, inserisce 2 in ultima posizione ed esce dal ciclo
-                if(sum+2 == timeSignatureNum[measureIndex]) {
-                    accentPattern[i] = 2;
-                    i = Math.ceil(timeSignatureNum[measureIndex]/2);
-                } else {
-                    // Caso in cui anche sommando 2 andiamo oltre il totale e andiamo a modificare il penultimo elemento
-                    sum-= accentPattern[i-1];
-
-                    // Se è uguale a 3 inseriamo 2
-                    if(accentPattern[i-1] == 3) {
-                        accentPattern[i-1] = 2;
-                        sum += 2;
+                    // Prova a sommare 2 a sum e se risulta uguale al totale, inserisce 2 in ultima posizione ed esce dal ciclo
+                    if(sum+2 == timeSignatureNum[measureIndex]) {
+                        accentPattern[i] = 2;
+                        i = Math.ceil(timeSignatureNum[measureIndex]/2);
                     } else {
-                        // Se è uguale a 2 inseriamo 3
-                        accentPattern[i-1] = 3;
-                        sum += 3;
-                    }
+                        // Caso in cui anche sommando 2 andiamo oltre il totale e andiamo a modificare il penultimo elemento
+                        sum-= accentPattern[i-1];
 
-                    // Facciamo ripartire il conteggio da i-1
-                    i = i-1;
+                        // Se è uguale a 3 inseriamo 2
+                        if(accentPattern[i-1] == 3) {
+                            accentPattern[i-1] = 2;
+                            sum += 2;
+                        } else {
+                            // Se è uguale a 2 inseriamo 3
+                            accentPattern[i-1] = 3;
+                            sum += 3;
+                        }
+
+                        // Facciamo ripartire il conteggio da i-1
+                        i = i-1;
+                    }
+                }
+
+                if (sum==timeSignatureNum[measureIndex]){
+                    i=Math.floor(timeSignatureNum[measureIndex]/2);
                 }
             }
+            accentPatternMap.set(measureIndex+"", accentPattern);
 
-            if (sum==timeSignatureNum[measureIndex]){
-                i=Math.floor(timeSignatureNum[measureIndex]/2);
+        } else{
+
+            if (complexity==1){
+                accentPatternMap.set(measureIndex+"", accentPatternMap.get(measureIndex-1 + ""));
+            }
+
+            else if (complexity==2){
+                if (measureIndex==1){
+                    var accentPattern = new Array(Math.ceil(timeSignatureNum[0]/2));
+
+                    for (let i=0; accentPatternMap.get(measureIndex-1 + "")[i]!=0 && i<4; i++){
+
+                        accentPattern[i]=(accentPatternMap.get(measureIndex-1 + "")[i])*2+1;
+
+                    }
+                    accentPatternMap.set(measureIndex+"", accentPattern);
+                    console.log(accentPattern)
+                }
+                if (measureIndex==2){
+                    accentPatternMap.set(measureIndex+"", accentPatternMap.get(measureIndex-2 + ""));
+                }
+                if (measureIndex==3){
+                    accentPatternMap.set(measureIndex+"", accentPatternMap.get(measureIndex-2 + ""));
+                }
             }
         }
-        accentPatternMap.set(measureIndex+"", accentPattern);
+    }
+
+
+    if (measureIndex!=0){
+
+        if (complexity==1){
+            timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex-1]
+            timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex-1]
+        }
+
+        else if (complexity==2){
+            if(measureIndex==1){
+                timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex-1]*2
+                timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex-1]*2
+                for (let i=0; accentPatternMap.get(measureIndex-1 + "")[i]!=0 && i<4; i++){
+                    timeSignatureNum[measureIndex]++;
+                }
+            }
+            if (measureIndex==2){
+                timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex-2]
+                timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex-2]
+            }
+            if(measureIndex==3){
+                timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex-2]
+                timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex-2]
+            }
+
+        }
 
     }
+
+    if (notes[measureIndex]==0){ //determines the number of notes and the pattern for each measure
+        if (measureIndex==0){
+            notes[measureIndex] = timeSignatureNum[measureIndex] * sub / timeSignatureDen[measureIndex];
+            pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
+        }
+        else{
+            if (complexity==1){
+                if (measureIndex==3){
+                    notes[measureIndex] = timeSignatureNum[measureIndex] * sub / timeSignatureDen[measureIndex];
+                    pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
+                }
+                else {
+                    notes[measureIndex] = notes[0];
+                    pattern[measureIndex] = pattern[0];
+                }
+            }
+            else if (complexity==2){
+                if (measureIndex==2){
+                    notes[measureIndex] = notes[0];
+                    pattern[measureIndex] = pattern[0];
+                }
+                else {
+                    notes[measureIndex] = timeSignatureNum[measureIndex] * sub / timeSignatureDen[measureIndex];
+                    pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
+                }
+            }
+        }
+    }
+
+
     if (refreshIntervalId==0){
-        refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]))
+        refreshIntervalId = setInterval(render, 240000 / (BPM * sub))
     }
 }
 
@@ -213,27 +292,25 @@ function render() {
         guitar();
 
     }
-    console.log("sub=", sub[measureIndex])
+    console.log("sub=", sub)
     console.log("accentIndex=", accentIndex);
     console.log("accentPattern=", accentPatternMap.get(measureIndex + "")[count]);
 
     if (index == 0 || accentIndex == accentPatternMap.get(measureIndex + "")[count]) {
         cymbal();
+
         if (index != 0) {
             count++;
+            if (count % 2 == 0){
+                snare()
+            }
         }
         accentIndex = 0;
     }
 
-    /*if(index%(sub/4)==0){
-
-        cymbal();
-
-    }*/
-
     index++;
 
-    if ((index / sub[measureIndex]) % (1 / timeSignatureDen[measureIndex]) == 0) {
+    if ((index / sub) % (1 / timeSignatureDen[measureIndex]) == 0) {
         accentIndex++;
     }
 
@@ -245,6 +322,9 @@ function render() {
         if (measureIndex == 4) {
             measureIndex = 0;
         }
+        console.log("measure=", measureIndex)
+        console.log("TimeSigNum=", timeSignatureNum[measureIndex])
+        console.log("TimeSigDen=", timeSignatureDen[measureIndex])
     }
 }
 
