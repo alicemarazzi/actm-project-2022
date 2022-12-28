@@ -18,7 +18,7 @@ var notes = new Array(4).fill(0);
 var sub = 0;
 var refreshIntervalId = 0;
 var refreshIntervalIdb = 0;
-var complexity = 2;
+var complexity = 3;
 var measureIndex = 0;
 var pattern = new Array(4).fill(0);
 var accentPatternMap = new Map();
@@ -173,7 +173,7 @@ function update(){
 
         } else{
 
-            if (complexity==1){
+            if (complexity==1 || complexity==3){
                 accentPatternMap.set(measureIndex+"", accentPatternMap.get(measureIndex-1 + ""));
             }
 
@@ -225,6 +225,20 @@ function update(){
             }
 
         }
+        else if (complexity==3){
+            if (measureIndex==1){
+                timeSignatureNum[measureIndex]=3*timeSignatureNum[measureIndex-1]
+                timeSignatureDen[measureIndex]=2*timeSignatureDen[measureIndex-1]
+            }
+            if (measureIndex==2){
+                timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex-2]
+                timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex-2]
+            }
+            if(measureIndex==3){
+                timeSignatureNum[measureIndex]=2*timeSignatureNum[measureIndex-1]
+                timeSignatureDen[measureIndex]=3*timeSignatureDen[measureIndex-1]
+            }
+        }
 
     }
 
@@ -244,15 +258,24 @@ function update(){
                     pattern[measureIndex] = pattern[0];
                 }
             }
-            else if (complexity==2){
-                if (measureIndex==2){
+            else if (complexity==2) {
+                if (measureIndex == 2) {
                     notes[measureIndex] = notes[0];
                     pattern[measureIndex] = pattern[0];
-                }
-                else {
+                } else {
                     notes[measureIndex] = timeSignatureNum[measureIndex] * sub / timeSignatureDen[measureIndex];
                     pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
                 }
+            }
+            else if (complexity==3){
+                    if (measureIndex==2){
+                        notes[measureIndex] = notes[0];
+                        pattern[measureIndex] = pattern[0];
+                    }
+                    else {
+                        notes[measureIndex] = timeSignatureNum[measureIndex] * sub / timeSignatureDen[measureIndex];
+                        pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
+                    }
             }
         }
     }
@@ -301,18 +324,27 @@ function render() {
 
         if (index != 0) {
             count++;
-            if (count % 2 == 0){
-                snare()
+            if (count == 1 || count == 3){
+                snare();
             }
         }
         accentIndex = 0;
     }
 
     index++;
-
-    if ((index / sub) % (1 / timeSignatureDen[measureIndex]) == 0) {
-        accentIndex++;
+    if (complexity == 3){
+        if ((index / sub) % (1 / timeSignatureDen[0]) == 0) {
+            hat();
+            accentIndex++;
+        }
     }
+    else {
+        if ((index / sub) % (1 / timeSignatureDen[measureIndex]) == 0) {
+            hat();
+            accentIndex++;
+        }
+    }
+
 
     if (index >= notes[measureIndex]) {
 
