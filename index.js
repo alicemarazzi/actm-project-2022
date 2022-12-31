@@ -41,6 +41,7 @@ function changeBPM() {
 
 function changeComplexity() {
     parseInt(document.getElementById('complex').value);
+    complexity = parseInt(document.getElementById('complex').value);
 }
 
 function changeKey() {
@@ -104,10 +105,6 @@ function play() {
 
 function update(){
 
-
-
-
-
     if (sub==0) { //determines the subdivision
         sub = Math.ceil(Math.random() * 7);
         if (sub % 7 == 0) {
@@ -121,6 +118,20 @@ function update(){
         } else if (sub == 1) {
             sub = 8;
         }
+
+        /*var s = sub;
+
+        console.log(sub);
+
+        console.log(s);
+
+        while(s > 0) {
+            $(".add-row").click(function(){
+                var markup = "<tr><td></td><td></td><td></td><td></td></tr>";
+                $("table tbody").append(markup);
+            });
+            s--;
+        }*/
     }
 
     if (!accentPatternMap.get(measureIndex+"")) {
