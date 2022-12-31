@@ -40,13 +40,12 @@ function changeBPM() {
 }
 
 function changeComplexity() {
-    console.log(parseInt(document.getElementById('complex').value));
+    parseInt(document.getElementById('complex').value);
 }
 
 function changeKey() {
     key = document.getElementById('keyselected').value;
 }
-
 
 function kick() {
     var audio = new Audio('Kick (9).wav');
@@ -83,7 +82,7 @@ function play() {
 
     if (refreshIntervalIdb) {
 
-        document.getElementById("some-div-id").innerHTML = "";
+        // document.getElementById("some-div-id").innerHTML = "";
 
         clearInterval(refreshIntervalId);
         clearInterval(refreshIntervalIdb)
@@ -97,10 +96,8 @@ function play() {
         measureIndex = 0;
         accentIndex = 0;
         count = 0;
+
     } else {
-
-        createStave();
-
         refreshIntervalIdb = setInterval(update, 600/BPM*timeSignatureNum[measureIndex]/timeSignatureDen[measureIndex])
     }
 }
@@ -111,6 +108,20 @@ function update(){
 
 
 
+    if (sub==0) { //determines the subdivision
+        sub = Math.ceil(Math.random() * 7);
+        if (sub % 7 == 0) {
+            sub = 14;
+        } else if (sub % 5 == 0) {
+            sub = 10;
+        } else if (sub % 3 == 0) {
+            sub = 12;
+        } else if (sub % 2 == 0) {
+            sub = 16;
+        } else if (sub == 1) {
+            sub = 8;
+        }
+    }
 
     if (!accentPatternMap.get(measureIndex+"")) {
         var sigPatt
@@ -306,8 +317,13 @@ function render() {
 
     if (patternBinary.charAt(index) - '0') {
         kick();
+        guitar();
     }
     console.log("sub=", sub[measureIndex])
+
+    console.log("sub=", sub)
+    console.log("accentIndex=", accentIndex);
+    console.log("accentPattern=", accentPatternMap.get(measureIndex + "")[count]);
 
 
     index++;
