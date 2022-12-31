@@ -26,6 +26,7 @@ var pattern = new Array(4).fill(0);
 var accentPatternMap = new Map();
 var accentIndex=0;
 var count=0;
+var s = -1; // per creare n righe della tabella e non modificarle più
 
 function createTimeSignatureNum() {
     timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
@@ -46,7 +47,6 @@ function changeComplexity() {
 function changeKey() {
     key = document.getElementById('keyselected').value;
 }
-
 
 function kick() {
     var audio = new Audio('Kick (9).wav');
@@ -95,37 +95,33 @@ function play() {
         measureIndex = 0;
         accentIndex = 0;
         count = 0;
+
     } else {
 
-        refreshIntervalIdb = setInterval(update, 600/BPM*timeSignatureNum[measureIndex]/timeSignatureDen[measureIndex])
+        refreshIntervalIdb = setInterval(update, 600/BPM*timeSignatureNum[measureIndex]/timeSignatureDen[measureIndex]);
+
     }
 }
 
 function update(){
-    /*var s = sub;
-
-        console.log(sub);
-
-        console.log(s);
-
-        while(s > 0) {
-            $(".add-row").click(function(){
-                var markup = "<tr><td></td><td></td><td></td><td></td></tr>";
-                $("table tbody").append(markup);
-            });
-            s--;
-        }*/
 
     if (!accentPatternMap.get(measureIndex+"")) {
-        var sigPatt
+
+        var sigPatt;
+
         if (complexity==3){
+
             sigPatt = Math.ceil(Math.random()*timeSignatureNum[measureIndex]+1)
             console.log("sigPatt =", sigPatt)
-        }
-        else{
+
+        } else {
+
             sigPatt = timeSignatureNum[measureIndex]
+
         }
+
         if (measureIndex==0){
+
             var sum=0;
             var accentPattern = new Array(Math.ceil(sigPatt/2));
 
@@ -170,14 +166,16 @@ function update(){
             }
             accentPatternMap.set(measureIndex+"", accentPattern);
 
-        } else{
+        } else {
 
             if (complexity==1 || complexity==3){
-                accentPatternMap.set(measureIndex+"", accentPatternMap.get(measureIndex-1 + ""));
-            }
 
-            else if (complexity==2){
+                accentPatternMap.set(measureIndex+"", accentPatternMap.get(measureIndex-1 + ""));
+
+            } else if (complexity==2){
+
                 if (measureIndex==1){
+
                     var accentPattern = new Array(Math.ceil(timeSignatureNum[0]/2));
 
                     for (let i=0; accentPatternMap.get(measureIndex-1 + "")[i]!=0 && i<4; i++){
@@ -187,17 +185,22 @@ function update(){
                     }
                     accentPatternMap.set(measureIndex+"", accentPattern);
                     console.log(accentPattern)
+
                 }
                 if (measureIndex==2){
+
                     accentPatternMap.set(measureIndex+"", accentPatternMap.get(measureIndex-2 + ""));
+
                 }
+
                 if (measureIndex==3){
+
                     accentPatternMap.set(measureIndex+"", accentPatternMap.get(measureIndex-2 + ""));
+
                 }
             }
         }
     }
-
 
     if (measureIndex!=0){
 
@@ -222,46 +225,65 @@ function update(){
                 timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex-2]
                 timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex-2]
             }
-
         }
-
     }
 
     if (sub[measureIndex]==0){
+
         if (measureIndex==0){
+
             sub[measureIndex] = Math.round(Math.random() * 2 + 2) * timeSignatureDen[measureIndex];
-        }
-        else if (complexity==1 || complexity==3){
-            sub[measureIndex] = sub[measureIndex-1]
-        }
-        else if (complexity==2){
+
+        } else if (complexity==1 || complexity==3){
+
+            sub[measureIndex] = sub[measureIndex-1];
+
+        } else if (complexity==2){
+
             if (measureIndex==1){
                 sub[measureIndex] = Math.round(Math.random() + 1) * timeSignatureDen[measureIndex]
-            }
-            else {
+            } else {
                 sub[measureIndex] = sub[measureIndex-2]
             }
+
         }
     }
 
+    if (s == -1) {
+        s = sub[measureIndex];
+
+        console.log("s=", s);
+        console.log("sub=", sub[measureIndex]);
+
+        while(s > 0) {
+            var markup = "<tr><td></td><td></td><td></td><td></td></tr>";
+            $("table tbody").append(markup);
+            s--;
+            console.log("s=", s);
+        }
+    }
 
     if (notes[measureIndex]==0){ //determines the number of notes and the pattern for each measure
+
         if (measureIndex==0){
+
             notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
             pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
-        }
-        else{
+
+        } else{
+
             if (complexity==1 || complexity==3){
+
                 if (measureIndex==3){
                     notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
                     pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
-                }
-                else {
+                } else {
                     notes[measureIndex] = notes[0];
                     pattern[measureIndex] = pattern[0];
                 }
-            }
-            else if (complexity==2) {
+
+            } else if (complexity==2) {
+
                 if (measureIndex == 2) {
                     notes[measureIndex] = notes[0];
                     pattern[measureIndex] = pattern[0];
@@ -270,7 +292,6 @@ function update(){
                     pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
                 }
             }
-
         }
     }
 
@@ -288,13 +309,13 @@ function update(){
 start.onclick = toggleOn;
 
 function toggleOn(e) {
+
     play();
 
     if(e.target.parentElement.classList.contains("green")) {
         e.target.parentElement.classList.toggle("redOn");
     } else {
         e.target.classList.toggle("redOn");
-
     }
 
     if(document.getElementById("StartStop").innerHTML == "START") {
@@ -306,6 +327,7 @@ function toggleOn(e) {
 }
 
 function render() {
+
     let patternBinary = pattern[measureIndex].toString(2);
 
     if (patternBinary.charAt(index) - '0') {
@@ -313,9 +335,7 @@ function render() {
     }
     console.log("sub=", sub[measureIndex])
 
-
     index++;
-
 
     if (index >= notes[measureIndex]) {
 
@@ -346,6 +366,7 @@ function render() {
 }
 
 function accentedPlay(){
+
     console.log("accentIndex=", accentIndex);
     console.log("accentPattern=", accentPatternMap.get(measureIndex + "")[count-1]);
 
