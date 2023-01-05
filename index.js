@@ -29,6 +29,7 @@ var pattern = new Array(4).fill(0);
 var accentPatternMap = new Map();
 var accentIndex=0;
 var count=0;
+var s = -1; // per creare n righe della tabella e non modificarle più
 
 function createTimeSignatureNum() {
     timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
@@ -50,7 +51,6 @@ function changeComplexity() {
 function changeKey() {
     key = document.getElementById('keyselected').value;
 }
-
 
 function kick() {
     var audio = new Audio('Kick (9).wav');
@@ -100,9 +100,8 @@ function play() {
         measureIndex = 0;
         accentIndex = 0;
         count = 0;
-    } else {
 
-        createStave();
+    } else {
 
         generate()
     }
@@ -258,6 +257,19 @@ function generate() {
             }
         }
 
+    if (s == -1) {
+        s = sub[measureIndex];
+
+        console.log("s=", s);
+        console.log("sub=", sub[measureIndex]);
+
+        while(s > 0) {
+            var markup = "<tr><td></td><td></td><td></td><td></td></tr>";
+            $("table tbody").append(markup);
+            s--;
+            console.log("s=", s);
+        }
+    }
 
  //determines the number of notes and the pattern for the kick for each measure
         if (measureIndex == 0) {
@@ -283,7 +295,6 @@ function generate() {
                     pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
                 }
             }
-
         }
     } //end of for loop
     measureIndex=0
@@ -308,13 +319,13 @@ function generate() {
 start.onclick = toggleOn;
 
 function toggleOn(e) {
+
     play();
 
     if(e.target.parentElement.classList.contains("green")) {
         e.target.parentElement.classList.toggle("redOn");
     } else {
         e.target.classList.toggle("redOn");
-
     }
 
     if(document.getElementById("StartStop").innerHTML == "START") {
@@ -326,6 +337,7 @@ function toggleOn(e) {
 }
 
 function render() {
+
     let patternBinary = pattern[measureIndex].toString(2);
 
     if (patternBinary.charAt(index) - '0') {
@@ -333,9 +345,7 @@ function render() {
     }
     console.log("sub=", sub[measureIndex])
 
-
     index++;
-
 
     if (index >= notes[measureIndex]) {
 
@@ -374,6 +384,7 @@ function render() {
 }
 
 function accentedPlay(){
+
     console.log("accentIndex=", accentIndex);
 
     if(complexity==3){
@@ -410,50 +421,4 @@ function accentedPlay(){
         accentIndex++;
         console.log("accentPattern=", accentPatternMap.get(measureIndex + "")[count-1]);
     }
-}
-
-
-
-VF = Vex.Flow;
-
-
-function createStave() {
-// We created an object to store the information about the workspace
-    var WorkspaceInformation = {
-        // The div in which you're going to work
-        div: document.getElementById("some-div-id"),
-        // Vex creates a svg with specific dimensions
-        canvasWidth: 500,
-        canvasHeight: 500
-    };
-
-// Create a renderer with SVG
-    var renderer = new VF.Renderer(
-        WorkspaceInformation.div,
-        VF.Renderer.Backends.SVG
-    );
-
-// Use the renderer to give the dimensions to the SVG
-    renderer.resize(WorkspaceInformation.canvasWidth, WorkspaceInformation.canvasHeight);
-
-// Expose the context of the renderer
-    var context = renderer.getContext();
-
-// And give some style to our SVG
-    context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
-
-
-    /**
-     * Creating a new stave
-     */
-// Create a stave of width 400 at position x10, y40 on the SVG.
-    var stave = new VF.Stave(10, 40, 400);
-
-    stave.addClef("treble").addTimeSignature(timeSignatureNum[measureIndex] + "/" + timeSignatureDen[measureIndex]);
-    stave.setContext(context).draw();
-// Add a clef and time signature.
-// stave.addClef("treble").addTimeSignature("4/4");
-//stave.addClef("treble").addTimeSignature(timeSignatureNum + "/" + timeSignatureDen);
-// Set the context of the stave our previous exposed context and execute the method draw !
-// stave.setContext(context).draw();
 }

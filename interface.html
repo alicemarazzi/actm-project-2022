@@ -10,7 +10,43 @@
 <body>
 <div class = "rectangle">
 
-    <div id="some-div-id">
+    <div id="box-system">
+        <head>
+            <style>
+                table{
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    position: absolute;
+                    margin-bottom: 20px;
+                    border-collapse: collapse;
+                }
+                table, th, td{
+                    border: 1px solid #cdcdcd;
+                }
+                table th, table td{
+                    width: 15px;
+                    height: 15px;
+                    padding: 10px;
+                    text-align: center;
+                }
+            </style>
+            <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        </head>
+        <body>
+        <table>
+            <thead>
+            <tr>
+                <th>c</th>
+                <th>k</th>
+                <th>s</th>
+                <th>h</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        </body>
     </div>
 
     <h1 id = "title" style="font-family: Impact"> ACTM PROJECT 2022 </h1>
@@ -73,16 +109,6 @@
             <option value="16">16</option>
         </select>
     </div>
-
-    <!-- <div class="TimeSignatureDen">-->
-    <!--    <button class="dropbtn">Denominator</button>-->
-    <!--    <div class="dropdown-content">-->
-    <!--        <a id = "two" onclick = createTimeSignatureDen(2)>2</a>-->
-    <!--        <a id = "four" onclick = createTimeSignatureDen(4)>4</a>-->
-    <!--        <a id = "eight" onclick = createTimeSignatureDen(8)>8</a>-->
-    <!--        <a id = "sixteen" onclick = createTimeSignatureDen(16)>16</a>-->
-    <!--    </div>-->
-    <!--</div> -->
 
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vexflow@4.0.3/build/cjs/vexflow.js">
