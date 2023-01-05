@@ -29,7 +29,7 @@ var pattern = new Array(4).fill(0);
 var accentPatternMap = new Map();
 var accentIndex=0;
 var count=0;
-var s = -1; // per creare n righe della tabella e non modificarle più
+var s = 0; // per creare n righe della tabella e non modificarle più
 
 function createTimeSignatureNum() {
     timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
@@ -88,8 +88,6 @@ function play() {
 
     if (refreshIntervalId) {
 
-        document.getElementById("some-div-id").innerHTML = "";
-
         clearInterval(refreshIntervalId);
         clearInterval(refreshIntervalIdc);
         clearInterval(refreshIntervalIdd);
@@ -102,27 +100,25 @@ function play() {
         count = 0;
 
     } else {
-
         generate()
     }
 }
 
 function generate() {
+
     for (measureIndex = 0; measureIndex < 4; measureIndex++) {
 
         if (measureIndex == 0) { //generate first accent pattern
 
             if (complexity == 3) { //in the case of complexity=3 the accent pattern has a different time signature numerator than the rest of the elements
+
                 while (timeSignatureNum[measureIndex] % sigPatt == 0){
                     sigPatt = Math.ceil(Math.random() * timeSignatureNum[measureIndex] + 1)
                     console.log("sigPatt =", sigPatt)
                 }
 
-
             } else {
-
                 sigPatt = timeSignatureNum[measureIndex]
-
             }
 
             var sum = 0;
@@ -257,19 +253,16 @@ function generate() {
             }
         }
 
-    if (s == -1) {
-        s = sub[measureIndex];
+    /* if (s == -1) {
 
-        console.log("s=", s);
-        console.log("sub=", sub[measureIndex]);
+        s = sub[measureIndex];
 
         while(s > 0) {
             var markup = "<tr><td></td><td></td><td></td><td></td></tr>";
             $("table tbody").append(markup);
             s--;
-            console.log("s=", s);
         }
-    }
+    }*/
 
  //determines the number of notes and the pattern for the kick for each measure
         if (measureIndex == 0) {
@@ -297,6 +290,7 @@ function generate() {
             }
         }
     } //end of for loop
+
     measureIndex=0
     if (refreshIntervalIdd == 0) {
         refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
@@ -314,7 +308,6 @@ function generate() {
 
     }
 }
-
 
 start.onclick = toggleOn;
 
@@ -342,7 +335,27 @@ function render() {
 
     if (patternBinary.charAt(index) - '0') {
         kick();
+
+        if (s != -1) {
+            var markup = "<tr><td></td><td>*</td><td></td><td></td></tr>";
+            $("table tbody").append(markup);
+            s++;
+        }
+
+    } else {
+
+        if (s != -1) {
+            var markup = "<tr><td></td><td></td><td></td><td></td></tr>";
+            $("table tbody").append(markup);
+            s++;
+        }
+
     }
+
+    if (s == sub[measureIndex]) {
+        s = -1;
+    }
+
     console.log("sub=", sub[measureIndex])
 
     index++;
