@@ -21,6 +21,7 @@ var hatNotes = new Array(4).fill(0);
 var sub = new Array(4).fill(0);
 var hatsub = new Array(4).fill(0);
 var refreshIntervalId = 0;
+var refreshIntervalIdb = 0;
 var refreshIntervalIdc = 0;
 var refreshIntervalIdd = 0;
 var complexity = 1;
@@ -30,6 +31,7 @@ var accentPatternMap = new Map();
 var accentIndex=0;
 var count=0;
 var s = 0; // per creare n righe della tabella e non modificarle più
+var accent=1;
 
 function createTimeSignatureNum() {
     timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
@@ -54,7 +56,7 @@ function changeKey() {
 
 function kick() {
     var audio = new Audio('Kick (9).wav');
-    volume(audio);
+    audio.volume = 0.75
     audio.play();
 }
 
@@ -65,24 +67,23 @@ function cymbal(){
 
 function snare(){
     var audio = new Audio('Snare (25).wav');
+    audio.volume = 0.6
     audio.play();
+}
+
+function ghostSnare(){
+    var audio = new Audio('ghoul_snare.wav')
+    audio.volume = Math.random()*0.3
+    audio.play()
 }
 
 function hat(){
     var audio = new Audio('Hat (7).wav');
-    volume(audio);
+    audio.volume = Math.random()*accent
     audio.play()
     console.log("hat")
 }
 
-function volume(audio) {
-    if (accentIndex==accentPatternMap.get(measureIndex+"")[count]){ //if the note being played is an accented one
-        audio.volume=0.75;                                                               // we set the volume to 1
-    }
-    else{                                                                             //otherwise we set it to 0.5
-        audio.volume=0.5;
-    }
-}
 
 function play() {
 
@@ -93,11 +94,21 @@ function play() {
         clearInterval(refreshIntervalIdd);
         refreshIntervalIdd = 0;
         refreshIntervalIdc = 0;
+        refreshIntervalIdb = 0
         refreshIntervalId = 0;
         index = 0;
         measureIndex = 0;
         accentIndex = 0;
         count = 0;
+        pattern.fill(0)
+        timeSignatureDen.fill(0)
+        timeSignatureNum.fill(0)
+        notes.fill(0)
+        sub.fill(0)
+        accentPatternMap.clear()
+        timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
+        sigPatt = timeSignatureNum[0]
+        timeSignatureDen[0] = parseInt(document.getElementById('timesigden').value);
 
     } else {
         generate()
@@ -113,12 +124,27 @@ function generate() {
             if (complexity == 3) { //in the case of complexity=3 the accent pattern has a different time signature numerator than the rest of the elements
 
                 while (timeSignatureNum[measureIndex] % sigPatt == 0){
-                    sigPatt = Math.ceil(Math.random() * timeSignatureNum[measureIndex] + 1)
-                    console.log("sigPatt =", sigPatt)
+                    if (timeSignatureNum[measureIndex]>=8){
+                        sigPatt = Math.ceil(Math.random() * timeSignatureNum[measureIndex] + 1)
+                        console.log("sigPatt =", sigPatt)
+                    }
+                    else{
+                        sigPatt = Math.ceil(Math.random() * timeSignatureNum[measureIndex]*2 + 1)
+                        console.log("sigPatt =", sigPatt)
+                    }
                 }
 
+
             } else {
-                sigPatt = timeSignatureNum[measureIndex]
+
+                if (timeSignatureNum[measureIndex]>=8){
+                    sigPatt = timeSignatureNum[measureIndex]
+                }
+
+                else{
+                    sigPatt = timeSignatureNum[measureIndex]*2
+                }
+
             }
 
             var sum = 0;
@@ -170,11 +196,11 @@ function generate() {
         }
         //Generate subsequent accent patterns
         else {
-            if (complexity == 1 || complexity == 3) { //in the case of complexity 1 and 3 the accent pattern stays the same
+            if (complexity) {
 
                 accentPatternMap.set(measureIndex + "", accentPatternMap.get(measureIndex - 1 + ""));
 
-            } else if (complexity == 2) { //in the case of complexity 2 the pattern changes
+            } /*else if (complexity == 2) { //in the case of complexity 2 the pattern changes
 
                 if (measureIndex == 1) {
 
@@ -187,45 +213,25 @@ function generate() {
                     }
                     accentPatternMap.set(measureIndex + "", accentPattern);
                     console.log(accentPattern)
-                } else {
-                    accentPatternMap.set(measureIndex + "", accentPatternMap.get(measureIndex - 2 + ""));
-                }
-            }
+                }*/
         }
 
 
         //generate list of time signatures
         if (measureIndex != 0) {
 
-            if (complexity == 1 || complexity == 3) { //in the cases of complexity 1 and 3 the time signature stays the same
+            if (complexity == 1 || complexity == 2|| complexity == 3 ||complexity == 4) { //in the cases of complexity 1 and 3 the time signature stays the same
 
                 timeSignatureNum[measureIndex] = timeSignatureNum[measureIndex - 1]
                 timeSignatureDen[measureIndex] = timeSignatureDen[measureIndex - 1]
 
-            } else if (complexity == 2) {
-
-                if (measureIndex == 1) {
-
-                    timeSignatureDen[measureIndex] = timeSignatureDen[measureIndex - 1] * 2
-                    timeSignatureNum[measureIndex] = timeSignatureNum[measureIndex - 1] * 2
-
-                    for (let i = 0; accentPatternMap.get(measureIndex - 1 + "")[i] != 0 && i < 4; i++) {
-
-                        timeSignatureNum[measureIndex]++;
-
-                    }
-                }
-                if (measureIndex == 2) {
-                    timeSignatureNum[measureIndex] = timeSignatureNum[measureIndex - 2]
-                    timeSignatureDen[measureIndex] = timeSignatureDen[measureIndex - 2]
-                }
-                if (measureIndex == 3) {
-                    timeSignatureNum[measureIndex] = timeSignatureNum[measureIndex - 2]
-                    timeSignatureDen[measureIndex] = timeSignatureDen[measureIndex - 2]
-                }
-
             }
 
+        }
+
+        while (timeSignatureDen[measureIndex]<8){
+            timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex]*2
+            timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex]*2
         }
 
         if (sub[measureIndex] == 0) { //determines the subdivisions for each measure
@@ -234,24 +240,73 @@ function generate() {
 
                 sub[measureIndex] = Math.round(Math.random() * 2 + 2) * timeSignatureDen[measureIndex];
 
-            } else if (complexity == 1 || complexity == 3) {
+            } else if (complexity == 1 || complexity == 3 || complexity == 4) {
 
                 sub[measureIndex] = sub[measureIndex - 1]
 
             } else if (complexity == 2) {
 
                 if (measureIndex == 1) {
-                    sub[measureIndex] = Math.round(Math.random() + 1) * timeSignatureDen[measureIndex]
+                    sub[measureIndex]=sub[measureIndex-1]
+                    for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
+                        sub[measureIndex]++;
+                    }
                 } else {
                     sub[measureIndex] = sub[measureIndex - 2]
                 }
             }
-            if (complexity<4){
 
-                hatsub[measureIndex] = sub[measureIndex]
+            if (BPM>=110){
+                while (sub[measureIndex]>16){
+                    sub[measureIndex]=sub[measureIndex]/2
+                }
+                if (sub[measureIndex]==timeSignatureDen[measureIndex]){
+                    if(sub[measureIndex]%3==0){
+                        sub[measureIndex]=sub[measureIndex]*3/2
+                    }
+                    else{
+                        sub[measureIndex]=sub[measureIndex]*2/3
+                    }
+                }
+            }
+
+
+
+
+            hatsub[measureIndex] = sub[measureIndex]
+
+            if(complexity==4){
+                if (measureIndex == 0) {
+                    while (sub[measureIndex]%hatsub[measureIndex]==0 || hatsub[measureIndex]%sub[measureIndex]==0){
+                        hatsub[measureIndex] = sub[measureIndex]*Math.round(Math.random()*4+1)/2
+                    }
+                } else {
+
+                    hatsub[measureIndex] = hatsub[measureIndex - 1]
+
+                }
+            }
+
+            if (BPM>=110){
+                while (hatsub[measureIndex]>16){
+                    hatsub[measureIndex]=hatsub[measureIndex]/2
+                }
+                if (complexity==4){
+                    if (sub[measureIndex]==hatsub[measureIndex]){
+                        if(hatsub[measureIndex]%3==0){
+                            hatsub[measureIndex]=hatsub[measureIndex]*3/2
+                        }
+                        else{
+                            hatsub[measureIndex]=hatsub[measureIndex]*2/3
+                        }
+                    }
+                }
 
             }
+
         }
+
+
 
     /* if (s == -1) {
 
@@ -266,12 +321,17 @@ function generate() {
 
  //determines the number of notes and the pattern for the kick for each measure
         if (measureIndex == 0) {
+
             notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
             hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex];
             accentedNotes[measureIndex] = sigPatt * sub[measureIndex] / timeSignatureDen[measureIndex];
             pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
+
+            if (pattern[measureIndex]<Math.pow(2, notes[measureIndex])/2){
+                pattern[measureIndex]=pattern[measureIndex]+Math.pow(2, notes[measureIndex])/2
+            }
         } else {
-            if (complexity == 1 || complexity == 3) {
+            if (complexity == 1 || complexity == 3 || complexity==4) {
                 if (measureIndex == 3) {
                     notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
                     pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
@@ -280,12 +340,17 @@ function generate() {
                     pattern[measureIndex] = pattern[0];
                 }
             } else if (complexity == 2) {
-                if (measureIndex == 2) {
-                    notes[measureIndex] = notes[0];
-                    pattern[measureIndex] = pattern[0];
-                } else {
+                console.log("dentro if")
+                if (measureIndex == 1) {
+                    console.log("dentro if2")
                     notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
+                    console.log("notes =", notes[measureIndex])
                     pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
+                    console.log("pattern =", pattern[measureIndex])
+                }
+                else {
+                    notes[measureIndex] = notes[measureIndex-2];
+                    pattern[measureIndex] = pattern[measureIndex-2];
                 }
             }
         }
@@ -294,19 +359,16 @@ function generate() {
     measureIndex=0
     if (refreshIntervalIdd == 0) {
         refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
+        setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.15}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
     }
     if (refreshIntervalId == 0) {
         refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]))
     }
     if (refreshIntervalIdc == 0) {
-        if (hatsub[measureIndex] % 3!=0){
-            refreshIntervalIdc = setInterval(hat, 480000 / (BPM * hatsub[measureIndex]))
-        }
-        else {
-            refreshIntervalIdc = setInterval(hat, 720000 / (BPM * hatsub[measureIndex]))
-        }
+        refreshIntervalIdc = setInterval(hat, 240000 / (BPM * hatsub[measureIndex]))
 
     }
+
 }
 
 start.onclick = toggleOn;
@@ -331,10 +393,14 @@ function toggleOn(e) {
 
 function render() {
 
+    if(index==0){
+        cymbal()
+    }
+
     let patternBinary = pattern[measureIndex].toString(2);
 
-    if (patternBinary.charAt(index) - '0') {
-        kick();
+    if (index*timeSignatureDen[measureIndex]%sub[measureIndex]!=0 && patternBinary.charAt(index) - '0') {
+        ghostSnare();
 
         if (s != -1) {
             var markup = "<tr><td></td><td>*</td><td></td><td></td></tr>";
@@ -362,10 +428,12 @@ function render() {
 
     if (index >= notes[measureIndex]) {
 
+        hat()
+
         index = 0;
         measureIndex++;
 
-        if (complexity!=3){
+        if (complexity==1 || complexity==4){
             accentIndex=0;
             if (count>1){
                 count = 0;
@@ -379,17 +447,16 @@ function render() {
         if (measureIndex == 4) {
             measureIndex = 0;
         }
-        if (complexity!=3){
+        if (complexity==1 || complexity==4){
             clearInterval(refreshIntervalIdd);
+            clearInterval(refreshIntervalIdb)
             refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
+            setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.25}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
         }
+
+
         refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]))
-        if (hatsub[measureIndex] % 3!=0){
-            refreshIntervalIdc = setInterval(hat, 480000 / (BPM * hatsub[measureIndex]))
-        }
-        else {
-            refreshIntervalIdc = setInterval(hat, 720000 / (BPM * hatsub[measureIndex]))
-        }
+        refreshIntervalIdc = setInterval(hat, 240000 / (BPM * hatsub[measureIndex]))
         console.log("measure=", measureIndex)
         console.log("TimeSigNum=", timeSignatureNum[measureIndex])
         console.log("TimeSigDen=", timeSignatureDen[measureIndex])
@@ -400,14 +467,17 @@ function accentedPlay(){
 
     console.log("accentIndex=", accentIndex);
 
-    if(complexity==3){
+    if(complexity==2 || complexity==3){
         if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(0 + "")[count-1]) {
-            cymbal();
+            accent=0.75
 
-            count++;
-            if (count == 2 || count == 4){
+            if (count % 2 ==0){
+                kick();
+            }
+            else{
                 snare();
             }
+            count++;
             accentIndex = 0;
         }
         accentIndex++;
@@ -422,8 +492,11 @@ function accentedPlay(){
 
     else {
         if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(measureIndex + "")[count-1]) {
-            cymbal();
-            if (count % 2 !=0){
+            accent=0.75
+            if (count % 2 ==0){
+                kick();
+            }
+            else{
                 snare();
             }
 
