@@ -419,7 +419,8 @@ function render() {
         ghostSnare();
 
         if (s != -1) {
-            var markup = "<tr><td></td><td>*</td><td></td><td></td></tr>";
+
+            var markup = "<tr><td></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
             $("table tbody").append(markup);
             s++;
         }
@@ -506,9 +507,7 @@ function accentedPlay(){
             }
             accentIndex=0;
         }
-    }
-
-    else {
+    } else {
         if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(measureIndex + "")[count-1]) {
             accent=0.75
             if (count % 2 ==0){
