@@ -77,6 +77,7 @@
     position: absolute;
     width: 125px;
     height: 620px;
+    max-height: 630px;
     left: 20%;
     top: 8%;
 }

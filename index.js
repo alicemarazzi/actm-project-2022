@@ -498,6 +498,7 @@ function render() {
         if (complexity==1 || complexity==4 || complexity==5){
             clearInterval(refreshIntervalIdd);
             clearInterval(refreshIntervalIdb);
+            playH = 1;
             refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
             setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.25}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
         }
@@ -509,6 +510,7 @@ function render() {
 
         refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]))
         hat()
+        playH = 1;
         refreshIntervalIdc = setInterval(hat, 480000 / (BPM * hatsub[measureIndex]))
 
         console.log("measure=", measureIndex)
@@ -617,6 +619,7 @@ function accentedPlay(){
             accentIndex=0;
         }
     } else {
+
         if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(measureIndex + "")[count-1]) {
             accent=0.75
             if (count % 2 ==0){
@@ -625,35 +628,112 @@ function accentedPlay(){
                 if (s != -1) {
 
                     if (playGS == 1) {
+
                         if (playC == 1) {
 
-                            var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                            if (playH == 1) {
+
+                                // C YES K YES GS YES S NO H YES
+
+                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+
+                            } else {
+
+                                // C YES K YES GS YES S NO H NO
+
+                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+                            }
+
+                            /*var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
                             $("table tbody").append(markup);
-                            s++;
+                            s++;*/
 
                             playC = 0;
+
                         } else {
 
-                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                            if (playH == 1) {
+
+                                // C NO K YES GS YES S NO H YES
+
+                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+                            } else {
+
+                                // C NO K YES GS YES S NO H NO
+
+                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+                            }
+
+                            /*var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
                             $("table tbody").append(markup);
-                            s++;
+                            s++;*/
 
                         }
 
                         playGS = 0;
+
                     } else {
+
                         if (playC == 1) {
 
-                            var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
+                            if (playH == 1) {
+
+                                // C YES K YES GS NO S NO H YES
+
+                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+
+                            } else {
+
+                                // C YES K YES GS NO S NO H NO
+
+                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                            }
+
+                            /*var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
                             $("table tbody").append(markup);
-                            s++;
+                            s++;*/
 
                             playC = 0;
                         } else {
 
-                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
+                            if (playH == 1) {
+
+                                // C NO K YES GS NO S NO H YES
+                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+                            } else {
+
+                                // C NO K YES GS NO S NO H NO
+                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+                            }
+
+                            /*var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
                             $("table tbody").append(markup);
-                            s++;
+                            s++;*/
 
                         }
                     }
@@ -667,32 +747,98 @@ function accentedPlay(){
                     if (playGS == 1) {
                         if (playC == 1) {
 
-                            var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            if (playH == 1) {
+
+                                // C YES K NO GS YES S YES H YES
+
+                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+                            } else {
+
+                                // C YES K NO GS YES S YES H NO
+                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+                            }
+
+                            /*var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
                             $("table tbody").append(markup);
-                            s++;
+                            s++;*/
 
                             playC = 0;
                         } else {
 
-                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            if (playH == 1) {
+
+                                // C NO K NO GS YES S YES H YES
+                                var markup = "<tr><td></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+                            } else {
+
+                                // C NO K NO GS YES S YES H NO
+                                var markup = "<tr><td></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+                            }
+
+                            /*var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
                             $("table tbody").append(markup);
-                            s++;
+                            s++;*/
 
                         }
                         playGS = 0;
                     } else {
                         if (playC == 1) {
 
-                            var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            if (playH == 1) {
+
+                                // C YES K NO GS NO S YES H YES
+                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+                            } else {
+
+                                // C YES K NO GS NO S YES H NO
+                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+                            }
+
+                            /*var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
                             $("table tbody").append(markup);
-                            s++;
+                            s++;*/
 
                             playC = 0;
+
                         } else {
 
-                            var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            if (playH == 1) {
+
+                                // C NO K NO GS NO S YES H YES
+                                var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+                            } else {
+
+                                // C NO K NO GS NO S YES H NO
+                                var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+                            }
+
+                            /*var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
                             $("table tbody").append(markup);
-                            s++;
+                            s++;*/
 
                         }
                     }
