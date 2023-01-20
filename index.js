@@ -849,6 +849,11 @@ function accentedPlay(){
 
             accentIndex = 0;
         }
+
+        if (s == sub[measureIndex]) {
+            s = -1;
+        }
+
         accentIndex++;
         console.log("accentPattern=", accentPatternMap.get(measureIndex + "")[count-1]);
     }
