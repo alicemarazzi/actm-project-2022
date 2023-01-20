@@ -30,8 +30,13 @@ var pattern = new Array(4).fill(0);
 var accentPatternMap = new Map();
 var accentIndex=0;
 var count=0;
-var s = 0; // per creare n righe della tabella e non modificarle più
+var s = 0;
 var accent=1;
+var playC = 0;
+var playGS = 0;
+var playK = 0;
+var playS = 0;
+var playH = 0;
 
 function createTimeSignatureNum() {
     timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
@@ -84,7 +89,6 @@ function hat(){
     console.log("hat")
 }
 
-
 function play() {
 
     if (refreshIntervalId) {
@@ -100,6 +104,8 @@ function play() {
         measureIndex = 0;
         accentIndex = 0;
         count = 0;
+
+        // Per cancellare il pattern con STOP
         /*pattern.fill(0)
         timeSignatureDen.fill(0)
         timeSignatureNum.fill(0)
@@ -305,7 +311,7 @@ function generate() {
 
             hatsub[measureIndex] = sub[measureIndex]
 
-            if(complexity>=4){
+            if(complexity==4){
                 if (measureIndex == 0) {
                     while (sub[measureIndex]%hatsub[measureIndex]==0 || hatsub[measureIndex]%sub[measureIndex]==0){
                         hatsub[measureIndex] = sub[measureIndex]*Math.round(Math.random()*4+1)/2
@@ -411,6 +417,7 @@ function render() {
 
     if(index==0){
         cymbal()
+        playC = 1;
     }
 
     let patternBinary = pattern[measureIndex].toString(2);
@@ -418,35 +425,59 @@ function render() {
     if (index*timeSignatureDen[measureIndex]%sub[measureIndex]!=0 && patternBinary.charAt(index) - '0') {
         ghostSnare();
 
-        if (s != -1) {
+        playGS = 1;
 
-            var markup = "<tr><td></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-            $("table tbody").append(markup);
-            s++;
-        }
+        /*if (s != -1) {
+
+            if (playC == 1) {
+
+                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                $("table tbody").append(markup);
+                s++;
+
+                playC = 0;
+            } else {
+
+                var markup = "<tr><td></td><td></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                $("table tbody").append(markup);
+                s++;
+
+            }
+
+
+        }*/
 
     } else {
 
-        if (s != -1) {
-            var markup = "<tr><td></td><td></td><td></td><td></td></tr>";
-            $("table tbody").append(markup);
-            s++;
-        }
+        //playGS = 0;
+
+        /*if (s != -1) {
+
+            if (playC == 1) {
+
+                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td></td><td></td></tr>";
+                $("table tbody").append(markup);
+                s++;
+
+                playC = 0;
+            } else {
+
+                var markup = "<tr><td></td><td></td><td></td><td></td><td></td></tr>";
+                $("table tbody").append(markup);
+                s++;
+
+            }
+        }*/
 
     }
 
-    if (s == sub[measureIndex]) {
-        s = -1;
-    }
+
 
     console.log("sub=", sub[measureIndex])
 
     index++;
 
     if (index >= notes[measureIndex]) {
-
-
-
         index = 0;
         measureIndex++;
 
@@ -466,9 +497,13 @@ function render() {
         }
         if (complexity==1 || complexity==4 || complexity==5){
             clearInterval(refreshIntervalIdd);
-            clearInterval(refreshIntervalIdb)
+            clearInterval(refreshIntervalIdb);
             refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
             setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.25}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
+        }
+
+        if (s == sub[measureIndex]) {
+            s = -1;
         }
 
 
@@ -492,9 +527,83 @@ function accentedPlay(){
 
             if (count % 2 ==0){
                 kick();
-            }
-            else{
+
+                playK = 1;
+
+                /*if (s != -1) {
+
+                    if (playGS == 1) {
+                        if (playC == 1) {
+
+                            var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                            playC = 0;
+                        } else {
+
+                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                        }
+                    } else {
+                        if (playC == 1) {
+
+                            var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                            playC = 0;
+                        } else {
+
+                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                        }
+                    }
+                }*/
+
+            } else{
                 snare();
+
+                playS = 1;
+
+                /*if (s != -1) {
+
+                    if (playGS == 1) {
+                        if (playC == 1) {
+
+                            var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                            playC = 0;
+                        } else {
+
+                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                        }
+                    } else {
+                        if (playC == 1) {
+
+                            var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                            playC = 0;
+                        } else {
+
+                            var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                        }
+                    }
+                }*/
             }
             count++;
             accentIndex = 0;
@@ -512,9 +621,82 @@ function accentedPlay(){
             accent=0.75
             if (count % 2 ==0){
                 kick();
+
+                if (s != -1) {
+
+                    if (playGS == 1) {
+                        if (playC == 1) {
+
+                            var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                            playC = 0;
+                        } else {
+
+                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                        }
+
+                        playGS = 0;
+                    } else {
+                        if (playC == 1) {
+
+                            var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                            playC = 0;
+                        } else {
+
+                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                        }
+                    }
+                }
             }
             else{
                 snare();
+
+                if (s != -1) {
+
+                    if (playGS == 1) {
+                        if (playC == 1) {
+
+                            var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                            playC = 0;
+                        } else {
+
+                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                        }
+                        playGS = 0;
+                    } else {
+                        if (playC == 1) {
+
+                            var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                            playC = 0;
+                        } else {
+
+                            var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                        }
+                    }
+                }
             }
 
             count++;
