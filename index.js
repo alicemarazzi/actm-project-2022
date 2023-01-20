@@ -632,6 +632,22 @@ function accentedPlay(){
             count++;
 
             accentIndex = 0;
+        } else {
+            if (i < length) {
+                var table = document.getElementById("tableS");
+                var row = table.insertRow(i+1);
+                var cell = row.insertCell(0);
+
+                cell.innerHTML = "";
+
+                var table = document.getElementById("tableK");
+                var row = table.insertRow(i+1);
+                var cell = row.insertCell(0);
+
+                cell.innerHTML = "";
+
+                i++;
+            }
         }
 
         accentIndex++;
