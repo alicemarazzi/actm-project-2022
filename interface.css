@@ -192,3 +192,30 @@
 
 /*!* Change the background color of the dropdown button when the dropdown content is shown *!*/
 /*.TimeSignatureDen:hover .dropbtn {background-color: #3e8e41;}*/
+
+.drumkit {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.drum {
+    padding: 10px 30px;
+    margin: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    z-index: 1;
+}
+
+@keyframes drum-animation {
+    from {
+        background-color:  #ffffff;
+    }
+    to {
+        background-color: #fbf2c0;
+    }
+
+}

@@ -25,27 +25,6 @@ var accentPatternMap = new Map();
 var accentIndex=0;
 var count=0;
 
-
-/*
-                                ALICE DOWNLOAD
- */
-
-var waContext = new window.AudioContext();
-waContext.resume();
-
-var i_download = 0;
-
-var myArrayBuffer = waContext.createBuffer(1, waContext.sampleRate, waContext.sampleRate);
-var nowBuffering = myArrayBuffer.getChannelData(0);
-    // for (var i = 0; i < myArrayBuffer.length; i++) {
-    //     // audio needs to be in [-1.0; 1.0]
-    //     nowBuffering[i] = Math.random() * 2 - 1;
-    // }
-
-/*
-                                FINE ALICE DOWNLOAD
- */
-
 function createTimeSignatureNum() {
     timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
 }
@@ -71,53 +50,28 @@ function kick() {
     var audio = new Audio('bassy_kick.wav');
     volume(audio);
     audio.play();
-    if (i_download < myArrayBuffer.length) {
-        nowBuffering[i_download] = audio;
-        console.log("BUFFER=", nowBuffering)
-        i_download++;
-    } else run();
 }
 
 function cymbal(){
     var audio = new Audio('new_cymbal.wav');
     audio.play();
-    if (i_download < myArrayBuffer.length) {
-        nowBuffering[i_download] = audio;
-        console.log("BUFFER=", nowBuffering)
-        i_download++;
-    } else run();
 }
 
 function snare(){
     var audio = new Audio('cage_snare.wav');
     audio.play();
-    if (i_download < myArrayBuffer.length) {
-        nowBuffering[i_download] = audio;
-        console.log("BUFFER=", nowBuffering)
-        i_download++;
-    } else run();
 }
 
 function guitar(){
     var audio = new Audio('HMRhyChugA-E Lo.wav');
     volume(audio);
     audio.play();
-    if (i_download < myArrayBuffer.length) {
-        nowBuffering[i_download] = audio;
-        console.log("BUFFER=", nowBuffering)
-        i_download++;
-    } else run();
 }
 
 function hat(){
     var audio = new Audio('man_hat.wav');
     volume(audio);
     audio.play();
-    if (i_download < myArrayBuffer.length) {
-        nowBuffering[i_download] = audio;
-        console.log("BUFFER=", nowBuffering)
-        i_download++;
-    } else run();
 }
 
 function volume(audio) {
@@ -130,10 +84,6 @@ function volume(audio) {
 }
 
 function play() {
-
-    // c.resume();
-
-    run();
 
     if (refreshIntervalIdb) {
 
@@ -331,37 +281,8 @@ function toggleOn(e) {
         document.getElementById("StartStop").innerHTML = "START";
     }
 
-    // run();
 }
 
-async function run()
-{
-    playAudio(myArrayBuffer)
-}
-
-function playAudio(buf){
-    const streamNode = waContext.createMediaStreamDestination();
-    const stream = streamNode.stream;
-    const recorder = new MediaRecorder( stream );
-    const chunks = [];
-    recorder.ondataavailable = evt => chunks.push( evt.data );
-    recorder.onstop = evt => exportAudio( new Blob( chunks ) );
-
-    const source = waContext.createBufferSource()
-    source.onended = () => recorder.stop();
-    source.buffer = buf
-    source.playbackRate.value = 0.2
-    source.connect( streamNode );
-    source.connect(c.destination);
-    source.start(0)
-    recorder.start();
-}
-
-function exportAudio( blob ) {
-    const aud = new Audio(URL.createObjectURL(blob));
-    aud.controls = true;
-    document.body.prepend(aud);
-}
 
 function render() {
 

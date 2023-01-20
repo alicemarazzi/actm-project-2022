@@ -56,9 +56,6 @@
     <button id = "download">
         <p class = "STitle">DOWNLOAD</p>
     </button>
-
-<!--    <input type="button" onclick="waContext.resume()" value="play"/>-->
-
     <div class = "TSTitle" style="font-family: Helvetica"> <span class="bolded">TIME SIGNATURE</span> </div>
 
     <div class = "TimeSignatureNum">
@@ -75,22 +72,69 @@
             <option value="16">16</option>
         </select>
     </div>
-
-    <!-- <div class="TimeSignatureDen">-->
-    <!--    <button class="dropbtn">Denominator</button>-->
-    <!--    <div class="dropdown-content">-->
-    <!--        <a id = "two" onclick = createTimeSignatureDen(2)>2</a>-->
-    <!--        <a id = "four" onclick = createTimeSignatureDen(4)>4</a>-->
-    <!--        <a id = "eight" onclick = createTimeSignatureDen(8)>8</a>-->
-    <!--        <a id = "sixteen" onclick = createTimeSignatureDen(16)>16</a>-->
-    <!--    </div>-->
-    <!--</div> -->
-
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vexflow@4.0.3/build/cjs/vexflow.js">
 </script>
 <script src="index.js">
 </script>
 </script>
+    <div id="drumkit" class="drumkit"></div>
+    <script type="text/javascript">
+
+        var data = {
+            'A': { name: 'Hihat', sound: ''},
+            'B': { name: 'Kick', sound: ''},
+            'C': { name: 'Snare', sound: ''}
+        };
+
+        var drumkit = document.getElementById('drumkit');
+
+        function construct() {
+            for(var key in data) {
+                var drumEl = document.createElement('div');
+                drumEl.classList.add('drum');
+
+                var h2 = document.createElement('h2');
+                h2.textContent = key;
+
+                var span = document.createElement('span');
+                span.textContent = data[key].name;
+
+                drumEl.appendChild(h2);
+                drumEl.appendChild(span);
+                drumkit.appendChild(drumEl);
+
+                data[key].el = drumEl;
+
+                drumEl.addEventListener('click', function(event) {
+                    var key = event.currentTarget.querySelector('h2').textContent;
+                    playDrum(key);
+                });
+            }
+        };
+
+        function playDrum(key) {
+            var audio = new Audio();
+            audio.src = data[key].sound;
+            audio.play();
+
+            data[key].el.style.animation = 'drum-animation 0.3s';
+
+            data[key].el.addEventListener('animationend', removeAnimation);
+
+        };
+
+        function removeAnimation(event) {
+            event.currentTarget.style.animation = 'none';
+
+        }
+
+        function handleKeyEvents(event) {
+            playDrum(event.key.toUpperCase());
+        }
+
+        construct();
+        window.addEventListener('keydown', handleKeyEvents);
+    </script>
 </body>
 </html>
