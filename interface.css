@@ -42,11 +42,6 @@
     position: absolute;
 }
 
-.Style {
-    top: 5%;
-    left: 5%;
-}
-
 .TSTitle {
     top: 7%;
     right: 5%;
@@ -76,20 +71,21 @@
     position: absolute;
 }
 
-#some-div-id {
+#box-system {
+    background-color: lightgrey;
+    border-radius: 1%;
     position: absolute;
-    width: 500px;
-    height: 200px;
-    border: 1px solid black;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    width: 125px;
+    height: 620px;
+    max-height: 630px;
+    left: 20%;
+    top: 8%;
 }
 
 #start {
     position: absolute;
     left: 50%;
-    bottom: 20%;
+    bottom: 40%;
     transform: translate(-50%, -50%);
     width: 50px;
     height: 50px;
@@ -100,7 +96,7 @@
 #download {
     position: absolute;
     left: 50%;
-    top: 20%;
+    top: 40%;
     transform: translate(-50%, -50%);
     width: 100px;
     height: 50px;

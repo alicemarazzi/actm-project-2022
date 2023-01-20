@@ -11,22 +11,36 @@ var key;
 // var scale;
 var timeSignatureNum = new Array(4);
 var timeSignatureDen = new Array(4);
+var sigPatt = 4
 timeSignatureNum[0] = 4;
 timeSignatureDen[0] = 4;
 var index=0;
 var notes = new Array(4).fill(0);
-var sub = 0;
+var accentedNotes = new Array(4).fill(0);
+var hatNotes = new Array(4).fill(0);
+var sub = new Array(4).fill(0);
+var hatsub = new Array(4).fill(0);
 var refreshIntervalId = 0;
 var refreshIntervalIdb = 0;
-var complexity = 2;
+var refreshIntervalIdc = 0;
+var refreshIntervalIdd = 0;
+var complexity = 1;
 var measureIndex = 0;
 var pattern = new Array(4).fill(0);
 var accentPatternMap = new Map();
 var accentIndex=0;
 var count=0;
+var s = 0;
+var accent=1;
+var playC = 0;
+var playGS = 0;
+var playK = 0;
+var playS = 0;
+var playH = 0;
 
 function createTimeSignatureNum() {
     timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
+    sigPatt = timeSignatureNum[0]
 }
 
 function createTimeSignatureDen() {
@@ -38,241 +52,357 @@ function changeBPM() {
 }
 
 function changeComplexity() {
-    console.log(parseInt(document.getElementById('complex').value));
+    complexity = parseInt(document.getElementById('complex').value);
 }
 
 function changeKey() {
     key = document.getElementById('keyselected').value;
 }
 
-
 function kick() {
-    var audio = new Audio('bassy_kick.wav');
-    volume(audio);
+    var audio = new Audio('Kick (9).wav');
+    audio.volume = 0.75
     audio.play();
 }
 
 function cymbal(){
-    var audio = new Audio('new_cymbal.wav');
+    var audio = new Audio('live_open_hat.wav');
     audio.play();
 }
 
 function snare(){
-    var audio = new Audio('cage_snare.wav');
+    var audio = new Audio('Snare (25).wav');
+    audio.volume = 0.6
     audio.play();
 }
 
-function guitar(){
-    var audio = new Audio('HMRhyChugA-E Lo.wav');
-    volume(audio);
-    audio.play();
+function ghostSnare(){
+    var audio = new Audio('ghoul_snare.wav')
+    audio.volume = Math.random()*0.3
+    audio.play()
 }
 
 function hat(){
-    var audio = new Audio('man_hat.wav');
-    volume(audio);
-    audio.play();
-}
-
-function volume(audio) {
-    if (accentIndex==accentPatternMap.get(measureIndex+"")[count]){ //if the note being played is an accented one
-        audio.volume=1;                                                               // we set the volume to 1
-    }
-    else{                                                                             //otherwise we set it to 0.5
-        audio.volume=0.5;
-    }
+    var audio = new Audio('Hat (7).wav');
+    audio.volume = Math.random()*accent
+    audio.play()
+    console.log("hat")
 }
 
 function play() {
 
-    if (refreshIntervalIdb) {
-
-        document.getElementById("some-div-id").innerHTML = "";
+    if (refreshIntervalId) {
 
         clearInterval(refreshIntervalId);
-        clearInterval(refreshIntervalIdb)
+        clearInterval(refreshIntervalIdc);
+        clearInterval(refreshIntervalIdd);
+        refreshIntervalIdd = 0;
+        refreshIntervalIdc = 0;
+        refreshIntervalIdb = 0
         refreshIntervalId = 0;
-        refreshIntervalIdb = 0;
         index = 0;
         measureIndex = 0;
         accentIndex = 0;
         count = 0;
+
+        // Per cancellare il pattern con STOP
+        /*pattern.fill(0)
+        timeSignatureDen.fill(0)
+        timeSignatureNum.fill(0)
+        notes.fill(0)
+        sub.fill(0)
+        accentPatternMap.clear()
+        timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
+        sigPatt = timeSignatureNum[0]
+        timeSignatureDen[0] = parseInt(document.getElementById('timesigden').value);*/
+
     } else {
-
-        createStave();
-
-        refreshIntervalIdb = setInterval(update, 600/BPM*timeSignatureNum[measureIndex]/timeSignatureDen[measureIndex])
+        generate()
     }
 }
 
-function update(){
+function generate() {
+
+    for (measureIndex = 0; measureIndex < 4; measureIndex++) {
+
+        if (measureIndex == 0) { //generate first accent pattern
+
+            if (complexity == 3) { //in the case of complexity=3 the accent pattern has a different time signature numerator than the rest of the elements
+
+                while (timeSignatureNum[measureIndex] % sigPatt == 0){
+                    if (timeSignatureNum[measureIndex]>=8){
+                        sigPatt = Math.ceil(Math.random() * timeSignatureNum[measureIndex] + 1)
+                        console.log("sigPatt =", sigPatt)
+                    }
+                    else{
+                        sigPatt = Math.ceil(Math.random() * timeSignatureNum[measureIndex]*2 + 1)
+                        console.log("sigPatt =", sigPatt)
+                    }
+                }
 
 
+            } else {
 
+                if (timeSignatureNum[measureIndex]>=8){
+                    sigPatt = timeSignatureNum[measureIndex]
+                }
 
-    if (sub==0) { //determines the subdivision
-        sub = Math.ceil(Math.random() * 7);
-        if (sub % 7 == 0) {
-            sub = 14;
-        } else if (sub % 5 == 0) {
-            sub = 10;
-        } else if (sub % 3 == 0) {
-            sub = 12;
-        } else if (sub % 2 == 0) {
-            sub = 16;
-        } else if (sub == 1) {
-            sub = 8;
-        }
-    }
+                else{
+                    sigPatt = timeSignatureNum[measureIndex]*2
+                }
 
-    if (!accentPatternMap.get(measureIndex+"")) {
-        if (measureIndex==0){
-            var sum=0;
-            var accentPattern = new Array(Math.ceil(timeSignatureNum[0]/2));
+            }
 
-            for (let i=0; i<Math.ceil(timeSignatureNum[measureIndex]/2); i++) {
+            var sum = 0;
+            var accentPattern = new Array(Math.ceil(sigPatt / 2));
+
+            for (let i = 0; i < Math.ceil(sigPatt / 2); i++) {
 
                 // Aggiunge un valore tra 2 e 3 alla posizione i-esima
                 accentPattern[i] = Math.round(Math.random() + 2);
                 sum += accentPattern[i];
 
                 // Controlla che la somma rimanga minore del totale, altrimenti entra nell'if
-                if (sum > timeSignatureNum[measureIndex]) {
+                if (sum > sigPatt) {
 
                     // Elimina l'ultimo elemento
                     sum -= accentPattern[i];
 
                     // Prova a sommare 2 a sum e se risulta uguale al totale, inserisce 2 in ultima posizione ed esce dal ciclo
-                    if(sum+2 == timeSignatureNum[measureIndex]) {
+                    if (sum + 2 == sigPatt) {
                         accentPattern[i] = 2;
-                        i = Math.ceil(timeSignatureNum[measureIndex]/2);
+                        i = Math.ceil(sigPatt / 2);
                     } else {
                         // Caso in cui anche sommando 2 andiamo oltre il totale e andiamo a modificare il penultimo elemento
-                        sum-= accentPattern[i-1];
+                        sum -= accentPattern[i - 1];
 
                         // Se è uguale a 3 inseriamo 2
-                        if(accentPattern[i-1] == 3) {
-                            accentPattern[i-1] = 2;
+                        if (accentPattern[i - 1] == 3) {
+                            accentPattern[i - 1] = 2;
                             sum += 2;
                         } else {
                             // Se è uguale a 2 inseriamo 3
-                            accentPattern[i-1] = 3;
+                            accentPattern[i - 1] = 3;
                             sum += 3;
                         }
 
                         // Facciamo ripartire il conteggio da i-1
-                        i = i-1;
+                        i = i - 1;
                     }
                 }
 
-                if (sum==timeSignatureNum[measureIndex]){
-                    i=Math.floor(timeSignatureNum[measureIndex]/2);
+                if (sum == sigPatt) {
+                    i = Math.floor(sigPatt / 2);
                 }
             }
-            accentPatternMap.set(measureIndex+"", accentPattern);
+            if (!accentPattern[1]){
+                accentPattern[1]=accentPattern[0]
+            }
+            accentPatternMap.set(measureIndex + "", accentPattern);
+        }
+        //Generate subsequent accent patterns
+        else {
+            if (complexity!=5) {
 
-        } else{
+                accentPatternMap.set(measureIndex + "", accentPatternMap.get(measureIndex - 1 + ""));
+            }
+        }
 
-            if (complexity==1){
-                accentPatternMap.set(measureIndex+"", accentPatternMap.get(measureIndex-1 + ""));
+
+        //generate list of time signatures
+        if (measureIndex != 0) {
+
+            if (complexity != 5) { //in the cases of complexity 1 and 3 the time signature stays the same
+
+                timeSignatureNum[measureIndex] = timeSignatureNum[measureIndex - 1]
+                timeSignatureDen[measureIndex] = timeSignatureDen[measureIndex - 1]
+
             }
 
-            else if (complexity==2){
+            else{
                 if (measureIndex==1){
-                    var accentPattern = new Array(Math.ceil(timeSignatureNum[0]/2));
+                    timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex-1]*2
+                    timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex-1]*2
+                    for (let i = 0; accentPatternMap.get(measureIndex - 1 + "")[i] && i < 4; i++) {
 
-                    for (let i=0; accentPatternMap.get(measureIndex-1 + "")[i]!=0 && i<4; i++){
-
-                        accentPattern[i]=(accentPatternMap.get(measureIndex-1 + "")[i])*2+1;
+                        timeSignatureNum[measureIndex]++
 
                     }
-                    accentPatternMap.set(measureIndex+"", accentPattern);
-                    console.log(accentPattern)
                 }
-                if (measureIndex==2){
-                    accentPatternMap.set(measureIndex+"", accentPatternMap.get(measureIndex-2 + ""));
+                else{
+                    timeSignatureNum[measureIndex] = timeSignatureNum[measureIndex - 2]
+                    timeSignatureDen[measureIndex] = timeSignatureDen[measureIndex - 2]
                 }
-                if (measureIndex==3){
-                    accentPatternMap.set(measureIndex+"", accentPatternMap.get(measureIndex-2 + ""));
-                }
-            }
-        }
-    }
-
-
-    if (measureIndex!=0){
-
-        if (complexity==1){
-            timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex-1]
-            timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex-1]
-        }
-
-        else if (complexity==2){
-            if(measureIndex==1){
-                timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex-1]*2
-                timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex-1]*2
-                for (let i=0; accentPatternMap.get(measureIndex-1 + "")[i]!=0 && i<4; i++){
-                    timeSignatureNum[measureIndex]++;
-                }
-            }
-            if (measureIndex==2){
-                timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex-2]
-                timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex-2]
-            }
-            if(measureIndex==3){
-                timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex-2]
-                timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex-2]
             }
 
         }
 
-    }
+        while (timeSignatureDen[measureIndex]<8){
+            timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex]*2
+            timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex]*2
+        }
 
-    if (notes[measureIndex]==0){ //determines the number of notes and the pattern for each measure
-        if (measureIndex==0){
-            notes[measureIndex] = timeSignatureNum[measureIndex] * sub / timeSignatureDen[measureIndex];
+        if (complexity==5 && measureIndex!=0){
+            if (measureIndex == 1) {
+
+                var accentPattern = new Array(Math.ceil(timeSignatureNum[0] / 2));
+
+                for (let i = 0; accentPatternMap.get(measureIndex - 1 + "")[i] != 0 && i < 4; i++) {
+
+                    accentPattern[i] = (accentPatternMap.get(measureIndex - 1 + "")[i]) * 2 + 1;
+
+                }
+                accentPatternMap.set(measureIndex + "", accentPattern);
+            }
+            else {
+                accentPatternMap.set(measureIndex + "", accentPatternMap.get(measureIndex-2 +""));
+            }
+
+        }
+
+
+        if (sub[measureIndex] == 0) { //determines the subdivisions for each measure
+
+            if (measureIndex == 0) {
+
+                sub[measureIndex] = Math.round(Math.random() * 2 + 2) * timeSignatureDen[measureIndex];
+                console.log("sub[", measureIndex, "]==", sub[measureIndex])
+
+
+            } else {
+
+                sub[measureIndex] = sub[measureIndex - 1]
+
+
+            }
+            if (complexity == 2) {
+
+                if (measureIndex == 1) {
+                    for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
+                        sub[measureIndex]++;
+                    }
+                } else {
+                    sub[measureIndex] = sub[measureIndex - 2]
+                }
+            }
+            else if (complexity==5){
+                if (measureIndex == 1) {
+                    for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
+                        sub[measureIndex]--;
+                    }
+                } else if (measureIndex!=0) {
+                    sub[measureIndex] = sub[measureIndex - 2]
+                }
+            }
+
+            if (BPM>=110){
+                while (sub[measureIndex]>16){
+                    sub[measureIndex]=sub[measureIndex]/2
+                }
+                if (sub[measureIndex]==timeSignatureDen[measureIndex]){
+                    if(sub[measureIndex]%3==0){
+                        sub[measureIndex]=sub[measureIndex]*2/3
+                    }
+                    else{
+                        sub[measureIndex]=sub[measureIndex]*3/2
+                    }
+                }
+            }
+
+            hatsub[measureIndex] = sub[measureIndex]
+
+            if(complexity==4){
+                if (measureIndex == 0) {
+                    while (sub[measureIndex]%hatsub[measureIndex]==0 || hatsub[measureIndex]%sub[measureIndex]==0){
+                        hatsub[measureIndex] = sub[measureIndex]*Math.round(Math.random()*4+1)/2
+                    }
+                } else {
+
+                    hatsub[measureIndex] = hatsub[measureIndex - 1]
+
+                }
+            }
+
+            if (BPM>=110){
+                while (hatsub[measureIndex]>16){
+                    hatsub[measureIndex]=hatsub[measureIndex]/2
+                }
+                if (complexity==4){
+                    if (sub[measureIndex]==hatsub[measureIndex]){
+                        if(hatsub[measureIndex]%3==0){
+                            hatsub[measureIndex]=hatsub[measureIndex]*3/2
+                        }
+                        else{
+                            hatsub[measureIndex]=hatsub[measureIndex]*2/3
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+        console.log("sub[", measureIndex, "]==", sub[measureIndex])
+
+ //determines the number of notes and the pattern for the kick for each measure
+        if (measureIndex == 0) {
+
+            notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
+            hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex];
+            accentedNotes[measureIndex] = sigPatt * sub[measureIndex] / timeSignatureDen[measureIndex];
             pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
-        }
-        else{
-            if (complexity==1){
-                if (measureIndex==3){
-                    notes[measureIndex] = timeSignatureNum[measureIndex] * sub / timeSignatureDen[measureIndex];
+
+            if (pattern[measureIndex]<Math.pow(2, notes[measureIndex])/2){
+                pattern[measureIndex]=pattern[measureIndex]+Math.pow(2, notes[measureIndex])/2
+            }
+        } else {
+            if (complexity == 1 || complexity == 3 || complexity==4) {
+                if (measureIndex == 3) {
+                    notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
                     pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
-                }
-                else {
+                } else {
                     notes[measureIndex] = notes[0];
                     pattern[measureIndex] = pattern[0];
                 }
-            }
-            else if (complexity==2){
-                if (measureIndex==2){
-                    notes[measureIndex] = notes[0];
-                    pattern[measureIndex] = pattern[0];
+            } else if (complexity == 2 || complexity == 5) {
+                if (measureIndex == 1) {
+                    notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
+                    pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
                 }
                 else {
-                    notes[measureIndex] = timeSignatureNum[measureIndex] * sub / timeSignatureDen[measureIndex];
-                    pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
+                    notes[measureIndex] = notes[measureIndex-2];
+                    pattern[measureIndex] = pattern[measureIndex-2];
                 }
             }
         }
+    } //end of for loop
+
+    measureIndex=0
+    if (refreshIntervalIdd == 0) {
+        refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
+        setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.15}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
+    }
+    if (refreshIntervalId == 0) {
+        refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]))
+    }
+    if (refreshIntervalIdc == 0) {
+
+        refreshIntervalIdc = setInterval(hat, 480000 / (BPM * hatsub[measureIndex]))
+
     }
 
-
-    if (refreshIntervalId==0){
-        refreshIntervalId = setInterval(render, 240000 / (BPM * sub))
-    }
 }
 
 start.onclick = toggleOn;
 
 function toggleOn(e) {
+
     play();
 
     if(e.target.parentElement.classList.contains("green")) {
         e.target.parentElement.classList.toggle("redOn");
     } else {
         e.target.classList.toggle("redOn");
-
     }
 
     if(document.getElementById("StartStop").innerHTML == "START") {
@@ -283,99 +413,448 @@ function toggleOn(e) {
 
 }
 
-
 function render() {
 
-    if (i_download < myArrayBuffer.length) {
-        nowBuffering[i_download] = audio;
-        console.log("BUFFER=", nowBuffering)
-        i_download++;
-    } else run();
+    if(index==0){
+        cymbal()
+        playC = 1;
+    }
 
     let patternBinary = pattern[measureIndex].toString(2);
 
-    if (patternBinary.charAt(index) - '0') {
+    if (index*timeSignatureDen[measureIndex]%sub[measureIndex]!=0 && patternBinary.charAt(index) - '0') {
+        ghostSnare();
 
-        kick();
-        guitar();
+        playGS = 1;
 
-    }
-    console.log("sub=", sub)
-    console.log("accentIndex=", accentIndex);
-    console.log("accentPattern=", accentPatternMap.get(measureIndex + "")[count]);
+        /*if (s != -1) {
 
-    if (index == 0 || accentIndex == accentPatternMap.get(measureIndex + "")[count]) {
-        cymbal();
+            if (playC == 1) {
 
-        if (index != 0) {
-            count++;
-            if (count % 2 == 0){
-                snare()
+                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                $("table tbody").append(markup);
+                s++;
+
+                playC = 0;
+            } else {
+
+                var markup = "<tr><td></td><td></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                $("table tbody").append(markup);
+                s++;
+
             }
-        }
-        accentIndex = 0;
+
+
+        }*/
+
+    } else {
+
+        //playGS = 0;
+
+        /*if (s != -1) {
+
+            if (playC == 1) {
+
+                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td></td><td></td></tr>";
+                $("table tbody").append(markup);
+                s++;
+
+                playC = 0;
+            } else {
+
+                var markup = "<tr><td></td><td></td><td></td><td></td><td></td></tr>";
+                $("table tbody").append(markup);
+                s++;
+
+            }
+        }*/
+
     }
+
+
+
+    console.log("sub=", sub[measureIndex])
 
     index++;
 
-    if ((index / sub) % (1 / timeSignatureDen[measureIndex]) == 0) {
-        accentIndex++;
-    }
-
     if (index >= notes[measureIndex]) {
-
         index = 0;
-        count = 0;
         measureIndex++;
+
+        if (complexity==1 || complexity==4 || complexity==5){
+            accentIndex=0;
+            if (count>1){
+                count = 0;
+            }
+        }
+
+        clearInterval(refreshIntervalId);
+        clearInterval(refreshIntervalIdc);
+
+
         if (measureIndex == 4) {
             measureIndex = 0;
         }
+        if (complexity==1 || complexity==4 || complexity==5){
+            clearInterval(refreshIntervalIdd);
+            clearInterval(refreshIntervalIdb);
+            playH = 1;
+            refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
+            setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.25}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
+        }
+
+        if (s == sub[measureIndex]) {
+            s = -1;
+        }
+
+
+        refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]))
+        hat()
+        playH = 1;
+        refreshIntervalIdc = setInterval(hat, 480000 / (BPM * hatsub[measureIndex]))
+
         console.log("measure=", measureIndex)
         console.log("TimeSigNum=", timeSignatureNum[measureIndex])
         console.log("TimeSigDen=", timeSignatureDen[measureIndex])
     }
 }
 
-VF = Vex.Flow;
+function accentedPlay(){
 
+    console.log("accentIndex=", accentIndex);
 
-function createStave() {
-// We created an object to store the information about the workspace
-    var WorkspaceInformation = {
-        // The div in which you're going to work
-        div: document.getElementById("some-div-id"),
-        // Vex creates a svg with specific dimensions
-        canvasWidth: 500,
-        canvasHeight: 500
-    };
+    if(complexity==2 || complexity==3){
+        if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(0 + "")[count-1]) {
+            accent=0.75
 
-// Create a renderer with SVG
-    var renderer = new VF.Renderer(
-        WorkspaceInformation.div,
-        VF.Renderer.Backends.SVG
-    );
+            if (count % 2 ==0){
+                kick();
 
-// Use the renderer to give the dimensions to the SVG
-    renderer.resize(WorkspaceInformation.canvasWidth, WorkspaceInformation.canvasHeight);
+                playK = 1;
 
-// Expose the context of the renderer
-    var context = renderer.getContext();
+                /*if (s != -1) {
 
-// And give some style to our SVG
-    context.setFont("Arial", 10, "").setBackgroundFillStyle("#eed");
+                    if (playGS == 1) {
+                        if (playC == 1) {
 
+                            var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
 
-    /**
-     * Creating a new stave
-     */
-// Create a stave of width 400 at position x10, y40 on the SVG.
-    var stave = new VF.Stave(10, 40, 400);
+                            playC = 0;
+                        } else {
 
-    stave.addClef("treble").addTimeSignature(timeSignatureNum[measureIndex] + "/" + timeSignatureDen[measureIndex]);
-    stave.setContext(context).draw();
-// Add a clef and time signature.
-// stave.addClef("treble").addTimeSignature("4/4");
-//stave.addClef("treble").addTimeSignature(timeSignatureNum + "/" + timeSignatureDen);
-// Set the context of the stave our previous exposed context and execute the method draw !
-// stave.setContext(context).draw();
+                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                        }
+                    } else {
+                        if (playC == 1) {
+
+                            var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                            playC = 0;
+                        } else {
+
+                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                        }
+                    }
+                }*/
+
+            } else{
+                snare();
+
+                playS = 1;
+
+                /*if (s != -1) {
+
+                    if (playGS == 1) {
+                        if (playC == 1) {
+
+                            var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                            playC = 0;
+                        } else {
+
+                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                        }
+                    } else {
+                        if (playC == 1) {
+
+                            var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                            playC = 0;
+                        } else {
+
+                            var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;
+
+                        }
+                    }
+                }*/
+            }
+            count++;
+            accentIndex = 0;
+        }
+        accentIndex++;
+        console.log("accentPattern=", accentPatternMap.get(measureIndex + "")[count-1]);
+        if (!accentPatternMap.get(measureIndex + "")[count]){
+            if (count>1){
+                count=0;
+            }
+            accentIndex=0;
+        }
+    } else {
+
+        if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(measureIndex + "")[count-1]) {
+            accent=0.75
+            if (count % 2 ==0){
+                kick();
+
+                if (s != -1) {
+
+                    if (playGS == 1) {
+
+                        if (playC == 1) {
+
+                            if (playH == 1) {
+
+                                // C YES K YES GS YES S NO H YES
+
+                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+
+                            } else {
+
+                                // C YES K YES GS YES S NO H NO
+
+                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+                            }
+
+                            /*var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;*/
+
+                            playC = 0;
+
+                        } else {
+
+                            if (playH == 1) {
+
+                                // C NO K YES GS YES S NO H YES
+
+                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+                            } else {
+
+                                // C NO K YES GS YES S NO H NO
+
+                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+                            }
+
+                            /*var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;*/
+
+                        }
+
+                        playGS = 0;
+
+                    } else {
+
+                        if (playC == 1) {
+
+                            if (playH == 1) {
+
+                                // C YES K YES GS NO S NO H YES
+
+                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+
+                            } else {
+
+                                // C YES K YES GS NO S NO H NO
+
+                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                            }
+
+                            /*var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;*/
+
+                            playC = 0;
+                        } else {
+
+                            if (playH == 1) {
+
+                                // C NO K YES GS NO S NO H YES
+                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+                            } else {
+
+                                // C NO K YES GS NO S NO H NO
+                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+                            }
+
+                            /*var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;*/
+
+                        }
+                    }
+                }
+            }
+            else{
+                snare();
+
+                if (s != -1) {
+
+                    if (playGS == 1) {
+                        if (playC == 1) {
+
+                            if (playH == 1) {
+
+                                // C YES K NO GS YES S YES H YES
+
+                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+                            } else {
+
+                                // C YES K NO GS YES S YES H NO
+                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+                            }
+
+                            /*var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;*/
+
+                            playC = 0;
+                        } else {
+
+                            if (playH == 1) {
+
+                                // C NO K NO GS YES S YES H YES
+                                var markup = "<tr><td></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+                            } else {
+
+                                // C NO K NO GS YES S YES H NO
+                                var markup = "<tr><td></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+                            }
+
+                            /*var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;*/
+
+                        }
+                        playGS = 0;
+                    } else {
+                        if (playC == 1) {
+
+                            if (playH == 1) {
+
+                                // C YES K NO GS NO S YES H YES
+                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+                            } else {
+
+                                // C YES K NO GS NO S YES H NO
+                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+                            }
+
+                            /*var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;*/
+
+                            playC = 0;
+
+                        } else {
+
+                            if (playH == 1) {
+
+                                // C NO K NO GS NO S YES H YES
+                                var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+
+                                playH = 0;
+                            } else {
+
+                                // C NO K NO GS NO S YES H NO
+                                var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                                $("table tbody").append(markup);
+                                s++;
+                            }
+
+                            /*var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
+                            $("table tbody").append(markup);
+                            s++;*/
+
+                        }
+                    }
+                }
+            }
+
+            count++;
+
+            accentIndex = 0;
+        }
+
+        if (s == sub[measureIndex]) {
+            s = -1;
+        }
+
+        accentIndex++;
+        console.log("accentPattern=", accentPatternMap.get(measureIndex + "")[count-1]);
+    }
 }
