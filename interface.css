@@ -71,14 +71,44 @@
     position: absolute;
 }
 
+#tableGS {
+    position: absolute;
+    left: 0%;
+    top: 50%;
+}
+
+#tableC {
+    position: absolute;
+    left: 20%;
+    top: 50%;
+}
+
+#tableK {
+    position: absolute;
+    left: 40%;
+    top: 50%;
+}
+
+#tableS {
+    position: absolute;
+    left: 60%;
+    top: 50%;
+}
+
+#tableH {
+    position: absolute;
+    left: 80%;
+    top: 50%;
+}
+
 #box-system {
     background-color: lightgrey;
     border-radius: 1%;
     position: absolute;
-    width: 125px;
+    width: 220px;
     height: 620px;
     max-height: 630px;
-    left: 20%;
+    left: 15%;
     top: 8%;
 }
 

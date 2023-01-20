@@ -31,12 +31,10 @@ var accentPatternMap = new Map();
 var accentIndex=0;
 var count=0;
 var s = 0;
+var length = 50;
+var i = 0;
+var y = 0;
 var accent=1;
-var playC = 0;
-var playGS = 0;
-var playK = 0;
-var playS = 0;
-var playH = 0;
 
 function createTimeSignatureNum() {
     timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
@@ -84,9 +82,8 @@ function ghostSnare(){
 
 function hat(){
     var audio = new Audio('Hat (7).wav');
-    audio.volume = Math.random()*accent
-    audio.play()
-    console.log("hat")
+    audio.volume = Math.random()*accent;
+    audio.play();
 }
 
 function play() {
@@ -132,11 +129,9 @@ function generate() {
                 while (timeSignatureNum[measureIndex] % sigPatt == 0){
                     if (timeSignatureNum[measureIndex]>=8){
                         sigPatt = Math.ceil(Math.random() * timeSignatureNum[measureIndex] + 1)
-                        console.log("sigPatt =", sigPatt)
                     }
                     else{
                         sigPatt = Math.ceil(Math.random() * timeSignatureNum[measureIndex]*2 + 1)
-                        console.log("sigPatt =", sigPatt)
                     }
                 }
 
@@ -266,7 +261,6 @@ function generate() {
             if (measureIndex == 0) {
 
                 sub[measureIndex] = Math.round(Math.random() * 2 + 2) * timeSignatureDen[measureIndex];
-                console.log("sub[", measureIndex, "]==", sub[measureIndex])
 
 
             } else {
@@ -342,8 +336,6 @@ function generate() {
 
         }
 
-        console.log("sub[", measureIndex, "]==", sub[measureIndex])
-
  //determines the number of notes and the pattern for the kick for each measure
         if (measureIndex == 0) {
 
@@ -417,7 +409,25 @@ function render() {
 
     if(index==0){
         cymbal()
-        playC = 1;
+
+        if (s != -1) {
+            var table = document.getElementById("tableC");
+            var row = table.insertRow(s+1);
+            var cell = row.insertCell(0);
+
+            cell.innerHTML = "";
+            cell.style.backgroundColor = "#0000ff";
+
+        }
+    } else {
+        if (s != -1) {
+            var table = document.getElementById("tableC");
+            var row = table.insertRow(s+1);
+            var cell = row.insertCell(0);
+
+            cell.innerHTML = "";
+
+        }
     }
 
     let patternBinary = pattern[measureIndex].toString(2);
@@ -425,57 +435,60 @@ function render() {
     if (index*timeSignatureDen[measureIndex]%sub[measureIndex]!=0 && patternBinary.charAt(index) - '0') {
         ghostSnare();
 
-        playGS = 1;
+        if (s != -1) {
+            var table = document.getElementById("tableGS");
+            var row = table.insertRow(s+1);
+            var cell = row.insertCell(0);
 
-        /*if (s != -1) {
-
-            if (playC == 1) {
-
-                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                $("table tbody").append(markup);
-                s++;
-
-                playC = 0;
-            } else {
-
-                var markup = "<tr><td></td><td></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                $("table tbody").append(markup);
-                s++;
-
-            }
-
-
-        }*/
+            cell.innerHTML = "";
+            cell.style.backgroundColor = "#4c9a2a";
+            s++;
+        }
 
     } else {
 
-        //playGS = 0;
+        if (s != -1) {
+            var table = document.getElementById("tableGS");
+            var row = table.insertRow(s+1);
+            var cell = row.insertCell(0);
 
-        /*if (s != -1) {
-
-            if (playC == 1) {
-
-                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td></td><td></td></tr>";
-                $("table tbody").append(markup);
-                s++;
-
-                playC = 0;
-            } else {
-
-                var markup = "<tr><td></td><td></td><td></td><td></td><td></td></tr>";
-                $("table tbody").append(markup);
-                s++;
-
-            }
-        }*/
+            cell.innerHTML = "";
+            s++;
+        }
 
     }
 
+    if (s == sub[measureIndex]) {
+        length = s;
+        s = -1;
+    }
 
-
-    console.log("sub=", sub[measureIndex])
 
     index++;
+
+    console.log(index);
+
+    if (index % 2 == 0) {
+        if (y < length) {
+            var table = document.getElementById("tableH");
+            var row = table.insertRow(y+1);
+            var cell = row.insertCell(0);
+
+            cell.innerHTML = "";
+            cell.style.backgroundColor = "#8b0000";
+
+            y++;
+        }
+    } else {
+        if (y < length) {
+            var table = document.getElementById("tableH");
+            var row = table.insertRow(y+1);
+            var cell = row.insertCell(0);
+
+            cell.innerHTML = "";
+            y++;
+        }
+    }
 
     if (index >= notes[measureIndex]) {
         index = 0;
@@ -498,120 +511,70 @@ function render() {
         if (complexity==1 || complexity==4 || complexity==5){
             clearInterval(refreshIntervalIdd);
             clearInterval(refreshIntervalIdb);
-            playH = 1;
             refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
             setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.25}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
         }
 
-        if (s == sub[measureIndex]) {
-            s = -1;
-        }
+        refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]));
 
+        hat();
 
-        refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]))
-        hat()
-        playH = 1;
-        refreshIntervalIdc = setInterval(hat, 480000 / (BPM * hatsub[measureIndex]))
+        refreshIntervalIdc = setInterval(hat, 480000 / (BPM * hatsub[measureIndex]));
 
-        console.log("measure=", measureIndex)
-        console.log("TimeSigNum=", timeSignatureNum[measureIndex])
-        console.log("TimeSigDen=", timeSignatureDen[measureIndex])
     }
 }
 
 function accentedPlay(){
-
-    console.log("accentIndex=", accentIndex);
 
     if(complexity==2 || complexity==3){
         if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(0 + "")[count-1]) {
             accent=0.75
 
             if (count % 2 ==0){
+
                 kick();
 
-                playK = 1;
+                if (i < length) {
+                    var table = document.getElementById("tableK");
+                    var row = table.insertRow(i+1);
+                    var cell = row.insertCell(0);
 
-                /*if (s != -1) {
+                    cell.innerHTML = "";
+                    cell.style.backgroundColor = "#ffa500";
 
-                    if (playGS == 1) {
-                        if (playC == 1) {
+                    var table = document.getElementById("tableS");
+                    var row = table.insertRow(s+1);
+                    var cell = row.insertCell(0);
 
-                            var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
+                    cell.innerHTML = "";
 
-                            playC = 0;
-                        } else {
-
-                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
-
-                        }
-                    } else {
-                        if (playC == 1) {
-
-                            var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
-
-                            playC = 0;
-                        } else {
-
-                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
-
-                        }
-                    }
-                }*/
+                    i++;
+                }
 
             } else{
                 snare();
 
-                playS = 1;
+                if (i < length) {
+                    var table = document.getElementById("tableS");
+                    var row = table.insertRow(i+1);
+                    var cell = row.insertCell(0);
 
-                /*if (s != -1) {
+                    cell.innerHTML = "";
+                    cell.style.backgroundColor = "#ffc0cb";
 
-                    if (playGS == 1) {
-                        if (playC == 1) {
+                    var table = document.getElementById("tableK");
+                    var row = table.insertRow(s+1);
+                    var cell = row.insertCell(0);
 
-                            var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
+                    cell.innerHTML = "";
 
-                            playC = 0;
-                        } else {
-
-                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
-
-                        }
-                    } else {
-                        if (playC == 1) {
-
-                            var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
-
-                            playC = 0;
-                        } else {
-
-                            var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
-
-                        }
-                    }
-                }*/
+                    i++;
+                }
             }
             count++;
             accentIndex = 0;
         }
         accentIndex++;
-        console.log("accentPattern=", accentPatternMap.get(measureIndex + "")[count-1]);
         if (!accentPatternMap.get(measureIndex + "")[count]){
             if (count>1){
                 count=0;
@@ -622,227 +585,48 @@ function accentedPlay(){
 
         if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(measureIndex + "")[count-1]) {
             accent=0.75
+
             if (count % 2 ==0){
+
                 kick();
 
-                if (s != -1) {
+                if (i < length) {
+                    var table = document.getElementById("tableK");
+                    var row = table.insertRow(i+1);
+                    var cell = row.insertCell(0);
 
-                    if (playGS == 1) {
+                    cell.innerHTML = "";
+                    cell.style.backgroundColor = "#ffa500";
 
-                        if (playC == 1) {
+                    var table = document.getElementById("tableS");
+                    var row = table.insertRow(i+1);
+                    var cell = row.insertCell(0);
 
-                            if (playH == 1) {
+                    cell.innerHTML = "";
 
-                                // C YES K YES GS YES S NO H YES
-
-                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-
-                            } else {
-
-                                // C YES K YES GS YES S NO H NO
-
-                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-                            }
-
-                            /*var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                            playC = 0;
-
-                        } else {
-
-                            if (playH == 1) {
-
-                                // C NO K YES GS YES S NO H YES
-
-                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-                            } else {
-
-                                // C NO K YES GS YES S NO H NO
-
-                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-                            }
-
-                            /*var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                        }
-
-                        playGS = 0;
-
-                    } else {
-
-                        if (playC == 1) {
-
-                            if (playH == 1) {
-
-                                // C YES K YES GS NO S NO H YES
-
-                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-
-                            } else {
-
-                                // C YES K YES GS NO S NO H NO
-
-                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                            }
-
-                            /*var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                            playC = 0;
-                        } else {
-
-                            if (playH == 1) {
-
-                                // C NO K YES GS NO S NO H YES
-                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-                            } else {
-
-                                // C NO K YES GS NO S NO H NO
-                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-                            }
-
-                            /*var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                        }
-                    }
+                    i++;
                 }
-            }
-            else{
+
+            } else {
                 snare();
 
-                if (s != -1) {
+                if (i < length) {
+                    var table = document.getElementById("tableS");
+                    var row = table.insertRow(i+1);
+                    var cell = row.insertCell(0);
 
-                    if (playGS == 1) {
-                        if (playC == 1) {
+                    cell.innerHTML = "";
+                    cell.style.backgroundColor = "#ffc0cb";
 
-                            if (playH == 1) {
+                    var table = document.getElementById("tableK");
+                    var row = table.insertRow(i+1);
+                    var cell = row.insertCell(0);
 
-                                // C YES K NO GS YES S YES H YES
+                    cell.innerHTML = "";
 
-                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-                            } else {
-
-                                // C YES K NO GS YES S YES H NO
-                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-                            }
-
-                            /*var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                            playC = 0;
-                        } else {
-
-                            if (playH == 1) {
-
-                                // C NO K NO GS YES S YES H YES
-                                var markup = "<tr><td></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-                            } else {
-
-                                // C NO K NO GS YES S YES H NO
-                                var markup = "<tr><td></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-                            }
-
-                            /*var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                        }
-                        playGS = 0;
-                    } else {
-                        if (playC == 1) {
-
-                            if (playH == 1) {
-
-                                // C YES K NO GS NO S YES H YES
-                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-                            } else {
-
-                                // C YES K NO GS NO S YES H NO
-                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-                            }
-
-                            /*var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                            playC = 0;
-
-                        } else {
-
-                            if (playH == 1) {
-
-                                // C NO K NO GS NO S YES H YES
-                                var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-                            } else {
-
-                                // C NO K NO GS NO S YES H NO
-                                var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-                            }
-
-                            /*var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                        }
-                    }
+                    i++;
                 }
+
             }
 
             count++;
@@ -850,11 +634,6 @@ function accentedPlay(){
             accentIndex = 0;
         }
 
-        if (s == sub[measureIndex]) {
-            s = -1;
-        }
-
         accentIndex++;
-        console.log("accentPattern=", accentPatternMap.get(measureIndex + "")[count-1]);
     }
 }
