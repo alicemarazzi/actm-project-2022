@@ -20,6 +20,7 @@ var accentedNotes = new Array(4).fill(0);
 var hatNotes = new Array(4).fill(0);
 var sub = new Array(4).fill(0);
 var hatsub = new Array(4).fill(0);
+var hatIndex =0;
 var refreshIntervalId = 0;
 var refreshIntervalIdb = 0;
 var refreshIntervalIdc = 0;
@@ -29,12 +30,10 @@ var measureIndex = 0;
 var pattern = new Array(4).fill(0);
 var accentPatternMap = new Map();
 var accentIndex=0;
+var tableIndex=0;
 var count=0;
-var s = 0;
-var length = 50;
-var i = 0;
-var y = 0;
 var accent=1;
+var tableMap = new Map();
 
 function createTimeSignatureNum() {
     timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
@@ -84,6 +83,11 @@ function hat(){
     var audio = new Audio('Hat (7).wav');
     audio.volume = Math.random()*accent;
     audio.play();
+    tableMap.get(hatIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/hatsub[measureIndex]+"").get(4 + "").style.backgroundColor = "#8b0000";
+    hatIndex++;
+    if (hatIndex==hatNotes[0]){
+        hatIndex=0;
+    }
 }
 
 function play() {
@@ -91,6 +95,7 @@ function play() {
     if (refreshIntervalId) {
 
         clearInterval(refreshIntervalId);
+        clearInterval(refreshIntervalIdb)
         clearInterval(refreshIntervalIdc);
         clearInterval(refreshIntervalIdd);
         refreshIntervalIdd = 0;
@@ -341,7 +346,7 @@ function generate() {
 
             notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
             hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex];
-            accentedNotes[measureIndex] = sigPatt * sub[measureIndex] / timeSignatureDen[measureIndex];
+            accentedNotes[measureIndex] = sigPatt;
             pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
 
             if (pattern[measureIndex]<Math.pow(2, notes[measureIndex])/2){
@@ -370,18 +375,11 @@ function generate() {
     } //end of for loop
 
     measureIndex=0
-    if (refreshIntervalIdd == 0) {
-        refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
-        setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.15}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
-    }
-    if (refreshIntervalId == 0) {
-        refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]))
-    }
-    if (refreshIntervalIdc == 0) {
+    table()
+    //refreshIntervalIde = setInterval(table, gcd(gcd(240000 / (BPM * timeSignatureDen[measureIndex])),240000 / (BPM * sub[measureIndex])),480000 / (BPM * hatsub[measureIndex]))
 
-        refreshIntervalIdc = setInterval(hat, 480000 / (BPM * hatsub[measureIndex]))
 
-    }
+
 
 }
 
@@ -409,86 +407,21 @@ function render() {
 
     if(index==0){
         cymbal()
-
-        if (s != -1) {
-            var table = document.getElementById("tableC");
-            var row = table.insertRow(s+1);
-            var cell = row.insertCell(0);
-
-            cell.innerHTML = "";
-            cell.style.backgroundColor = "#0000ff";
-
-        }
-    } else {
-        if (s != -1) {
-            var table = document.getElementById("tableC");
-            var row = table.insertRow(s+1);
-            var cell = row.insertCell(0);
-
-            cell.innerHTML = "";
-
-        }
+        tableMap.get(index*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/sub[measureIndex]+"").get(1+"").style.backgroundColor = "#0000ff";
+        console.log("colora")
     }
 
     let patternBinary = pattern[measureIndex].toString(2);
 
     if (index*timeSignatureDen[measureIndex]%sub[measureIndex]!=0 && patternBinary.charAt(index) - '0') {
         ghostSnare();
-
-        if (s != -1) {
-            var table = document.getElementById("tableGS");
-            var row = table.insertRow(s+1);
-            var cell = row.insertCell(0);
-
-            cell.innerHTML = "";
-            cell.style.backgroundColor = "#4c9a2a";
-            s++;
-        }
-
-    } else {
-
-        if (s != -1) {
-            var table = document.getElementById("tableGS");
-            var row = table.insertRow(s+1);
-            var cell = row.insertCell(0);
-
-            cell.innerHTML = "";
-            s++;
-        }
+        tableMap.get(index*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/sub[measureIndex]+"").get(5 + "").style.backgroundColor = "#4c9a2a";
 
     }
-
-    if (s == sub[measureIndex]) {
-        length = s;
-        s = -1;
-    }
-
 
     index++;
 
     console.log(index);
-
-    if (index % 2 == 0) {
-        if (y < length) {
-            var table = document.getElementById("tableH");
-            var row = table.insertRow(y+1);
-            var cell = row.insertCell(0);
-
-            cell.innerHTML = "";
-            cell.style.backgroundColor = "#8b0000";
-
-            y++;
-        }
-    } else {
-        if (y < length) {
-            var table = document.getElementById("tableH");
-            var row = table.insertRow(y+1);
-            var cell = row.insertCell(0);
-
-            cell.innerHTML = "";
-            y++;
-        }
-    }
 
     if (index >= notes[measureIndex]) {
         index = 0;
@@ -533,43 +466,11 @@ function accentedPlay(){
             if (count % 2 ==0){
 
                 kick();
+                tableMap.get(tableIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/timeSignatureDen[measureIndex]+"").get(3 + "").style.backgroundColor = "#ffa500";
 
-                if (i < length) {
-                    var table = document.getElementById("tableK");
-                    var row = table.insertRow(i+1);
-                    var cell = row.insertCell(0);
-
-                    cell.innerHTML = "";
-                    cell.style.backgroundColor = "#ffa500";
-
-                    var table = document.getElementById("tableS");
-                    var row = table.insertRow(s+1);
-                    var cell = row.insertCell(0);
-
-                    cell.innerHTML = "";
-
-                    i++;
-                }
-
-            } else{
+            } else {
                 snare();
-
-                if (i < length) {
-                    var table = document.getElementById("tableS");
-                    var row = table.insertRow(i+1);
-                    var cell = row.insertCell(0);
-
-                    cell.innerHTML = "";
-                    cell.style.backgroundColor = "#ffc0cb";
-
-                    var table = document.getElementById("tableK");
-                    var row = table.insertRow(s+1);
-                    var cell = row.insertCell(0);
-
-                    cell.innerHTML = "";
-
-                    i++;
-                }
+                tableMap.get(tableIndex * lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0]) / timeSignatureDen[measureIndex] + "").get(2 + "").style.backgroundColor = "#ffc0cb";
             }
             count++;
             accentIndex = 0;
@@ -589,67 +490,92 @@ function accentedPlay(){
             if (count % 2 ==0){
 
                 kick();
-
-                if (i < length) {
-                    var table = document.getElementById("tableK");
-                    var row = table.insertRow(i+1);
-                    var cell = row.insertCell(0);
-
-                    cell.innerHTML = "";
-                    cell.style.backgroundColor = "#ffa500";
-
-                    var table = document.getElementById("tableS");
-                    var row = table.insertRow(i+1);
-                    var cell = row.insertCell(0);
-
-                    cell.innerHTML = "";
-
-                    i++;
-                }
+                tableMap.get(tableIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/timeSignatureDen[measureIndex]+"").get(3 + "").style.backgroundColor = "#ffa500";
 
             } else {
                 snare();
-
-                if (i < length) {
-                    var table = document.getElementById("tableS");
-                    var row = table.insertRow(i+1);
-                    var cell = row.insertCell(0);
-
-                    cell.innerHTML = "";
-                    cell.style.backgroundColor = "#ffc0cb";
-
-                    var table = document.getElementById("tableK");
-                    var row = table.insertRow(i+1);
-                    var cell = row.insertCell(0);
-
-                    cell.innerHTML = "";
-
-                    i++;
-                }
-
+                tableMap.get(tableIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/timeSignatureDen[measureIndex]+"").get(2 + "").style.backgroundColor = "#ffc0cb";
+                console.log("count=", count)
             }
 
             count++;
 
             accentIndex = 0;
-        } else {
-            if (i < length) {
-                var table = document.getElementById("tableS");
-                var row = table.insertRow(i+1);
-                var cell = row.insertCell(0);
-
-                cell.innerHTML = "";
-
-                var table = document.getElementById("tableK");
-                var row = table.insertRow(i+1);
-                var cell = row.insertCell(0);
-
-                cell.innerHTML = "";
-
-                i++;
-            }
         }
 
         accentIndex++;
+        tableIndex++;
+        if (tableIndex>=accentedNotes[0]){
+            tableIndex=0;
+        }
     }
+}
+
+function table(){
+    for (let s=0; s<=lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0]); s++){
+        var arrayMap = new Map();
+        var table = document.getElementById("tableC");
+        var row = table.insertRow(s+1);
+        var cell = row.insertCell(0);
+
+        cell.innerHTML = "";
+
+        arrayMap.set(1 + "", cell);
+
+        var table = document.getElementById("tableS");
+        var row = table.insertRow(s+1);
+        var cell = row.insertCell(0);
+
+        cell.innerHTML = "";
+        arrayMap.set(2 + "", cell);
+
+        var table = document.getElementById("tableK");
+        var row = table.insertRow(s+1);
+        var cell = row.insertCell(0);
+
+        cell.innerHTML = "";
+        arrayMap.set(3 + "", cell);
+
+        var table = document.getElementById("tableH");
+        var row = table.insertRow(s+1);
+        var cell = row.insertCell(0);
+
+        cell.innerHTML = "";
+        arrayMap.set(4 + "", cell);
+
+        var table = document.getElementById("tableGS");
+        var row = table.insertRow(s+1);
+        var cell = row.insertCell(0);
+
+        cell.innerHTML = "";
+        arrayMap.set(5 + "", cell);
+        tableMap.set(s + "", arrayMap);
+
+    }
+    if (refreshIntervalIdd == 0) {
+        refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
+        setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.15}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
+    }
+    if (refreshIntervalId == 0) {
+        refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]))
+    }
+    if (refreshIntervalIdc == 0) {
+
+        refreshIntervalIdc = setInterval(hat, 480000 / (BPM * hatsub[measureIndex]))
+
+    }
+}
+
+function gcd(x, y) {
+    x = Math.abs(x);
+    y = Math.abs(y);
+    while(y) {
+        var t = y;
+        y = x % y;
+        x = t;
+    }
+    return x;
+}
+function lcm(a, b) {
+    return (Math.abs(a * b) / gcd(a, b))
 }
