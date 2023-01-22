@@ -34,6 +34,7 @@ var tableIndex=0;
 var count=0;
 var accent=1;
 var tableMap = new Map();
+var flagM = 0;
 
 function createTimeSignatureNum() {
     timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
@@ -370,13 +371,9 @@ function generate() {
         }
     } //end of for loop
 
-    measureIndex=0
-    table()
+    measureIndex=0;
+    table();
     //refreshIntervalIde = setInterval(table, gcd(gcd(240000 / (BPM * timeSignatureDen[measureIndex])),240000 / (BPM * sub[measureIndex])),480000 / (BPM * hatsub[measureIndex]))
-
-
-
-
 }
 
 start.onclick = toggleOn;
@@ -507,94 +504,99 @@ function accentedPlay(){
 }
 
 function table(){
-    for (let s=0; s<=lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0]); s++){
-        var arrayMap = new Map();
-        var table;
-        var cell;
 
-        table = document.getElementById("tableC");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(1 + "", cell);
+    if (flagM == 0) {
+        for (let s=0; s<=lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0]); s++){
+            var arrayMap = new Map();
+            var table;
+            var cell;
 
-        table = document.getElementById("tableS");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(2 + "", cell);
+            table = document.getElementById("tableC");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(1 + "", cell);
 
-        table = document.getElementById("tableK");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(3 + "", cell);
+            table = document.getElementById("tableS");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(2 + "", cell);
 
-        table = document.getElementById("tableH");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(4 + "", cell);
+            table = document.getElementById("tableK");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(3 + "", cell);
 
-        table = document.getElementById("tableGS");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(5 + "", cell);
+            table = document.getElementById("tableH");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(4 + "", cell);
 
-        table = document.getElementById("tableC2");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(6 + "", cell);
+            table = document.getElementById("tableGS");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(5 + "", cell);
 
-        table = document.getElementById("tableS2");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(7 + "", cell);
+            table = document.getElementById("tableC2");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(6 + "", cell);
 
-        table = document.getElementById("tableK2");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(8 + "", cell);
+            table = document.getElementById("tableS2");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(7 + "", cell);
 
-        table = document.getElementById("tableH2");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(9 + "", cell);
+            table = document.getElementById("tableK2");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(8 + "", cell);
 
-        table = document.getElementById("tableGS2");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(10 + "", cell);
+            table = document.getElementById("tableH2");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(9 + "", cell);
 
-        table = document.getElementById("tableC3");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(11 + "", cell);
+            table = document.getElementById("tableGS2");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(10 + "", cell);
 
-        table = document.getElementById("tableS3");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(12 + "", cell);
+            table = document.getElementById("tableC3");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(11 + "", cell);
 
-        table = document.getElementById("tableK3");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(13 + "", cell);
+            table = document.getElementById("tableS3");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(12 + "", cell);
 
-        table = document.getElementById("tableH3");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(14 + "", cell);
+            table = document.getElementById("tableK3");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(13 + "", cell);
 
-        table = document.getElementById("tableGS3");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(15 + "", cell);
+            table = document.getElementById("tableH3");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(14 + "", cell);
 
-        table = document.getElementById("tableC4");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(16 + "", cell);
+            table = document.getElementById("tableGS3");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(15 + "", cell);
 
-        table = document.getElementById("tableS4");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(17 + "", cell);
+            table = document.getElementById("tableC4");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(16 + "", cell);
 
-        table = document.getElementById("tableK4");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(18 + "", cell);
+            table = document.getElementById("tableS4");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(17 + "", cell);
 
-        table = document.getElementById("tableH4");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(19 + "", cell);
+            table = document.getElementById("tableK4");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(18 + "", cell);
 
-        table = document.getElementById("tableGS4");
-        cell = table.rows[0].insertCell(s+1);
-        arrayMap.set(20 + "", cell);
+            table = document.getElementById("tableH4");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(19 + "", cell);
 
-        tableMap.set(s + "", arrayMap);
+            table = document.getElementById("tableGS4");
+            cell = table.rows[0].insertCell(s+1);
+            arrayMap.set(20 + "", cell);
 
+            tableMap.set(s + "", arrayMap);
+
+        }
+        flagM = 1;
     }
+
     if (refreshIntervalIdd == 0) {
         refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
         setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.15}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
@@ -603,9 +605,7 @@ function table(){
         refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]))
     }
     if (refreshIntervalIdc == 0) {
-
         refreshIntervalIdc = setInterval(hat, 480000 / (BPM * hatsub[measureIndex]))
-
     }
 }
 
