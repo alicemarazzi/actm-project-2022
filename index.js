@@ -52,10 +52,6 @@ function changeComplexity() {
     complexity = parseInt(document.getElementById('complex').value);
 }
 
-function changeKey() {
-    key = document.getElementById('keyselected').value;
-}
-
 function kick() {
     var audio = new Audio('Kick (9).wav');
     audio.volume = 0.75
@@ -83,7 +79,7 @@ function hat(){
     var audio = new Audio('Hat (7).wav');
     audio.volume = Math.random()*accent;
     audio.play();
-    tableMap.get(hatIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/hatsub[measureIndex]+"").get(4 + "").style.backgroundColor = "#8b0000";
+    tableMap.get(hatIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/hatsub[measureIndex]+"").get(measureIndex*5 + 4 + "").style.backgroundColor = "#8b0000";
     hatIndex++;
     if (hatIndex==hatNotes[0]){
         hatIndex=0;
@@ -407,15 +403,14 @@ function render() {
 
     if(index==0){
         cymbal()
-        tableMap.get(index*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/sub[measureIndex]+"").get(1+"").style.backgroundColor = "#0000ff";
-        console.log("colora")
+        tableMap.get(index*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/sub[measureIndex]+"").get(measureIndex*5 + 1+"").style.backgroundColor = "#0000ff";
     }
 
     let patternBinary = pattern[measureIndex].toString(2);
 
     if (index*timeSignatureDen[measureIndex]%sub[measureIndex]!=0 && patternBinary.charAt(index) - '0') {
         ghostSnare();
-        tableMap.get(index*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/sub[measureIndex]+"").get(5 + "").style.backgroundColor = "#4c9a2a";
+        tableMap.get(index*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/sub[measureIndex]+"").get(measureIndex*5 + 5 + "").style.backgroundColor = "#4c9a2a";
 
     }
 
@@ -466,11 +461,11 @@ function accentedPlay(){
             if (count % 2 ==0){
 
                 kick();
-                tableMap.get(tableIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/timeSignatureDen[measureIndex]+"").get(3 + "").style.backgroundColor = "#ffa500";
+                tableMap.get(tableIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/timeSignatureDen[measureIndex]+"").get(measureIndex*5 + 3 + "").style.backgroundColor = "#ffa500";
 
             } else {
                 snare();
-                tableMap.get(tableIndex * lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0]) / timeSignatureDen[measureIndex] + "").get(2 + "").style.backgroundColor = "#ffc0cb";
+                tableMap.get(tableIndex * lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0]) / timeSignatureDen[measureIndex] + "").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb";
             }
             count++;
             accentIndex = 0;
@@ -490,11 +485,11 @@ function accentedPlay(){
             if (count % 2 ==0){
 
                 kick();
-                tableMap.get(tableIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/timeSignatureDen[measureIndex]+"").get(3 + "").style.backgroundColor = "#ffa500";
+                tableMap.get(tableIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/timeSignatureDen[measureIndex]+"").get(measureIndex*5 + 3 + "").style.backgroundColor = "#ffa500";
 
             } else {
                 snare();
-                tableMap.get(tableIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/timeSignatureDen[measureIndex]+"").get(2 + "").style.backgroundColor = "#ffc0cb";
+                tableMap.get(tableIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/timeSignatureDen[measureIndex]+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb";
                 console.log("count=", count)
             }
 
@@ -514,41 +509,89 @@ function accentedPlay(){
 function table(){
     for (let s=0; s<=lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0]); s++){
         var arrayMap = new Map();
-        var table = document.getElementById("tableC");
-        var row = table.insertRow(s+1);
-        var cell = row.insertCell(0);
+        var table;
+        var cell;
 
-        cell.innerHTML = "";
-
+        table = document.getElementById("tableC");
+        cell = table.rows[0].insertCell(s+1);
         arrayMap.set(1 + "", cell);
 
-        var table = document.getElementById("tableS");
-        var row = table.insertRow(s+1);
-        var cell = row.insertCell(0);
-
-        cell.innerHTML = "";
+        table = document.getElementById("tableS");
+        cell = table.rows[0].insertCell(s+1);
         arrayMap.set(2 + "", cell);
 
-        var table = document.getElementById("tableK");
-        var row = table.insertRow(s+1);
-        var cell = row.insertCell(0);
-
-        cell.innerHTML = "";
+        table = document.getElementById("tableK");
+        cell = table.rows[0].insertCell(s+1);
         arrayMap.set(3 + "", cell);
 
-        var table = document.getElementById("tableH");
-        var row = table.insertRow(s+1);
-        var cell = row.insertCell(0);
-
-        cell.innerHTML = "";
+        table = document.getElementById("tableH");
+        cell = table.rows[0].insertCell(s+1);
         arrayMap.set(4 + "", cell);
 
-        var table = document.getElementById("tableGS");
-        var row = table.insertRow(s+1);
-        var cell = row.insertCell(0);
-
-        cell.innerHTML = "";
+        table = document.getElementById("tableGS");
+        cell = table.rows[0].insertCell(s+1);
         arrayMap.set(5 + "", cell);
+
+        table = document.getElementById("tableC2");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(6 + "", cell);
+
+        table = document.getElementById("tableS2");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(7 + "", cell);
+
+        table = document.getElementById("tableK2");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(8 + "", cell);
+
+        table = document.getElementById("tableH2");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(9 + "", cell);
+
+        table = document.getElementById("tableGS2");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(10 + "", cell);
+
+        table = document.getElementById("tableC3");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(11 + "", cell);
+
+        table = document.getElementById("tableS3");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(12 + "", cell);
+
+        table = document.getElementById("tableK3");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(13 + "", cell);
+
+        table = document.getElementById("tableH3");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(14 + "", cell);
+
+        table = document.getElementById("tableGS3");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(15 + "", cell);
+
+        table = document.getElementById("tableC4");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(16 + "", cell);
+
+        table = document.getElementById("tableS4");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(17 + "", cell);
+
+        table = document.getElementById("tableK4");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(18 + "", cell);
+
+        table = document.getElementById("tableH4");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(19 + "", cell);
+
+        table = document.getElementById("tableGS4");
+        cell = table.rows[0].insertCell(s+1);
+        arrayMap.set(20 + "", cell);
+
         tableMap.set(s + "", arrayMap);
 
     }
@@ -576,6 +619,7 @@ function gcd(x, y) {
     }
     return x;
 }
+
 function lcm(a, b) {
     return (Math.abs(a * b) / gcd(a, b))
 }
