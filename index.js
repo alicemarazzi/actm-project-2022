@@ -5,36 +5,31 @@ cmp.connect(c.destination);
 var bs = c.createBufferSource();
 bs.loop = true;
 
-var BPM = 120;
-// var style;
-var key;
-// var scale;
-var timeSignatureNum = new Array(4);
-var timeSignatureDen = new Array(4);
+var BPM = 120
+var timeSignatureNum = new Array(4)
+var timeSignatureDen = new Array(4)
 var sigPatt = 4
-timeSignatureNum[0] = 4;
-timeSignatureDen[0] = 4;
-var index=0;
-var notes = new Array(4).fill(0);
-var accentedNotes = new Array(4).fill(0);
-var hatNotes = new Array(4).fill(0);
-var sub = new Array(4).fill(0);
-var hatsub = new Array(4).fill(0);
-var hatIndex =0;
-var refreshIntervalId = 0;
-var refreshIntervalIdb = 0;
-var refreshIntervalIdc = 0;
-var refreshIntervalIdd = 0;
-var complexity = 1;
-var measureIndex = 0;
-var pattern = new Array(4).fill(0);
-var accentPatternMap = new Map();
-var accentIndex=0;
-var tableIndex=0;
-var count=0;
-var accent=1;
-var tableMap = new Map();
-var flagM = 0;
+timeSignatureNum[0] = 4
+timeSignatureDen[0] = 4
+var snareflag=0
+var notes = new Array(4).fill(0)
+var accentedNotes = new Array(4).fill(0)
+var hatNotes = new Array(4).fill(0)
+var sub = new Array(4).fill(0)
+var hatsub = new Array(4).fill(0)
+var refreshIntervalId = 0
+var refreshIntervalIdb = 0
+var complexity = 1
+var measureIndex = 0
+var pattern = new Array(4).fill(0)
+var accentPatternMap = new Map()
+var accentIndex=0
+var tableIndex=0
+var count=0
+var accent=1
+var tableMap = new Map()
+var flagM = 0
+var tableNotes = new Array(4).fill(0)
 
 function createTimeSignatureNum() {
     timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
@@ -80,29 +75,22 @@ function hat(){
     var audio = new Audio('Hat (7).wav');
     audio.volume = Math.random()*accent;
     audio.play();
-    tableMap.get(hatIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/hatsub[measureIndex]+"").get(measureIndex*5 + 4 + "").style.backgroundColor = "#8b0000";
-    hatIndex++;
-    if (hatIndex==hatNotes[0]){
-        hatIndex=0;
-    }
+    tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 4 + "").style.backgroundColor = "#8b0000";
 }
 
 function play() {
 
     if (refreshIntervalId) {
 
-        clearInterval(refreshIntervalId);
+        clearInterval(refreshIntervalId)
         clearInterval(refreshIntervalIdb)
-        clearInterval(refreshIntervalIdc);
-        clearInterval(refreshIntervalIdd);
-        refreshIntervalIdd = 0;
-        refreshIntervalIdc = 0;
         refreshIntervalIdb = 0
-        refreshIntervalId = 0;
-        index = 0;
-        measureIndex = 0;
-        accentIndex = 0;
-        count = 0;
+        refreshIntervalId = 0
+        index = 0
+        measureIndex = 0
+        accentIndex = 0
+        count = 0
+        tableIndex=0
 
         // Per cancellare il pattern con STOP
         /*pattern.fill(0)
@@ -262,78 +250,78 @@ function generate() {
 
             if (measureIndex == 0) {
 
-                sub[measureIndex] = Math.round(Math.random() * 2 + 2) * timeSignatureDen[measureIndex];
-
+                sub[measureIndex] = Math.round(Math.random() * 2 + 2) * timeSignatureDen[measureIndex]
+                console.log("sub=", sub[measureIndex])
 
             } else {
-
                 sub[measureIndex] = sub[measureIndex - 1]
 
+                if (complexity == 2) {
 
-            }
-            if (complexity == 2) {
-
-                if (measureIndex == 1) {
-                    for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
-                        sub[measureIndex]++;
+                    if (measureIndex == 1) {
+                        for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
+                            sub[measureIndex]++;
+                        }
+                    } else {
+                        sub[measureIndex] = sub[measureIndex - 2]
                     }
-                } else {
-                    sub[measureIndex] = sub[measureIndex - 2]
                 }
-            }
-            else if (complexity==5){
-                if (measureIndex == 1) {
-                    for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
-                        sub[measureIndex]--;
+                else if (complexity==5){
+                    if (measureIndex == 1) {
+                        for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
+                            sub[measureIndex]--;
+                        }
+                    } else if (measureIndex!=0) {
+                        sub[measureIndex] = sub[measureIndex - 2]
                     }
-                } else if (measureIndex!=0) {
-                    sub[measureIndex] = sub[measureIndex - 2]
                 }
             }
+        }
 
-            if (BPM>=110){
-                while (sub[measureIndex]>16){
-                    sub[measureIndex]=sub[measureIndex]/2
+
+
+        if (BPM>=110){
+            while (sub[measureIndex]>16){
+                sub[measureIndex]=sub[measureIndex]/2
+            }
+            if (sub[measureIndex]==timeSignatureDen[measureIndex]){
+                if(sub[measureIndex]%3==0){
+                    sub[measureIndex]=sub[measureIndex]*2/3
                 }
-                if (sub[measureIndex]==timeSignatureDen[measureIndex]){
-                    if(sub[measureIndex]%3==0){
-                        sub[measureIndex]=sub[measureIndex]*2/3
+                else{
+                    sub[measureIndex]=sub[measureIndex]*3/2
+                }
+            }
+        }
+
+        hatsub[measureIndex] = sub[measureIndex]
+        console.log("sub=", sub[measureIndex])
+
+        if(complexity==4){
+            if (measureIndex == 0) {
+                while (sub[measureIndex]%hatsub[measureIndex]==0 || hatsub[measureIndex]%sub[measureIndex]==0){
+                    hatsub[measureIndex] = sub[measureIndex]*Math.round(Math.random()*4+1)/2
+                }
+            } else {
+
+                hatsub[measureIndex] = hatsub[measureIndex - 1]
+
+            }
+        }
+
+        if (BPM>=110){
+            while (hatsub[measureIndex]>16){
+                hatsub[measureIndex]=hatsub[measureIndex]/2
+            }
+            if (complexity==4){
+                if (sub[measureIndex]==hatsub[measureIndex]){
+                    if(hatsub[measureIndex]%3==0){
+                        hatsub[measureIndex]=hatsub[measureIndex]*3/2
                     }
                     else{
-                        sub[measureIndex]=sub[measureIndex]*3/2
+                        hatsub[measureIndex]=hatsub[measureIndex]*2/3
                     }
                 }
-            }
-
-            hatsub[measureIndex] = sub[measureIndex]
-
-            if(complexity==4){
-                if (measureIndex == 0) {
-                    while (sub[measureIndex]%hatsub[measureIndex]==0 || hatsub[measureIndex]%sub[measureIndex]==0){
-                        hatsub[measureIndex] = sub[measureIndex]*Math.round(Math.random()*4+1)/2
-                    }
-                } else {
-
-                    hatsub[measureIndex] = hatsub[measureIndex - 1]
-
-                }
-            }
-
-            if (BPM>=110){
-                while (hatsub[measureIndex]>16){
-                    hatsub[measureIndex]=hatsub[measureIndex]/2
-                }
-                if (complexity==4){
-                    if (sub[measureIndex]==hatsub[measureIndex]){
-                        if(hatsub[measureIndex]%3==0){
-                            hatsub[measureIndex]=hatsub[measureIndex]*3/2
-                        }
-                        else{
-                            hatsub[measureIndex]=hatsub[measureIndex]*2/3
-                        }
-                    }
-                }
-
             }
 
         }
@@ -368,12 +356,18 @@ function generate() {
                     pattern[measureIndex] = pattern[measureIndex-2];
                 }
             }
+            hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex];
+            if (complexity!=5){
+                accentedNotes[measureIndex]=accentedNotes[measureIndex-1]
+            }
+
         }
+        tableNotes[measureIndex]=lcm(lcm(hatNotes[measureIndex], notes[measureIndex]), accentedNotes[measureIndex])
+        console.log("tableNotes=", tableNotes)
     } //end of for loop
 
     measureIndex=0;
-    table();
-    //refreshIntervalIde = setInterval(table, gcd(gcd(240000 / (BPM * timeSignatureDen[measureIndex])),240000 / (BPM * sub[measureIndex])),480000 / (BPM * hatsub[measureIndex]))
+    table()
 }
 
 start.onclick = toggleOn;
@@ -396,61 +390,123 @@ function toggleOn(e) {
 
 }
 
-function render() {
 
-    if(index==0){
-        cymbal()
-        tableMap.get(index*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/sub[measureIndex]+"").get(measureIndex*5 + 1+"").style.backgroundColor = "#0000ff";
-    }
 
-    let patternBinary = pattern[measureIndex].toString(2);
+function table(){
 
-    if (index*timeSignatureDen[measureIndex]%sub[measureIndex]!=0 && patternBinary.charAt(index) - '0') {
-        ghostSnare();
-        tableMap.get(index*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/sub[measureIndex]+"").get(measureIndex*5 + 5 + "").style.backgroundColor = "#4c9a2a";
+    if (flagM == 0) {
+        for (measureIndex=0; measureIndex<4; measureIndex++){
 
-    }
+            for (let s=0; s<tableNotes[measureIndex]; s++){
+                var arrayMap = new Map();
+                var table;
+                var cell;
 
-    index++;
+                if (measureIndex==0){
+                    table = document.getElementById("tableC");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(1 + "", cell);
 
-    console.log(index);
+                    table = document.getElementById("tableS");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(2 + "", cell);
 
-    if (index >= notes[measureIndex]) {
-        index = 0;
-        measureIndex++;
+                    table = document.getElementById("tableK");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(3 + "", cell);
 
-        if (complexity==1 || complexity==4 || complexity==5){
-            accentIndex=0;
-            if (count>1){
-                count = 0;
+                    table = document.getElementById("tableH");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(4 + "", cell);
+
+                    table = document.getElementById("tableGS");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(5 + "", cell);
+                }
+                if (measureIndex==1){
+                    table = document.getElementById("tableC2");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(6 + "", cell);
+
+                    table = document.getElementById("tableS2");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(7 + "", cell);
+
+                    table = document.getElementById("tableK2");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(8 + "", cell);
+
+                    table = document.getElementById("tableH2");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(9 + "", cell);
+
+                    table = document.getElementById("tableGS2");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(10 + "", cell);
+                }
+                if (measureIndex==2){
+                    table = document.getElementById("tableC3");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(11 + "", cell);
+
+                    table = document.getElementById("tableS3");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(12 + "", cell);
+
+                    table = document.getElementById("tableK3");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(13 + "", cell);
+
+                    table = document.getElementById("tableH3");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(14 + "", cell);
+
+                    table = document.getElementById("tableGS3");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(15 + "", cell);
+                }
+                if (measureIndex==3){
+                    table = document.getElementById("tableC4");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(16 + "", cell);
+
+                    table = document.getElementById("tableS4");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(17 + "", cell);
+
+                    table = document.getElementById("tableK4");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(18 + "", cell);
+
+                    table = document.getElementById("tableH4");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(19 + "", cell);
+
+                    table = document.getElementById("tableGS4");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(20 + "", cell);
+                }
+                tableMap.set(s+(measureIndex*tableNotes[measureIndex]) + "", arrayMap);
+
             }
         }
-
-        clearInterval(refreshIntervalId);
-        clearInterval(refreshIntervalIdc);
-
-
-        if (measureIndex == 4) {
-            measureIndex = 0;
-        }
-        if (complexity==1 || complexity==4 || complexity==5){
-            clearInterval(refreshIntervalIdd);
-            clearInterval(refreshIntervalIdb);
-            refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
-            setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.25}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
-        }
-
-        refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]));
-
-        hat();
-
-        refreshIntervalIdc = setInterval(hat, 480000 / (BPM * hatsub[measureIndex]));
-
+        measureIndex=0
+        flagM = 1;
     }
+
+    if (refreshIntervalId==0){
+        refreshIntervalId = setInterval(tableIn, 240000 / (BPM * tableNotes[measureIndex]))
+    }
+    setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.15}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
+
 }
 
-function accentedPlay(){
-
+function tableIn(){
+    snareflag=0
+    if(tableIndex==0){
+        cymbal()
+        tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 1+"").style.backgroundColor = "#0000ff";
+    }
     if(complexity==2 || complexity==3){
         if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(0 + "")[count-1]) {
             accent=0.75
@@ -458,154 +514,81 @@ function accentedPlay(){
             if (count % 2 ==0){
 
                 kick();
-                tableMap.get(tableIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/timeSignatureDen[measureIndex]+"").get(measureIndex*5 + 3 + "").style.backgroundColor = "#ffa500";
+                tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 3 + "").style.backgroundColor = "#ffa500";
 
             } else {
                 snare();
-                tableMap.get(tableIndex * lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0]) / timeSignatureDen[measureIndex] + "").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb";
+                tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb";
+                snareflag=1
             }
             count++;
             accentIndex = 0;
         }
-        accentIndex++;
-        if (!accentPatternMap.get(measureIndex + "")[count]){
-            if (count>1){
-                count=0;
-            }
-            accentIndex=0;
-        }
-    } else {
-
+    }
+    else{
         if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(measureIndex + "")[count-1]) {
             accent=0.75
 
             if (count % 2 ==0){
 
                 kick();
-                tableMap.get(tableIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/timeSignatureDen[measureIndex]+"").get(measureIndex*5 + 3 + "").style.backgroundColor = "#ffa500";
+                tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 3 + "").style.backgroundColor = "#ffa500";
 
             } else {
                 snare();
-                tableMap.get(tableIndex*lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0])/timeSignatureDen[measureIndex]+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb";
-                console.log("count=", count)
+                tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb";
+                snareflag=1
             }
-
-            count++;
-
-            accentIndex = 0;
-        }
-
-        accentIndex++;
-        tableIndex++;
-        if (tableIndex>=accentedNotes[0]){
-            tableIndex=0;
+            count++
+            accentIndex = 0
         }
     }
-}
 
-function table(){
+    let patternBinary = pattern[measureIndex].toString(2);
 
-    if (flagM == 0) {
-        for (let s=0; s<=lcm(lcm(hatNotes[0], notes[measureIndex]), accentedNotes[0]); s++){
-            var arrayMap = new Map();
-            var table;
-            var cell;
+    if (snareflag==0 && tableIndex!=0 && patternBinary.charAt(tableIndex*(tableNotes[measureIndex]/sub[measureIndex]) - '0')!=0){
+        ghostSnare();
+        tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 5 + "").style.backgroundColor = "#4c9a2a";
+    }
 
-            table = document.getElementById("tableC");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(1 + "", cell);
 
-            table = document.getElementById("tableS");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(2 + "", cell);
 
-            table = document.getElementById("tableK");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(3 + "", cell);
+    if (tableIndex%(2*tableNotes[measureIndex]/hatsub[measureIndex])==0){
+        hat()
+    }
 
-            table = document.getElementById("tableH");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(4 + "", cell);
 
-            table = document.getElementById("tableGS");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(5 + "", cell);
 
-            table = document.getElementById("tableC2");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(6 + "", cell);
+    tableIndex++
+    if (tableIndex%(tableNotes[measureIndex]/timeSignatureDen[measureIndex])==0){
+        accentIndex++
+    }
+    if (tableIndex==tableNotes[measureIndex]){
 
-            table = document.getElementById("tableS2");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(7 + "", cell);
+        measureIndex++
+        tableIndex=0
 
-            table = document.getElementById("tableK2");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(8 + "", cell);
-
-            table = document.getElementById("tableH2");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(9 + "", cell);
-
-            table = document.getElementById("tableGS2");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(10 + "", cell);
-
-            table = document.getElementById("tableC3");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(11 + "", cell);
-
-            table = document.getElementById("tableS3");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(12 + "", cell);
-
-            table = document.getElementById("tableK3");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(13 + "", cell);
-
-            table = document.getElementById("tableH3");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(14 + "", cell);
-
-            table = document.getElementById("tableGS3");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(15 + "", cell);
-
-            table = document.getElementById("tableC4");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(16 + "", cell);
-
-            table = document.getElementById("tableS4");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(17 + "", cell);
-
-            table = document.getElementById("tableK4");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(18 + "", cell);
-
-            table = document.getElementById("tableH4");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(19 + "", cell);
-
-            table = document.getElementById("tableGS4");
-            cell = table.rows[0].insertCell(s+1);
-            arrayMap.set(20 + "", cell);
-
-            tableMap.set(s + "", arrayMap);
-
+        if (measureIndex == 4) {
+            measureIndex = 0
         }
-        flagM = 1;
-    }
-
-    if (refreshIntervalIdd == 0) {
-        refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
-        setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.15}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
-    }
-    if (refreshIntervalId == 0) {
-        refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]))
-    }
-    if (refreshIntervalIdc == 0) {
-        refreshIntervalIdc = setInterval(hat, 480000 / (BPM * hatsub[measureIndex]))
+        if (complexity==1 || complexity==4 || complexity==5){
+            clearInterval(refreshIntervalIdb)
+            setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.25}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
+            accentIndex=0
+            if (count>1){
+                count = 0
+            }
+        }
+        else{
+            if (!accentPatternMap.get(measureIndex + "")[count]){
+                if (count>1){
+                    count=0;
+                }
+                accentIndex=0;
+            }
+        }
+        clearInterval(refreshIntervalId)
+        refreshIntervalId = setInterval(tableIn, 240000 / (BPM * tableNotes[measureIndex]))
     }
 }
 
