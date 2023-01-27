@@ -5,38 +5,31 @@ cmp.connect(c.destination);
 var bs = c.createBufferSource();
 bs.loop = true;
 
-var BPM = 120;
-// var style;
-var key;
-// var scale;
-var timeSignatureNum = new Array(4);
-var timeSignatureDen = new Array(4);
+var BPM = 120
+var timeSignatureNum = new Array(4)
+var timeSignatureDen = new Array(4)
 var sigPatt = 4
-timeSignatureNum[0] = 4;
-timeSignatureDen[0] = 4;
-var index=0;
-var notes = new Array(4).fill(0);
-var accentedNotes = new Array(4).fill(0);
-var hatNotes = new Array(4).fill(0);
-var sub = new Array(4).fill(0);
-var hatsub = new Array(4).fill(0);
-var refreshIntervalId = 0;
-var refreshIntervalIdb = 0;
-var refreshIntervalIdc = 0;
-var refreshIntervalIdd = 0;
-var complexity = 1;
-var measureIndex = 0;
-var pattern = new Array(4).fill(0);
-var accentPatternMap = new Map();
-var accentIndex=0;
-var count=0;
-var s = 0;
-var accent=1;
-var playC = 0;
-var playGS = 0;
-var playK = 0;
-var playS = 0;
-var playH = 0;
+timeSignatureNum[0] = 4
+timeSignatureDen[0] = 4
+var snareflag=0
+var notes = new Array(4).fill(0)
+var accentedNotes = new Array(4).fill(0)
+var hatNotes = new Array(4).fill(0)
+var sub = new Array(4).fill(0)
+var hatsub = new Array(4).fill(0)
+var refreshIntervalId = 0
+var refreshIntervalIdb = 0
+var complexity = 1
+var measureIndex = 0
+var pattern = new Array(4).fill(0)
+var accentPatternMap = new Map()
+var accentIndex=0
+var tableIndex=0
+var count=0
+var accent=1
+var tableMap = new Map()
+var flagM = 0
+var tableNotes = new Array(4).fill(0)
 
 // ALI DRUMS SCHEME
 
@@ -144,10 +137,6 @@ function changeComplexity() {
     complexity = parseInt(document.getElementById('complex').value);
 }
 
-function changeKey() {
-    key = document.getElementById('keyselected').value;
-}
-
 function kick() {
     var audio = new Audio('Kick (9).wav');
     audio.volume = 0.75
@@ -177,27 +166,25 @@ function ghostSnare(){
 
 function hat(){
     var audio = new Audio('Hat (7).wav');
-    audio.volume = Math.random()*accent
+    audio.volume = Math.random()*accent;
     playDrum('5', 0);
-    audio.play()
-    console.log("hat")
+    audio.play();
+    tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 4 + "").style.backgroundColor = "#8b0000";
 }
 
 function play() {
 
     if (refreshIntervalId) {
 
-        clearInterval(refreshIntervalId);
-        clearInterval(refreshIntervalIdc);
-        clearInterval(refreshIntervalIdd);
-        refreshIntervalIdd = 0;
-        refreshIntervalIdc = 0;
+        clearInterval(refreshIntervalId)
+        clearInterval(refreshIntervalIdb)
         refreshIntervalIdb = 0
-        refreshIntervalId = 0;
-        index = 0;
-        measureIndex = 0;
-        accentIndex = 0;
-        count = 0;
+        refreshIntervalId = 0
+        index = 0
+        measureIndex = 0
+        accentIndex = 0
+        count = 0
+        tableIndex=0
 
         // Per cancellare il pattern con STOP
         /*pattern.fill(0)
@@ -226,11 +213,9 @@ function generate() {
                 while (timeSignatureNum[measureIndex] % sigPatt == 0){
                     if (timeSignatureNum[measureIndex]>=8){
                         sigPatt = Math.ceil(Math.random() * timeSignatureNum[measureIndex] + 1)
-                        console.log("sigPatt =", sigPatt)
                     }
                     else{
                         sigPatt = Math.ceil(Math.random() * timeSignatureNum[measureIndex]*2 + 1)
-                        console.log("sigPatt =", sigPatt)
                     }
                 }
 
@@ -359,91 +344,88 @@ function generate() {
 
             if (measureIndex == 0) {
 
-                sub[measureIndex] = Math.round(Math.random() * 2 + 2) * timeSignatureDen[measureIndex];
-                console.log("sub[", measureIndex, "]==", sub[measureIndex])
-
+                sub[measureIndex] = Math.round(Math.random() * 2 + 2) * timeSignatureDen[measureIndex]
+                console.log("sub=", sub[measureIndex])
 
             } else {
-
                 sub[measureIndex] = sub[measureIndex - 1]
 
+                if (complexity == 2) {
 
-            }
-            if (complexity == 2) {
-
-                if (measureIndex == 1) {
-                    for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
-                        sub[measureIndex]++;
+                    if (measureIndex == 1) {
+                        for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
+                            sub[measureIndex]++;
+                        }
+                    } else {
+                        sub[measureIndex] = sub[measureIndex - 2]
                     }
-                } else {
-                    sub[measureIndex] = sub[measureIndex - 2]
                 }
-            }
-            else if (complexity==5){
-                if (measureIndex == 1) {
-                    for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
-                        sub[measureIndex]--;
+                else if (complexity==5){
+                    if (measureIndex == 1) {
+                        for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
+                            sub[measureIndex]--;
+                        }
+                    } else if (measureIndex!=0) {
+                        sub[measureIndex] = sub[measureIndex - 2]
                     }
-                } else if (measureIndex!=0) {
-                    sub[measureIndex] = sub[measureIndex - 2]
                 }
             }
+        }
 
-            if (BPM>=110){
-                while (sub[measureIndex]>16){
-                    sub[measureIndex]=sub[measureIndex]/2
+
+
+        if (BPM>=110){
+            while (sub[measureIndex]>16){
+                sub[measureIndex]=sub[measureIndex]/2
+            }
+            if (sub[measureIndex]==timeSignatureDen[measureIndex]){
+                if(sub[measureIndex]%3==0){
+                    sub[measureIndex]=sub[measureIndex]*2/3
                 }
-                if (sub[measureIndex]==timeSignatureDen[measureIndex]){
-                    if(sub[measureIndex]%3==0){
-                        sub[measureIndex]=sub[measureIndex]*2/3
+                else{
+                    sub[measureIndex]=sub[measureIndex]*3/2
+                }
+            }
+        }
+
+        hatsub[measureIndex] = sub[measureIndex]
+        console.log("sub=", sub[measureIndex])
+
+        if(complexity==4){
+            if (measureIndex == 0) {
+                while (sub[measureIndex]%hatsub[measureIndex]==0 || hatsub[measureIndex]%sub[measureIndex]==0){
+                    hatsub[measureIndex] = sub[measureIndex]*Math.round(Math.random()*4+1)/2
+                }
+            } else {
+
+                hatsub[measureIndex] = hatsub[measureIndex - 1]
+
+            }
+        }
+
+        if (BPM>=110){
+            while (hatsub[measureIndex]>16){
+                hatsub[measureIndex]=hatsub[measureIndex]/2
+            }
+            if (complexity==4){
+                if (sub[measureIndex]==hatsub[measureIndex]){
+                    if(hatsub[measureIndex]%3==0){
+                        hatsub[measureIndex]=hatsub[measureIndex]*3/2
                     }
                     else{
-                        sub[measureIndex]=sub[measureIndex]*3/2
+                        hatsub[measureIndex]=hatsub[measureIndex]*2/3
                     }
                 }
-            }
-
-            hatsub[measureIndex] = sub[measureIndex]
-
-            if(complexity==4){
-                if (measureIndex == 0) {
-                    while (sub[measureIndex]%hatsub[measureIndex]==0 || hatsub[measureIndex]%sub[measureIndex]==0){
-                        hatsub[measureIndex] = sub[measureIndex]*Math.round(Math.random()*4+1)/2
-                    }
-                } else {
-
-                    hatsub[measureIndex] = hatsub[measureIndex - 1]
-
-                }
-            }
-
-            if (BPM>=110){
-                while (hatsub[measureIndex]>16){
-                    hatsub[measureIndex]=hatsub[measureIndex]/2
-                }
-                if (complexity==4){
-                    if (sub[measureIndex]==hatsub[measureIndex]){
-                        if(hatsub[measureIndex]%3==0){
-                            hatsub[measureIndex]=hatsub[measureIndex]*3/2
-                        }
-                        else{
-                            hatsub[measureIndex]=hatsub[measureIndex]*2/3
-                        }
-                    }
-                }
-
             }
 
         }
-
-        console.log("sub[", measureIndex, "]==", sub[measureIndex])
 
  //determines the number of notes and the pattern for the kick for each measure
         if (measureIndex == 0) {
 
             notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
             hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex];
-            accentedNotes[measureIndex] = sigPatt * sub[measureIndex] / timeSignatureDen[measureIndex];
+            accentedNotes[measureIndex] = sigPatt;
             pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
 
             if (pattern[measureIndex]<Math.pow(2, notes[measureIndex])/2){
@@ -468,23 +450,18 @@ function generate() {
                     pattern[measureIndex] = pattern[measureIndex-2];
                 }
             }
+            hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex];
+            if (complexity!=5){
+                accentedNotes[measureIndex]=accentedNotes[measureIndex-1]
+            }
+
         }
+        tableNotes[measureIndex]=lcm(lcm(hatNotes[measureIndex], notes[measureIndex]), accentedNotes[measureIndex])
+        console.log("tableNotes=", tableNotes)
     } //end of for loop
 
-    measureIndex=0
-    if (refreshIntervalIdd == 0) {
-        refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
-        setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.15}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
-    }
-    if (refreshIntervalId == 0) {
-        refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]))
-    }
-    if (refreshIntervalIdc == 0) {
-
-        refreshIntervalIdc = setInterval(hat, 480000 / (BPM * hatsub[measureIndex]))
-
-    }
-
+    measureIndex=0;
+    table()
 }
 
 start.onclick = toggleOn;
@@ -507,448 +484,219 @@ function toggleOn(e) {
 
 }
 
-function render() {
 
-    if(index==0){
-        cymbal()
-        playC = 1;
-    }
 
-    let patternBinary = pattern[measureIndex].toString(2);
+function table(){
 
-    if (index*timeSignatureDen[measureIndex]%sub[measureIndex]!=0 && patternBinary.charAt(index) - '0') {
-        ghostSnare();
+    if (flagM == 0) {
+        for (measureIndex=0; measureIndex<4; measureIndex++){
 
-        playGS = 1;
+            for (let s=0; s<tableNotes[measureIndex]; s++){
+                var arrayMap = new Map();
+                var table;
+                var cell;
 
-        /*if (s != -1) {
+                if (measureIndex==0){
+                    table = document.getElementById("tableC");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(1 + "", cell);
 
-            if (playC == 1) {
+                    table = document.getElementById("tableS");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(2 + "", cell);
 
-                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                $("table tbody").append(markup);
-                s++;
+                    table = document.getElementById("tableK");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(3 + "", cell);
 
-                playC = 0;
-            } else {
+                    table = document.getElementById("tableH");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(4 + "", cell);
 
-                var markup = "<tr><td></td><td></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                $("table tbody").append(markup);
-                s++;
+                    table = document.getElementById("tableGS");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(5 + "", cell);
+                }
+                if (measureIndex==1){
+                    table = document.getElementById("tableC2");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(6 + "", cell);
+
+                    table = document.getElementById("tableS2");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(7 + "", cell);
+
+                    table = document.getElementById("tableK2");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(8 + "", cell);
+
+                    table = document.getElementById("tableH2");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(9 + "", cell);
+
+                    table = document.getElementById("tableGS2");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(10 + "", cell);
+                }
+                if (measureIndex==2){
+                    table = document.getElementById("tableC3");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(11 + "", cell);
+
+                    table = document.getElementById("tableS3");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(12 + "", cell);
+
+                    table = document.getElementById("tableK3");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(13 + "", cell);
+
+                    table = document.getElementById("tableH3");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(14 + "", cell);
+
+                    table = document.getElementById("tableGS3");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(15 + "", cell);
+                }
+                if (measureIndex==3){
+                    table = document.getElementById("tableC4");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(16 + "", cell);
+
+                    table = document.getElementById("tableS4");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(17 + "", cell);
+
+                    table = document.getElementById("tableK4");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(18 + "", cell);
+
+                    table = document.getElementById("tableH4");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(19 + "", cell);
+
+                    table = document.getElementById("tableGS4");
+                    cell = table.rows[0].insertCell(s+1);
+                    arrayMap.set(20 + "", cell);
+                }
+                tableMap.set(s+(measureIndex*tableNotes[measureIndex]) + "", arrayMap);
 
             }
-
-
-        }*/
-
-    } else {
-
-        //playGS = 0;
-
-        /*if (s != -1) {
-
-            if (playC == 1) {
-
-                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td></td><td></td></tr>";
-                $("table tbody").append(markup);
-                s++;
-
-                playC = 0;
-            } else {
-
-                var markup = "<tr><td></td><td></td><td></td><td></td><td></td></tr>";
-                $("table tbody").append(markup);
-                s++;
-
-            }
-        }*/
-
+        }
+        measureIndex=0
+        flagM = 1;
     }
 
-
-
-    console.log("sub=", sub[measureIndex])
-
-    index++;
-
-    if (index >= notes[measureIndex]) {
-        index = 0;
-        measureIndex++;
-
-        if (complexity==1 || complexity==4 || complexity==5){
-            accentIndex=0;
-            if (count>1){
-                count = 0;
-            }
-        }
-
-        clearInterval(refreshIntervalId);
-        clearInterval(refreshIntervalIdc);
-
-
-        if (measureIndex == 4) {
-            measureIndex = 0;
-        }
-        if (complexity==1 || complexity==4 || complexity==5){
-            clearInterval(refreshIntervalIdd);
-            clearInterval(refreshIntervalIdb);
-            playH = 1;
-            refreshIntervalIdd = setInterval(accentedPlay, 240000 / (BPM * timeSignatureDen[measureIndex]))
-            setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.25}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
-        }
-
-        if (s == sub[measureIndex]) {
-            s = -1;
-        }
-
-
-        refreshIntervalId = setInterval(render, 240000 / (BPM * sub[measureIndex]))
-        hat()
-        playH = 1;
-        refreshIntervalIdc = setInterval(hat, 480000 / (BPM * hatsub[measureIndex]))
-
-        console.log("measure=", measureIndex)
-        console.log("TimeSigNum=", timeSignatureNum[measureIndex])
-        console.log("TimeSigDen=", timeSignatureDen[measureIndex])
+    if (refreshIntervalId==0){
+        refreshIntervalId = setInterval(tableIn, 240000 / (BPM * tableNotes[measureIndex]))
     }
+    setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.15}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
+
 }
 
-function accentedPlay(){
-
-    console.log("accentIndex=", accentIndex);
-
+function tableIn(){
+    snareflag=0
+    if(tableIndex==0){
+        cymbal()
+        tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 1+"").style.backgroundColor = "#0000ff";
+    }
     if(complexity==2 || complexity==3){
         if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(0 + "")[count-1]) {
             accent=0.75
 
             if (count % 2 ==0){
+
                 kick();
+                tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 3 + "").style.backgroundColor = "#ffa500";
 
-                playK = 1;
-
-                /*if (s != -1) {
-
-                    if (playGS == 1) {
-                        if (playC == 1) {
-
-                            var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
-
-                            playC = 0;
-                        } else {
-
-                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
-
-                        }
-                    } else {
-                        if (playC == 1) {
-
-                            var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
-
-                            playC = 0;
-                        } else {
-
-                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
-
-                        }
-                    }
-                }*/
-
-            } else{
+            } else {
                 snare();
-
-                playS = 1;
-
-                /*if (s != -1) {
-
-                    if (playGS == 1) {
-                        if (playC == 1) {
-
-                            var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
-
-                            playC = 0;
-                        } else {
-
-                            var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
-
-                        }
-                    } else {
-                        if (playC == 1) {
-
-                            var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
-
-                            playC = 0;
-                        } else {
-
-                            var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;
-
-                        }
-                    }
-                }*/
+                tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb";
+                snareflag=1
             }
             count++;
             accentIndex = 0;
         }
-        accentIndex++;
-        console.log("accentPattern=", accentPatternMap.get(measureIndex + "")[count-1]);
-        if (!accentPatternMap.get(measureIndex + "")[count]){
-            if (count>1){
-                count=0;
-            }
-            accentIndex=0;
-        }
-    } else {
-
+    }
+    else{
         if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(measureIndex + "")[count-1]) {
             accent=0.75
+
             if (count % 2 ==0){
+
                 kick();
+                tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 3 + "").style.backgroundColor = "#ffa500";
 
-                if (s != -1) {
-
-                    if (playGS == 1) {
-
-                        if (playC == 1) {
-
-                            if (playH == 1) {
-
-                                // C YES K YES GS YES S NO H YES
-
-                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-
-                            } else {
-
-                                // C YES K YES GS YES S NO H NO
-
-                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-                            }
-
-                            /*var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                            playC = 0;
-
-                        } else {
-
-                            if (playH == 1) {
-
-                                // C NO K YES GS YES S NO H YES
-
-                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-                            } else {
-
-                                // C NO K YES GS YES S NO H NO
-
-                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-                            }
-
-                            /*var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                        }
-
-                        playGS = 0;
-
-                    } else {
-
-                        if (playC == 1) {
-
-                            if (playH == 1) {
-
-                                // C YES K YES GS NO S NO H YES
-
-                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-
-                            } else {
-
-                                // C YES K YES GS NO S NO H NO
-
-                                var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                            }
-
-                            /*var markup = "<tr><td bgColor='#0000ff'></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                            playC = 0;
-                        } else {
-
-                            if (playH == 1) {
-
-                                // C NO K YES GS NO S NO H YES
-                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-                            } else {
-
-                                // C NO K YES GS NO S NO H NO
-                                var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-                            }
-
-                            /*var markup = "<tr><td></td><td bgColor='#ffa500'></td><td></td><td></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                        }
-                    }
-                }
-            }
-            else{
+            } else {
                 snare();
-
-                if (s != -1) {
-
-                    if (playGS == 1) {
-                        if (playC == 1) {
-
-                            if (playH == 1) {
-
-                                // C YES K NO GS YES S YES H YES
-
-                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-                            } else {
-
-                                // C YES K NO GS YES S YES H NO
-                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-                            }
-
-                            /*var markup = "<tr><td bgColor='#0000ff'></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                            playC = 0;
-                        } else {
-
-                            if (playH == 1) {
-
-                                // C NO K NO GS YES S YES H YES
-                                var markup = "<tr><td></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-                            } else {
-
-                                // C NO K NO GS YES S YES H NO
-                                var markup = "<tr><td></td><td></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-                            }
-
-                            /*var markup = "<tr><td></td><td bgColor='#ffa500'></td><td bgColor='#4c9a2a'></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                        }
-                        playGS = 0;
-                    } else {
-                        if (playC == 1) {
-
-                            if (playH == 1) {
-
-                                // C YES K NO GS NO S YES H YES
-                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-                            } else {
-
-                                // C YES K NO GS NO S YES H NO
-                                var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-                            }
-
-                            /*var markup = "<tr><td bgColor='#0000ff'></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                            playC = 0;
-
-                        } else {
-
-                            if (playH == 1) {
-
-                                // C NO K NO GS NO S YES H YES
-                                var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td bgColor='8b0000'></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-
-                                playH = 0;
-                            } else {
-
-                                // C NO K NO GS NO S YES H NO
-                                var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                                $("table tbody").append(markup);
-                                s++;
-                            }
-
-                            /*var markup = "<tr><td></td><td></td><td></td><td bgColor='#ffc0cb'></td><td></td></tr>";
-                            $("table tbody").append(markup);
-                            s++;*/
-
-                        }
-                    }
-                }
+                tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb";
+                snareflag=1
             }
-
-            count++;
-
-            accentIndex = 0;
+            count++
+            accentIndex = 0
         }
-
-        if (s == sub[measureIndex]) {
-            s = -1;
-        }
-
-        accentIndex++;
-        console.log("accentPattern=", accentPatternMap.get(measureIndex + "")[count-1]);
     }
+
+    let patternBinary = pattern[measureIndex].toString(2);
+
+    if (snareflag==0 && tableIndex!=0 && patternBinary.charAt(tableIndex*(tableNotes[measureIndex]/sub[measureIndex]) - '0')!=0){
+        ghostSnare();
+        tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 5 + "").style.backgroundColor = "#4c9a2a";
+    }
+
+
+
+    if (tableIndex%(2*tableNotes[measureIndex]/hatsub[measureIndex])==0){
+        hat()
+    }
+
+
+
+    tableIndex++
+    if (tableIndex%(tableNotes[measureIndex]/timeSignatureDen[measureIndex])==0){
+        accentIndex++
+    }
+    if (tableIndex==tableNotes[measureIndex]){
+
+        measureIndex++
+        tableIndex=0
+
+        if (measureIndex == 4) {
+            measureIndex = 0
+        }
+        if (complexity==1 || complexity==4 || complexity==5){
+            clearInterval(refreshIntervalIdb)
+            setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.25}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
+            accentIndex=0
+            if (count>1){
+                count = 0
+            }
+        }
+        else{
+            if (!accentPatternMap.get(measureIndex + "")[count]){
+                if (count>1){
+                    count=0;
+                }
+                accentIndex=0;
+            }
+        }
+        clearInterval(refreshIntervalId)
+        refreshIntervalId = setInterval(tableIn, 240000 / (BPM * tableNotes[measureIndex]))
+    }
+}
+
+function gcd(x, y) {
+    x = Math.abs(x);
+    y = Math.abs(y);
+    while(y) {
+        var t = y;
+        y = x % y;
+        x = t;
+    }
+    return x;
+}
+
+function lcm(a, b) {
+    return (Math.abs(a * b) / gcd(a, b))
 }
