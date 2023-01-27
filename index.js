@@ -30,6 +30,7 @@ var accent=1
 var tableMap = new Map()
 var flagM = 0
 var tableNotes = new Array(4).fill(0)
+var kickflag=0
 
 function createTimeSignatureNum() {
     timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
@@ -75,7 +76,6 @@ function hat(){
     var audio = new Audio('Hat (7).wav');
     audio.volume = Math.random()*accent;
     audio.play();
-    tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 4 + "").style.backgroundColor = "#8b0000";
 }
 
 function play() {
@@ -191,6 +191,22 @@ function generate() {
 
                 accentPatternMap.set(measureIndex + "", accentPatternMap.get(measureIndex - 1 + ""));
             }
+            else{
+                if (measureIndex == 1) {
+
+                    var accentPattern = new Array(Math.ceil(timeSignatureNum[0] / 2));
+
+                    for (let i=0; accentPatternMap.get(measureIndex-1 + "")[i]; i++){
+
+                        accentPattern[i] = (accentPatternMap.get(measureIndex - 1 + "")[i]) * 2 + 1;
+
+                    }
+                    accentPatternMap.set(measureIndex + "", accentPattern);
+                }
+                else {
+                    accentPatternMap.set(measureIndex + "", accentPatternMap.get(measureIndex-2 +""));
+                }
+            }
         }
 
 
@@ -208,7 +224,7 @@ function generate() {
                 if (measureIndex==1){
                     timeSignatureDen[measureIndex]=timeSignatureDen[measureIndex-1]*2
                     timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex-1]*2
-                    for (let i = 0; accentPatternMap.get(measureIndex - 1 + "")[i] && i < 4; i++) {
+                    for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++) {
 
                         timeSignatureNum[measureIndex]++
 
@@ -227,31 +243,12 @@ function generate() {
             timeSignatureNum[measureIndex]=timeSignatureNum[measureIndex]*2
         }
 
-        if (complexity==5 && measureIndex!=0){
-            if (measureIndex == 1) {
-
-                var accentPattern = new Array(Math.ceil(timeSignatureNum[0] / 2));
-
-                for (let i = 0; accentPatternMap.get(measureIndex - 1 + "")[i] != 0 && i < 4; i++) {
-
-                    accentPattern[i] = (accentPatternMap.get(measureIndex - 1 + "")[i]) * 2 + 1;
-
-                }
-                accentPatternMap.set(measureIndex + "", accentPattern);
-            }
-            else {
-                accentPatternMap.set(measureIndex + "", accentPatternMap.get(measureIndex-2 +""));
-            }
-
-        }
-
 
         if (sub[measureIndex] == 0) { //determines the subdivisions for each measure
 
             if (measureIndex == 0) {
 
                 sub[measureIndex] = Math.round(Math.random() * 2 + 2) * timeSignatureDen[measureIndex]
-                console.log("sub=", sub[measureIndex])
 
             } else {
                 sub[measureIndex] = sub[measureIndex - 1]
@@ -279,7 +276,6 @@ function generate() {
         }
 
 
-
         if (BPM>=110){
             while (sub[measureIndex]>16){
                 sub[measureIndex]=sub[measureIndex]/2
@@ -295,7 +291,6 @@ function generate() {
         }
 
         hatsub[measureIndex] = sub[measureIndex]
-        console.log("sub=", sub[measureIndex])
 
         if(complexity==4){
             if (measureIndex == 0) {
@@ -330,8 +325,13 @@ function generate() {
         if (measureIndex == 0) {
 
             notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
-            hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex];
-            accentedNotes[measureIndex] = sigPatt;
+            hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex]
+            if (complexity!=3) {
+                accentedNotes[measureIndex] = timeSignatureNum[measureIndex]
+            }
+            else {
+                accentedNotes[measureIndex]= sigPatt
+            }
             pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
 
             if (pattern[measureIndex]<Math.pow(2, notes[measureIndex])/2){
@@ -359,6 +359,9 @@ function generate() {
             hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex];
             if (complexity!=5){
                 accentedNotes[measureIndex]=accentedNotes[measureIndex-1]
+            }
+            else{
+                accentedNotes[measureIndex] = timeSignatureNum[measureIndex]
             }
 
         }
@@ -502,42 +505,53 @@ function table(){
 }
 
 function tableIn(){
+    console.log("accentIndex=", accentIndex)
+    console.log("count=", count-1)
     snareflag=0
     if(tableIndex==0){
         cymbal()
         tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 1+"").style.backgroundColor = "#0000ff";
     }
-    if(complexity==2 || complexity==3){
+    if(complexity==3 || complexity==2){
         if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(0 + "")[count-1]) {
             accent=0.75
 
-            if (count % 2 ==0){
+            if (kickflag==0){
 
-                kick();
+                kick()
                 tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 3 + "").style.backgroundColor = "#ffa500";
+                kickflag=1
 
             } else {
                 snare();
                 tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb";
                 snareflag=1
+                kickflag=0
             }
             count++;
             accentIndex = 0;
+        }
+        if (!accentPatternMap.get(0 + "")[count-1]){
+            count=1
         }
     }
     else{
         if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(measureIndex + "")[count-1]) {
             accent=0.75
 
-            if (count % 2 ==0){
+            if (kickflag==0){
 
                 kick();
                 tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 3 + "").style.backgroundColor = "#ffa500";
+                kickflag=1
+
 
             } else {
                 snare();
                 tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb";
                 snareflag=1
+                kickflag=0
+
             }
             count++
             accentIndex = 0
@@ -553,15 +567,23 @@ function tableIn(){
 
 
 
-    if (tableIndex%(2*tableNotes[measureIndex]/hatsub[measureIndex])==0){
+    if (tableIndex%(tableNotes[measureIndex]/hatsub[measureIndex])==0){
         hat()
+        tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 4 + "").style.backgroundColor = "#8b0000"
     }
 
 
 
     tableIndex++
-    if (tableIndex%(tableNotes[measureIndex]/timeSignatureDen[measureIndex])==0){
-        accentIndex++
+    if (complexity!=3) {
+        if (tableIndex % (tableNotes[measureIndex] / accentedNotes[measureIndex]) == 0) {
+            accentIndex++
+        }
+    }
+    else{
+        if (tableIndex % (tableNotes[measureIndex] / timeSignatureDen[measureIndex]) == 0) {
+            accentIndex++
+        }
     }
     if (tableIndex==tableNotes[measureIndex]){
 
@@ -571,7 +593,7 @@ function tableIn(){
         if (measureIndex == 4) {
             measureIndex = 0
         }
-        if (complexity==1 || complexity==4 || complexity==5){
+        if (complexity!=3){
             clearInterval(refreshIntervalIdb)
             setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.25}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
             accentIndex=0
@@ -581,9 +603,6 @@ function tableIn(){
         }
         else{
             if (!accentPatternMap.get(measureIndex + "")[count]){
-                if (count>1){
-                    count=0;
-                }
                 accentIndex=0;
             }
         }
