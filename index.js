@@ -92,16 +92,19 @@ function construct() {
 
         drumEl.addEventListener('click', function(event) {
             var key = event.currentTarget.querySelector('h2').textContent;
-            playDrum(key);
+            playDrum(key, 1);
         });
     }
 
 };
 
-function playDrum(key) {
-    // var audio = new Audio();
-    // audio.src = data[key].sound;
-    // audio.play();
+function playDrum(key, click) {
+
+    if (click) {
+        var audio = new Audio();
+        audio.src = data[key].sound;
+        audio.play();
+    }
 
     data[key].el.style.animation = 'drum-animation 0.3s';
 
@@ -148,34 +151,34 @@ function changeKey() {
 function kick() {
     var audio = new Audio('Kick (9).wav');
     audio.volume = 0.75
-    playDrum('1');
+    playDrum('1', 0);
     audio.play();
 }
 
 function cymbal(){
     var audio = new Audio('live_open_hat.wav');
-    playDrum('2');
+    playDrum('2', 0);
     audio.play();
 }
 
 function snare(){
     var audio = new Audio('Snare (25).wav');
     audio.volume = 0.6
-    playDrum('3');
+    playDrum('3', 0);
     audio.play();
 }
 
 function ghostSnare(){
     var audio = new Audio('ghoul_snare.wav')
     audio.volume = Math.random()*0.3
-    playDrum('4');
+    playDrum('4', 0);
     audio.play()
 }
 
 function hat(){
     var audio = new Audio('Hat (7).wav');
     audio.volume = Math.random()*accent
-    playDrum('5');
+    playDrum('5', 0);
     audio.play()
     console.log("hat")
 }
