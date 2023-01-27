@@ -53,8 +53,31 @@ var drumkit = document.getElementById('drumkit');
 
 function construct() {
     for(var key in data) {
-        var drumEl = document.createElement('div');
+        var drumEl = document.createElement('img');
         drumEl.classList.add('drum');
+        drumkit.appendChild(drumEl);
+        if (key == '1') {
+            drumEl.id = 'kick';
+            drumEl.src = "https://w7.pngwing.com/pngs/271/248/png-transparent-bass-drums-tom-toms-timbales-snare-drums-drums-gretsch-drum-cymbal.png"
+        }
+        else if (key == '2') {
+            drumEl.id = 'cymbal';
+            drumEl.src = "https://w7.pngwing.com/pngs/374/775/png-transparent-crash-cymbal-avedis-zildjian-company-crash-ride-cymbal-drum-drum-cymbal-musical-instruments.png"
+        }
+        else if (key == '3') {
+            drumEl.id = 'snare';
+            drumEl.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Drumhead_Coated_on_Snare_Drum.png/1200px-Drumhead_Coated_on_Snare_Drum.png"
+        }
+        else if (key == '4') {
+            drumEl.id = 'ghostsnare';
+            drumEl.src = "https://toppng.com/uploads/preview/stars-solid-shell-snare-drums-offer-three-characteristic-tama-star-snare-case-115631217325ugsplu4ci.png"
+        }
+        else if (key == '5') {
+            drumEl.id = 'hat';
+            drumEl.src = "https://e7.pngegg.com/pngimages/932/127/png-clipart-hi-hats-sabian-crescent-cymbals-paiste-hi-hat-hat-beat.png"
+        }
+
+
 
         var h2 = document.createElement('h2');
         h2.textContent = key;
@@ -64,7 +87,6 @@ function construct() {
 
         drumEl.appendChild(h2);
         drumEl.appendChild(span);
-        drumkit.appendChild(drumEl);
 
         data[key].el = drumEl;
 
@@ -73,6 +95,7 @@ function construct() {
             playDrum(key);
         });
     }
+
 };
 
 function playDrum(key) {
