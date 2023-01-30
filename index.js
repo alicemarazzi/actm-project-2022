@@ -394,7 +394,6 @@ function toggleOn(e) {
 }
 
 
-
 function table(){
 
     if (flagM == 0) {
