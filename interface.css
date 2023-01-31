@@ -486,16 +486,6 @@ th, td {
     cursor: pointer;
 }
 
-#download {
-    position: absolute;
-    right: 10%;
-    top: 30%;
-    width: 100px;
-    height: 50px;
-    border-radius: 5px;
-    background-color: blue;
-}
-
 #title {
     position: absolute;
     right: 2%;
