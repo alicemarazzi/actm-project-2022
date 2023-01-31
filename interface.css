@@ -12,20 +12,284 @@
     position: absolute;
 }
 
-.search-table-outter {
-    border:2px solid red;
+.scrollerGS {
+    border:2px lightgrey;
 
     left: 10%;
-    top: 0.5%;
-    /*left: 80px;
-    top: 2.5px;*/
+    top: 6%;
     position: absolute;
 
     /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
     width: 100%;
-    height: 100%;
-    /*width: 650px;
-    height: 710px;*/
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerC {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 9%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerK {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 12%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerS {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 15%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerH {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 18%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerGS2 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 30%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerC2 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 33%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerK2 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 36%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerS2 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 39%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerH2 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 42%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerGS3 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 54%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerC3 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 57%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerK3 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 60%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerS3 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 63%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerH3 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 66%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerGS4 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 78%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerC4 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 81%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerK4 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 84%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerH4 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 90%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerS4 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 87%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
 }
 
 .search-table{
@@ -49,10 +313,6 @@ th {
 td {
     padding: 2px 2px;
     text-align: center;
-}
-
-.search-table-outter {
-    overflow-x: scroll;
 }
 
 th, td {
@@ -204,106 +464,6 @@ th, td {
 .rotate4:after {
     content: "";
     display: inline-block;
-}
-
-#tableGS {
-    position: absolute;
-    top: 6%;
-}
-
-#tableC {
-    position: absolute;
-    top: 9%;
-}
-
-#tableK {
-    position: absolute;
-    top: 12%;
-}
-
-#tableS {
-    position: absolute;
-    top: 15%;
-}
-
-#tableH {
-    position: absolute;
-    top: 18%;
-}
-
-#tableGS2 {
-    position: absolute;
-    top: 30%;
-}
-
-#tableC2 {
-    position: absolute;
-    top: 33%;
-}
-
-#tableK2 {
-    position: absolute;
-    top: 36%;
-}
-
-#tableS2 {
-    position: absolute;
-    top: 39%;
-}
-
-#tableH2 {
-    position: absolute;
-    top: 42%;
-}
-
-#tableGS3 {
-    position: absolute;
-    top: 54%;
-}
-
-#tableC3 {
-    position: absolute;
-    top: 57%;
-}
-
-#tableK3 {
-    position: absolute;
-    top: 60%;
-}
-
-#tableS3 {
-    position: absolute;
-    top: 63%;
-}
-
-#tableH3 {
-    position: absolute;
-    top: 66%;
-}
-
-#tableGS4 {
-    position: absolute;
-    top: 78%;
-}
-
-#tableC4 {
-    position: absolute;
-    top: 81%;
-}
-
-#tableK4 {
-    position: absolute;
-    top: 84%;
-}
-
-#tableS4 {
-    position: absolute;
-    top: 87%;
-}
-
-#tableH4 {
-    position: absolute;
-    top: 90%;
 }
 
 #box-system {
