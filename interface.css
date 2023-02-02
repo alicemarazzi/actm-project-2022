@@ -12,6 +12,313 @@
     position: absolute;
 }
 
+.scrollerGS {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 6%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerC {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 9%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerK {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 12%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerS {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 15%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerH {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 18%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerGS2 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 30%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerC2 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 33%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerK2 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 36%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerS2 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 39%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerH2 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 42%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerGS3 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 54%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerC3 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 57%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerK3 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 60%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerS3 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 63%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerH3 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 66%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerGS4 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 78%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerC4 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 81%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerK4 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 84%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerH4 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 90%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.scrollerS4 {
+    border:2px lightgrey;
+
+    left: 10%;
+    top: 87%;
+    position: absolute;
+
+    /*IT CHANGES THE DIMENSIONS OF THE RED BOX*/
+    width: 100%;
+    height: 3%;
+
+    overflow: auto;
+}
+
+.search-table{
+    table-layout: fixed;
+}
+
+.search-table, td, th{
+    /*QUESTO SERVE PER I BORDI DELLA TABELLA*/
+    border-collapse:collapse;
+    border:1px solid #777;
+
+    /*PER CAMBIARE LE DIMENSIONI DELLA TABELLA*/
+    width: 20px;
+}
+
+th {
+    padding: 2px 2px;
+    font-size:12px;
+}
+
+td {
+    padding: 2px 2px;
+    text-align: center;
+}
+
+th, td {
+    min-width: 60px;
+}
+
 .box {
     width: 50px;
     height: 50px;
@@ -71,150 +378,100 @@
     position: absolute;
 }
 
-.rotate {
+.rotate1 {
     display: inline-block;
     white-space: nowrap;
     transform: translate(0, 100%) rotate(-90deg);
     transform-origin: 0 0;
     vertical-align: bottom;
+    position: absolute;
+    top: 8%;
+    left: 5%;
 }
 
-.rotate:before {
+.rotate1:before {
     content: "";
     float: left;
     margin-top: 100%;
 }
 
-.rotate:after {
+.rotate1:after {
     content: "";
     display: inline-block;
 }
 
-#tableGS {
+.rotate2 {
+    display: inline-block;
+    white-space: nowrap;
+    transform: translate(0, 100%) rotate(-90deg);
+    transform-origin: 0 0;
+    vertical-align: bottom;
     position: absolute;
-    left: 80%;
-    top: 2.5%;
+    top: 32%;
+    left: 5%;
 }
 
-#tableC {
-    position: absolute;
-    left: 80%;
-    top: 7.5%;
+.rotate2:before {
+    content: "";
+    float: left;
+    margin-top: 100%;
 }
 
-#tableK {
-    position: absolute;
-    left: 80%;
-    top: 12.5%;
+.rotate2:after {
+    content: "";
+    display: inline-block;
 }
 
-#tableS {
+.rotate3 {
+    display: inline-block;
+    white-space: nowrap;
+    transform: translate(0, 100%) rotate(-90deg);
+    transform-origin: 0 0;
+    vertical-align: bottom;
     position: absolute;
-    left: 80%;
-    top: 17.5%;
+    top: 55%;
+    left: 5%;
 }
 
-#tableH {
-    position: absolute;
-    left: 80%;
-    top: 22.5%;
+.rotate3:before {
+    content: "";
+    float: left;
+    margin-top: 100%;
 }
 
-#tableGS2 {
-    position: absolute;
-    left: 80%;
-    top: 28.5%;
+.rotate3:after {
+    content: "";
+    display: inline-block;
 }
 
-#tableC2 {
+.rotate4 {
+    display: inline-block;
+    white-space: nowrap;
+    transform: translate(0, 100%) rotate(-90deg);
+    transform-origin: 0 0;
+    vertical-align: bottom;
     position: absolute;
-    left: 80%;
-    top: 33.5%;
+    top: 80%;
+    left: 5%;
 }
 
-#tableK2 {
-    position: absolute;
-    left: 80%;
-    top: 38.5%;
+.rotate4:before {
+    content: "";
+    float: left;
+    margin-top: 100%;
 }
 
-#tableS2 {
-    position: absolute;
-    left: 80%;
-    top: 43.5%;
-}
-
-#tableH2 {
-    position: absolute;
-    left: 80%;
-    top: 48.5%;
-}
-#tableGS3 {
-    position: absolute;
-    left: 80%;
-    top: 54.5%;
-}
-
-#tableC3 {
-    position: absolute;
-    left: 80%;
-    top: 59.5%;
-}
-
-#tableK3 {
-    position: absolute;
-    left: 80%;
-    top: 64.5%;
-}
-
-#tableS3 {
-    position: absolute;
-    left: 80%;
-    top: 69.5%;
-}
-
-#tableH3 {
-    position: absolute;
-    left: 80%;
-    top: 74.5%;
-}
-
-#tableGS4 {
-    position: absolute;
-    left: 80%;
-    top: 80.5%;
-}
-
-#tableC4 {
-    position: absolute;
-    left: 80%;
-    top: 85.5%;
-}
-
-#tableK4 {
-    position: absolute;
-    left: 80%;
-    top: 90.5%;
-}
-
-#tableS4 {
-    position: absolute;
-    left: 80%;
-    top: 95.5%;
-}
-
-#tableH4 {
-    position: absolute;
-    left: 80%;
-    top: 100.5%;
+.rotate4:after {
+    content: "";
+    display: inline-block;
 }
 
 #box-system {
     background-color: lightgrey;
     border-radius: 1%;
     position: absolute;
-    width: 600px;
-    height: 700px;
+    width: 40%;
+    height: 95%;
     left: 0%;
     top: 0%;
 }
@@ -227,16 +484,6 @@
     height: 50px;
     border-radius: 50%;
     cursor: pointer;
-}
-
-#download {
-    position: absolute;
-    right: 10%;
-    top: 30%;
-    width: 100px;
-    height: 50px;
-    border-radius: 5px;
-    background-color: blue;
 }
 
 #title {
