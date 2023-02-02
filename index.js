@@ -51,23 +51,23 @@ function construct() {
         drumkit.appendChild(drumEl);
         if (key == '1') {
             drumEl.id = 'kick';
-            drumEl.src = "https://w7.pngwing.com/pngs/271/248/png-transparent-bass-drums-tom-toms-timbales-snare-drums-drums-gretsch-drum-cymbal.png"
+            drumEl.src = 'https://imgur.com/c91KDb5.png';
         }
         else if (key == '2') {
             drumEl.id = 'cymbal';
-            drumEl.src = "https://w7.pngwing.com/pngs/374/775/png-transparent-crash-cymbal-avedis-zildjian-company-crash-ride-cymbal-drum-drum-cymbal-musical-instruments.png"
+            drumEl.src = 'https://imgur.com/KBvRsYL.png';
         }
         else if (key == '3') {
             drumEl.id = 'snare';
-            drumEl.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Drumhead_Coated_on_Snare_Drum.png/1200px-Drumhead_Coated_on_Snare_Drum.png"
+            drumEl.src = 'https://imgur.com/VZaoOpw.png';
         }
         else if (key == '4') {
             drumEl.id = 'ghostsnare';
-            drumEl.src = "https://toppng.com/uploads/preview/stars-solid-shell-snare-drums-offer-three-characteristic-tama-star-snare-case-115631217325ugsplu4ci.png"
+            drumEl.src = 'https://imgur.com/VmbVify.png';
         }
         else if (key == '5') {
             drumEl.id = 'hat';
-            drumEl.src = "https://e7.pngegg.com/pngimages/932/127/png-clipart-hi-hats-sabian-crescent-cymbals-paiste-hi-hat-hat-beat.png"
+            drumEl.src = 'https://imgur.com/w7yDSQ4.png';
         }
 
 
@@ -75,47 +75,40 @@ function construct() {
         var h2 = document.createElement('h2');
         h2.textContent = key;
 
-        var span = document.createElement('span');
-        span.textContent = data[key].name;
-
         drumEl.appendChild(h2);
-        drumEl.appendChild(span);
 
         data[key].el = drumEl;
 
         drumEl.addEventListener('click', function(event) {
             var key = event.currentTarget.querySelector('h2').textContent;
-            playDrum(key, 1);
+            playDrum(key, 1, 0.9);
         });
     }
 
 };
 
-function playDrum(key, click) {
-
+function playDrum(key, click, volume) {
     if (click) {
         var audio = new Audio();
         audio.src = data[key].sound;
         audio.play();
     }
-
-    data[key].el.style.animation = 'drum-animation 0.3s';
-
-    data[key].el.addEventListener('animationend', removeAnimation);
-
-};
+    if (key == '4') {
+        data[key].el.style.animation = 'drum-animation-ghostsnare 0.3s';
+        data[3].el.style.animation = 'disappear 0.3s';
+        data[key].el.addEventListener('animationend', removeAnimation);
+        data[3].el.addEventListener('animationend', removeAnimation);
+    } else {
+        data[key].el.style.animation = 'drum-animation 0.3s';
+        data[key].el.addEventListener('animationend', removeAnimation);
+    }
+}
 
 function removeAnimation(event) {
     event.currentTarget.style.animation = 'none';
-
 }
 
-// function handleKeyEvents(event) {
-//     playDrum(event.key.toUpperCase());
-// }
-
 construct();
-//window.addEventListener('keydown', handleKeyEvents);
 
 // ALI DRUMS SCHEME END
 
@@ -140,34 +133,34 @@ function changeComplexity() {
 function kick() {
     var audio = new Audio('Kick (9).wav');
     audio.volume = 0.75
-    playDrum('1', 0);
+    playDrum('1', 0, audio);
     audio.play();
 }
 
 function cymbal(){
     var audio = new Audio('live_open_hat.wav');
-    playDrum('2', 0);
+    playDrum('2', 0, audio);
     audio.play();
 }
 
 function snare(){
     var audio = new Audio('Snare (25).wav');
     audio.volume = 0.6
-    playDrum('3', 0);
+    playDrum('3', 0, audio);
     audio.play();
 }
 
 function ghostSnare(){
     var audio = new Audio('ghoul_snare.wav')
     audio.volume = Math.random()*0.3
-    playDrum('4', 0);
+    playDrum('4', 0, audio);
     audio.play()
 }
 
 function hat(){
     var audio = new Audio('Hat (7).wav');
     audio.volume = Math.random()*accent;
-    playDrum('5', 0);
+    playDrum('5', 0, audio);
     audio.play();
     tableMap.get(tableIndex+(measureIndex*tableNotes[measureIndex])+"").get(measureIndex*5 + 4 + "").style.backgroundColor = "#8b0000";
 }
