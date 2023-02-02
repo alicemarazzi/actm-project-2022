@@ -563,27 +563,32 @@ th, td {
 #kick {
     left: 2%;
     top: 2%;
+    cursor: url(https://cdn.custom-cursor.com/db/pointer/32/drumstick_and_drum_pointer.png), pointer;
 }
 
 #cymbal {
     right: 2%;
     top: 2%;
+    cursor: url(https://cdn.custom-cursor.com/db/cursor/32/drumstick_and_drum_cursor.png), pointer;
 }
 
 #snare {
     left: 2%;
     bottom: 2%;
+    cursor: url(https://cdn.custom-cursor.com/db/cursor/32/drumstick_and_drum_cursor.png), pointer;
 }
 
 #ghostsnare {
     left: 2%;
     bottom: 2%;
     opacity: 0;
+    cursor: url(https://cdn.custom-cursor.com/db/cursor/32/drumstick_and_drum_cursor.png), pointer;
 }
 
 #hat {
     right: 2%;
     bottom: 2%;
+    cursor: url(https://cdn.custom-cursor.com/db/cursor/32/drumstick_and_drum_cursor.png), pointer;
 }
 
 @keyframes drum-animation {
@@ -596,6 +601,7 @@ th, td {
         opacity: 1;
         max-width: 205px;
         max-height: 205px;
+        border: 2px solid black;
     }
 
 }
@@ -610,6 +616,7 @@ th, td {
         opacity: 0.75;
         max-width: 205px;
         max-height: 205px;
+        border: 2px solid black;
     }
 
 }

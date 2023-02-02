@@ -82,26 +82,37 @@ function construct() {
 
         drumEl.addEventListener('click', function(event) {
             var key = event.currentTarget.querySelector('h2').textContent;
-            playDrum(key, 1, 0.9);
+            playDrum(key, 1);
         });
     }
 
 };
 
-function playDrum(key, click, volume) {
+function playDrum(key, click) {
     if (click) {
         var audio = new Audio();
-        audio.src = data[key].sound;
+        if (key == '4') {
+            audio.src = data[3].sound;
+            data[3].el.style.animation = 'drum-animation 0.3s';
+            data[3].el.addEventListener('animationend', removeAnimation);
+        }
+        else {
+            audio.src = data[key].sound;
+            data[key].el.style.animation = 'drum-animation 0.3s';
+            data[key].el.addEventListener('animationend', removeAnimation);
+        }
         audio.play();
     }
-    if (key == '4') {
-        data[key].el.style.animation = 'drum-animation-ghostsnare 0.3s';
-        data[3].el.style.animation = 'disappear 0.3s';
-        data[key].el.addEventListener('animationend', removeAnimation);
-        data[3].el.addEventListener('animationend', removeAnimation);
-    } else {
-        data[key].el.style.animation = 'drum-animation 0.3s';
-        data[key].el.addEventListener('animationend', removeAnimation);
+    else {
+        if (key == '4') {
+            data[key].el.style.animation = 'drum-animation-ghostsnare 0.3s';
+            data[3].el.style.animation = 'disappear 0.3s';
+            data[key].el.addEventListener('animationend', removeAnimation);
+            data[3].el.addEventListener('animationend', removeAnimation);
+        } else {
+            data[key].el.style.animation = 'drum-animation 0.3s';
+            data[key].el.addEventListener('animationend', removeAnimation);
+        }
     }
 }
 
@@ -134,34 +145,34 @@ function changeComplexity() {
 function kick() {
     var audio = new Audio('Kick (9).wav');
     audio.volume = 0.75
-    playDrum('1', 0, audio);
+    playDrum('1', 0);
     audio.play();
 }
 
 function cymbal(){
     var audio = new Audio('live_open_hat.wav');
-    playDrum('2', 0, audio);
+    playDrum('2', 0);
     audio.play();
 }
 
 function snare(){
     var audio = new Audio('Snare (25).wav');
     audio.volume = 0.6
-    playDrum('3', 0, audio);
+    playDrum('3', 0);
     audio.play();
 }
 
 function ghostSnare(){
     var audio = new Audio('ghoul_snare.wav')
     audio.volume = Math.random()*0.3
-    playDrum('4', 0, audio);
+    playDrum('4', 0);
     audio.play()
 }
 
 function hat(){
     var audio = new Audio('Hat (7).wav');
     audio.volume = Math.random()*accent;
-    playDrum('5', 0, audio);
+    playDrum('5', 0);
     audio.play();
 }
 
