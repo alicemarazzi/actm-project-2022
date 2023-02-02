@@ -341,12 +341,14 @@ th, td {
     bottom: 25%;
     position: absolute;
     display: inline-block;
+    z-index: 1;
 }
 
 .Complexity {
     bottom: 5%;
     right: 5%;
     position: absolute;
+    z-index: 1;
 }
 
 .TSTitle {
@@ -361,21 +363,23 @@ th, td {
     position: absolute;
     border-radius: 5%;
     display: inline-block;
+    z-index: 1;
 }
 
-/* The container <div> - needed to position the dropdown content */
 .TimeSignatureDen {
     top: 55%;
     right: 5%;
     position: absolute;
     border-radius: 5%;
     display: inline-block;
+    z-index: 1;
 }
 
 .Key {
     bottom: 5%;
     left: 5%;
     position: absolute;
+    z-index: 1;
 }
 
 .rotate1 {
@@ -527,6 +531,7 @@ th, td {
     opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
     -webkit-transition: .2s; /* 0.2 seconds transition on hover */
     transition: opacity .2s;
+    z-index: 1;
 }
 
 /* Mouse-over effects */
@@ -537,61 +542,60 @@ th, td {
 .drumkit {
     position: absolute;
     width: 500px;
-    height: 400px;
-    right: 10px;
-    top: 30%;
+    height: 500px;
+    top: 20%;
+    left: 45%;
+    z-index: 0;
 }
 
 .drum {
     position: absolute;
-    max-width: 100px;
-    max-height: 100px;
-    /*padding: 10px 30px;*/
+    max-width: 200px;
+    max-height: 200px;
     margin: 5px;
-    text-align: center;
     cursor: pointer;
-    z-index: 1;
+    /*z-index: 1;*/
     opacity: 0.5;
     border-radius: 50%;
+    z-index: 0;
 }
 
 #kick {
-    right: 200px;
-    top: 50%;
-
+    left: 0%;
+    top: 0%;
 }
 
 #cymbal {
-    right: 350px;
-    top: 60%;
+    right: 0%;
+    top: 0%;
 }
 
 #snare {
-    right: 300px;
-    top: 15%;
+    left: 0%;
+    bottom: 0%;
 }
 
 #ghostsnare {
-    right: 300px;
-    top: 15%;
+    left: 0%;
+    bottom: 0%;
     opacity: 0;
 }
 
 #hat {
-    right: 150px;
-    top: 20%;
+    right: 0%;
+    bottom: 0%;
 }
 
 @keyframes drum-animation {
     from {
         opacity: 0.5;
-        max-width: 100px;
-        max-height: 100px;
+        max-width: 200px;
+        max-height: 200px;
     }
     to {
         opacity: 1;
-        max-width: 105px;
-        max-height:105px;
+        max-width: 205px;
+        max-height: 205px;
     }
 
 }
@@ -599,13 +603,13 @@ th, td {
 @keyframes drum-animation-ghostsnare {
     from {
         opacity: 0;
-        max-width: 100px;
-        max-height: 100px;
+        max-width: 200px;
+        max-height: 200px;
     }
     to {
-        opacity: 0.5;
-        max-width: 105px;
-        max-height:105px;
+        opacity: 0.75;
+        max-width: 205px;
+        max-height: 205px;
     }
 
 }
