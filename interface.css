@@ -561,29 +561,29 @@ th, td {
 }
 
 #kick {
-    left: 0%;
-    top: 0%;
+    left: 2%;
+    top: 2%;
 }
 
 #cymbal {
-    right: 0%;
-    top: 0%;
+    right: 2%;
+    top: 2%;
 }
 
 #snare {
-    left: 0%;
-    bottom: 0%;
+    left: 2%;
+    bottom: 2%;
 }
 
 #ghostsnare {
-    left: 0%;
-    bottom: 0%;
+    left: 2%;
+    bottom: 2%;
     opacity: 0;
 }
 
 #hat {
-    right: 0%;
-    bottom: 0%;
+    right: 2%;
+    bottom: 2%;
 }
 
 @keyframes drum-animation {
