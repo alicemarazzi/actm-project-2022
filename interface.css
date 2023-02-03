@@ -341,14 +341,14 @@ th, td {
     bottom: 25%;
     position: absolute;
     display: inline-block;
-    z-index: 1;
+    z-index: 2;
 }
 
 .Complexity {
     bottom: 5%;
     right: 5%;
     position: absolute;
-    z-index: 1;
+    z-index: 2;
 }
 
 .TSTitle {
@@ -363,7 +363,7 @@ th, td {
     position: absolute;
     border-radius: 5%;
     display: inline-block;
-    z-index: 1;
+    z-index: 2;
 }
 
 .TimeSignatureDen {
@@ -372,14 +372,14 @@ th, td {
     position: absolute;
     border-radius: 5%;
     display: inline-block;
-    z-index: 1;
+    z-index: 2;
 }
 
 .Key {
     bottom: 5%;
     left: 5%;
     position: absolute;
-    z-index: 1;
+    z-index: 2;
 }
 
 .rotate1 {
@@ -541,66 +541,73 @@ th, td {
 
 .drumkit {
     position: absolute;
-    width: 500px;
-    height: 500px;
+    width: 770px;
+    height: 425px;
     top: 20%;
-    left: 45%;
-    z-index: 0;
+    left: 30%;
+    z-index: 1;
+    background-image: url("https://imgur.com/fHxrNxy.png");
 }
 
 .drum {
     position: absolute;
-    max-width: 200px;
-    max-height: 200px;
     margin: 5px;
     cursor: pointer;
     /*z-index: 1;*/
-    opacity: 0.5;
+    opacity: 0.3;
     border-radius: 50%;
-    z-index: 0;
+    z-index: 2;
 }
 
 #kick {
-    left: 2%;
-    top: 2%;
+    top: 30%;
+    left: 43%;
+    width: 173px;
+    height: 140px;
     cursor: url(https://cdn.custom-cursor.com/db/pointer/32/drumstick_and_drum_pointer.png), pointer;
 }
 
 #cymbal {
-    right: 2%;
-    top: 2%;
+    right: 7.5%;
+    top: 9.5%;
+    width: 187px;
+    height: 129px;
+    rotate: 21deg;
     cursor: url(https://cdn.custom-cursor.com/db/cursor/32/drumstick_and_drum_cursor.png), pointer;
 }
 
 #snare {
-    left: 2%;
-    bottom: 2%;
+    left: 26.5%;
+    top: 36%;
+    width: 160px;
+    height: 145px;
     cursor: url(https://cdn.custom-cursor.com/db/cursor/32/drumstick_and_drum_cursor.png), pointer;
 }
 
 #ghostsnare {
-    left: 2%;
-    bottom: 2%;
+    left: 26.5%;
+    top: 36%;
+    width: 160px;
+    height: 145px;
     opacity: 0;
     cursor: url(https://cdn.custom-cursor.com/db/cursor/32/drumstick_and_drum_cursor.png), pointer;
 }
 
 #hat {
-    right: 2%;
-    bottom: 2%;
+    left: 0;
+    top: 20%;
+    width: 183px;
+    height: 128px;
+    rotate: -31deg;
     cursor: url(https://cdn.custom-cursor.com/db/cursor/32/drumstick_and_drum_cursor.png), pointer;
 }
 
 @keyframes drum-animation {
     from {
-        opacity: 0.5;
-        max-width: 200px;
-        max-height: 200px;
+        opacity: 0.3;
     }
     to {
-        opacity: 1;
-        max-width: 205px;
-        max-height: 205px;
+        opacity: 0.75;
         border: 2px solid black;
     }
 
@@ -609,13 +616,10 @@ th, td {
 @keyframes drum-animation-ghostsnare {
     from {
         opacity: 0;
-        max-width: 200px;
-        max-height: 200px;
+
     }
     to {
         opacity: 0.75;
-        max-width: 205px;
-        max-height: 205px;
         border: 2px solid black;
     }
 
@@ -623,7 +627,7 @@ th, td {
 
 @keyframes disappear {
     from {
-        opacity: 0.5;
+        opacity: 0.3;
     }
     to {
         opacity: 0;
