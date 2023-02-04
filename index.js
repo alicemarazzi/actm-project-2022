@@ -294,6 +294,10 @@ function generate() {
                         // Facciamo ripartire il conteggio da i-1
                         i = i - 1;
                     }
+
+                }
+                else if (sum==sigPatt){
+                    i=Math.ceil(sigPatt / 2)
                 }
 
                 if (sum == sigPatt) {
