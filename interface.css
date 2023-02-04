@@ -618,14 +618,13 @@ th, td {
     width: 640px;
     height: 426px;
     bottom: 5%;
-    right: 3%;
+    right: 7%;
     z-index: 1;
     background-image: url("drumperspective.jpg");
     background-size: contain;
-    box-shadow: 0 0 5px #34c0eb;
-    -moz-box-shadow: 0 0 5px #34c0eb;
-    -webkit-box-shadow: 0 0 5px #34c0eb;
-    -o-box-shadow: 0 0 5px #34c0eb;
+    -moz-box-shadow:  0 0 10px 3px #3754BD;
+    -webkit-box-shadow: 0 0 10px 3px #3754BD;
+    -o-box-shadow:  0 0 10px 3px #3754BD;
 }
 
 #drumblur {
