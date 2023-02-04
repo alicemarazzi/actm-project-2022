@@ -144,6 +144,26 @@ function createTimeSignatureDen() {
     timeSignatureDen[0] = parseInt(document.getElementById('timesigden').value);
 }
 
+function createKickType() {
+    kickType = parseInt(document.getElementById('kick_type').value);
+    kick();
+}
+
+function createOpenType() {
+    openType = parseInt(document.getElementById('open_type').value);
+    cymbal();
+}
+
+function createSnareType() {
+    snareType = parseInt(document.getElementById('snare_type').value);
+    snare();
+}
+
+function createHatType() {
+    hatType = parseInt(document.getElementById('hat_type').value);
+    hat();
+}
+
 function changeBPM() {
     BPM = parseInt(document.getElementById('bpmvalue').value);
 }

@@ -390,7 +390,6 @@ th, td {
     top: 17%;
     left: 50%;
     position: absolute;
-    font-family: customFonts;
 }
 
 .TimeSignatureNum {
@@ -505,8 +504,8 @@ th, td {
     position: absolute;
     width: 40%;
     height: 95%;
-    left: 0%;
-    top: 0%;
+    left: 0;
+    top: 0;
 }
 
 #measureOne {
@@ -682,6 +681,33 @@ th, td {
     height: 105px;
     rotate: -28deg;
     cursor: url(immagine_2023-02-04_111501041.png), pointer;
+}
+
+.snaretype {
+    position: absolute;
+    left: 40%;
+    top: 73%;
+}
+
+.kicktype {
+    position: absolute;
+    color: whitesmoke;
+    top: 56%;
+    left: 55%;
+}
+
+.opentype {
+    position: absolute;
+    color: whitesmoke;
+    right: 5%;
+    top: 70%;
+}
+
+.hattype {
+    position: absolute;
+    color: whitesmoke;
+    left: 23%;
+    top: 78%;
 }
 
 @keyframes drum-animation {
