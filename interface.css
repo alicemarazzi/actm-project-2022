@@ -26,7 +26,7 @@
 .scrollerGS {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 6%;
     position: absolute;
 
@@ -40,7 +40,7 @@
 .scrollerC {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 9%;
     position: absolute;
 
@@ -54,7 +54,7 @@
 .scrollerK {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 12%;
     position: absolute;
 
@@ -68,7 +68,7 @@
 .scrollerS {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 15%;
     position: absolute;
 
@@ -82,7 +82,7 @@
 .scrollerH {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 18%;
     position: absolute;
 
@@ -96,7 +96,7 @@
 .scrollerGS2 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 30%;
     position: absolute;
 
@@ -110,7 +110,7 @@
 .scrollerC2 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 33%;
     position: absolute;
 
@@ -124,7 +124,7 @@
 .scrollerK2 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 36%;
     position: absolute;
 
@@ -138,7 +138,7 @@
 .scrollerS2 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 39%;
     position: absolute;
 
@@ -152,7 +152,7 @@
 .scrollerH2 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 42%;
     position: absolute;
 
@@ -166,7 +166,7 @@
 .scrollerGS3 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 54%;
     position: absolute;
 
@@ -180,7 +180,7 @@
 .scrollerC3 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 57%;
     position: absolute;
 
@@ -194,7 +194,7 @@
 .scrollerK3 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 60%;
     position: absolute;
 
@@ -208,7 +208,7 @@
 .scrollerS3 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 63%;
     position: absolute;
 
@@ -222,7 +222,7 @@
 .scrollerH3 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 66%;
     position: absolute;
 
@@ -236,7 +236,7 @@
 .scrollerGS4 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 78%;
     position: absolute;
 
@@ -250,7 +250,7 @@
 .scrollerC4 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 81%;
     position: absolute;
 
@@ -264,7 +264,7 @@
 .scrollerK4 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 84%;
     position: absolute;
 
@@ -278,7 +278,7 @@
 .scrollerH4 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 90%;
     position: absolute;
 
@@ -292,7 +292,7 @@
 .scrollerS4 {
     border:2px lightgrey;
 
-    left: 10%;
+    left: 12%;
     top: 87%;
     position: absolute;
 
@@ -407,7 +407,7 @@ th, td {
     vertical-align: bottom;
     position: absolute;
     top: 8%;
-    left: 5%;
+    left: 3%;
 }
 
 .rotate1:before {
@@ -429,7 +429,7 @@ th, td {
     vertical-align: bottom;
     position: absolute;
     top: 32%;
-    left: 5%;
+    left: 3%;
 }
 
 .rotate2:before {
@@ -451,7 +451,7 @@ th, td {
     vertical-align: bottom;
     position: absolute;
     top: 55%;
-    left: 5%;
+    left: 3%;
 }
 
 .rotate3:before {
@@ -473,7 +473,7 @@ th, td {
     vertical-align: bottom;
     position: absolute;
     top: 80%;
-    left: 5%;
+    left: 3%;
 }
 
 .rotate4:before {
@@ -495,6 +495,30 @@ th, td {
     height: 95%;
     left: 0%;
     top: 0%;
+}
+
+#measureOne {
+    left: 8%;
+    top: 12%;
+    position: absolute;
+}
+
+#measureTwo {
+    left: 8%;
+    top: 37%;
+    position: absolute;
+}
+
+#measureThree {
+    left: 8%;
+    top: 60%;
+    position: absolute;
+}
+
+#measureFour {
+    left: 8%;
+    top: 85%;
+    position: absolute;
 }
 
 #start {

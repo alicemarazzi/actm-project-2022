@@ -483,10 +483,32 @@ function generate() {
     } //end of for loop
 
     measureIndex=0;
+
+
+    insertTableNotes();
+
     table()
 }
 
 start.onclick = toggleOn;
+
+function insertTableNotes() {
+    var paragraph = document.getElementById("measureOne");
+
+    paragraph.textContent += tableNotes[0];
+
+    paragraph = document.getElementById("measureTwo");
+
+    paragraph.textContent += tableNotes[1];
+
+    paragraph = document.getElementById("measureThree");
+
+    paragraph.textContent += tableNotes[2];
+
+    paragraph = document.getElementById("measureFour");
+
+    paragraph.textContent += tableNotes[3];
+}
 
 function toggleOn(e) {
 
