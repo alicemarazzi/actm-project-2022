@@ -31,13 +31,17 @@ var tableMap = new Map()
 var flagM = 0
 var tableNotes = new Array(4).fill(0)
 var kickflag=0
+var kickType=9
+var snareType=25
+var hatType=9
+var openType=1
 
 // ALI DRUMS SCHEME
 
 
 var data = {
     '1': { name: 'Kick', sound: 'Kick (9).wav'},
-    '2': { name: 'Cymbal', sound: 'live_open_hat.wav'},
+    '2': { name: 'Cymbal', sound: 'Openhat (1).wav'},
     '3': { name: 'Snare', sound: 'Snare (25).wav'},
     '4': { name: 'Ghost Snare', sound: 'ghoul_snare.wav'},
     '5': { name: 'hat', sound: 'Hat (7).wav'}
@@ -143,20 +147,20 @@ function changeComplexity() {
 }
 
 function kick() {
-    var audio = new Audio('Kick (9).wav');
+    var audio = new Audio('Kick ('+kickType+').wav');
     audio.volume = 0.75
     playDrum('1', 0);
     audio.play();
 }
 
 function cymbal(){
-    var audio = new Audio('live_open_hat.wav');
+    var audio = new Audio('Openhat ('+openType+'.wav');
     playDrum('2', 0);
     audio.play();
 }
 
 function snare(){
-    var audio = new Audio('Snare (25).wav');
+    var audio = new Audio('Snare ('+snareType+').wav');
     audio.volume = 0.6
     playDrum('3', 0);
     audio.play();
@@ -170,7 +174,7 @@ function ghostSnare(){
 }
 
 function hat(){
-    var audio = new Audio('Hat (7).wav');
+    var audio = new Audio('Hat ('+hatType+').wav');
     audio.volume = Math.random()*accent;
     playDrum('5', 0);
     audio.play();
