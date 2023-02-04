@@ -5,7 +5,7 @@
     min-height: 700px;
     border-radius: 1%;
     border: 3px solid black;
-    background-image: url("nicholas-green-rAsESO5Puqw-unsplash.jpg");
+    background-image: url("background.jfif");
     background-size: 100% 100%;
     left: 50%;
     top: 50%;
@@ -19,7 +19,7 @@
     min-width: 1000px;
     min-height: 700px;
     border-radius: 1%;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(1px);
 }
 
 /* width */
@@ -557,6 +557,7 @@ th, td {
     height: 50px;
     border-radius: 15px;
     cursor: pointer;
+    opacity: 0;
 }
 
 #title {
