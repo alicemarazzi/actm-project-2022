@@ -500,7 +500,7 @@ th, td {
 }
 
 #box-system {
-    /*background-color: lightgrey;*/
+    /*background-color: lightblue;*/
     border-radius: 1%;
     position: absolute;
     width: 40%;
@@ -510,25 +510,25 @@ th, td {
 }
 
 #measureOne {
-    left: 8%;
+    left: 7%;
     top: 12%;
     position: absolute;
 }
 
 #measureTwo {
-    left: 8%;
+    left: 7%;
     top: 37%;
     position: absolute;
 }
 
 #measureThree {
-    left: 8%;
+    left: 7%;
     top: 60%;
     position: absolute;
 }
 
 #measureFour {
-    left: 8%;
+    left: 7%;
     top: 85%;
     position: absolute;
 }
