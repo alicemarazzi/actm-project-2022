@@ -28,6 +28,7 @@ var kickType=8
 var snareType=25
 var hatType=12
 var openType=1
+var replayFlag=0
 
 // ALI DRUMS SCHEME
 
@@ -205,12 +206,11 @@ function play() {
         clearInterval(refreshIntervalIdb)
         refreshIntervalIdb = 0
         refreshIntervalId = 0
-        index = 0
         measureIndex = 0
         accentIndex = 0
         count = 0
         tableIndex=0
-        kickflag = 0;
+        kickflag = 0
 
         // Per cancellare il pattern con STOP
         /*pattern.fill(0)
@@ -223,9 +223,14 @@ function play() {
         sigPatt = timeSignatureNum[0]
         timeSignatureDen[0] = parseInt(document.getElementById('timesigden').value);*/
 
-    } else {
+    } else if (replayFlag==0) {
         generate()
     }
+    else{
+        refreshIntervalId = setInterval(tableIn, 240000 / (BPM * tableNotes[measureIndex]))
+        setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.15}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
+    }
+
 }
 
 function generate() {
@@ -505,7 +510,7 @@ function generate() {
 
         }
         tableNotes[measureIndex]=lcm(lcm(hatNotes[measureIndex], notes[measureIndex]), accentedNotes[measureIndex])
-        console.log("tableNotes=", tableNotes)
+        replayFlag=1
     } //end of for loop
 
     measureIndex=0;
