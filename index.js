@@ -212,7 +212,7 @@ function generate() {
 
         if (measureIndex == 0) { //generate first accent pattern
 
-            if (complexity == 3) { //in the case of complexity=3 the accent pattern has a different time signature numerator than the rest of the elements
+            /*if (complexity == 3) { //in the case of complexity=3 the accent pattern has a different time signature numerator than the rest of the elements
 
                 while (timeSignatureNum[measureIndex] % sigPatt == 0){
                     if (timeSignatureNum[measureIndex]>=8){
@@ -224,17 +224,17 @@ function generate() {
                 }
 
 
-            } else {
+            } else {*/
 
-                if (timeSignatureNum[measureIndex]>=8){
-                    sigPatt = timeSignatureNum[measureIndex]
-                }
-
-                else{
-                    sigPatt = timeSignatureNum[measureIndex]*2
-                }
-
+            if (timeSignatureNum[measureIndex]>=8){
+                sigPatt = timeSignatureNum[measureIndex]
             }
+
+            else{
+                sigPatt = timeSignatureNum[measureIndex]*2
+            }
+
+            //}
 
             var sum = 0;
             var accentPattern = new Array(Math.ceil(sigPatt / 2));
@@ -285,7 +285,7 @@ function generate() {
         }
         //Generate subsequent accent patterns
         else {
-            if (complexity!=5) {
+            if (complexity!=4) {
 
                 accentPatternMap.set(measureIndex + "", accentPatternMap.get(measureIndex - 1 + ""));
             }
@@ -311,7 +311,7 @@ function generate() {
         //generate list of time signatures
         if (measureIndex != 0) {
 
-            if (complexity != 5) { //in the cases of complexity 1 and 3 the time signature stays the same
+            if (complexity != 4) { //in the cases of complexity 1 and 3 the time signature stays the same
 
                 timeSignatureNum[measureIndex] = timeSignatureNum[measureIndex - 1]
                 timeSignatureDen[measureIndex] = timeSignatureDen[measureIndex - 1]
@@ -354,7 +354,7 @@ function generate() {
             } else {
                 sub[measureIndex] = sub[measureIndex - 1]
 
-                if (complexity == 2) {
+                if (complexity == 3) {
 
                     if (measureIndex == 1) {
                         for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
@@ -364,7 +364,7 @@ function generate() {
                         sub[measureIndex] = sub[measureIndex - 2]
                     }
                 }
-                else if (complexity==5){
+                else if (complexity==4){
                     if (measureIndex == 1) {
                         for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
                             sub[measureIndex]--;
@@ -398,7 +398,7 @@ function generate() {
 
         hatsub[measureIndex] = sub[measureIndex]
 
-        if(complexity==4){
+        if(complexity==2){
             if (measureIndex == 0) {
                 while (sub[measureIndex]%hatsub[measureIndex]==0 || hatsub[measureIndex]%sub[measureIndex]==0){
                     hatsub[measureIndex] = sub[measureIndex]*Math.round(Math.random()*4+1)/2
@@ -433,19 +433,19 @@ function generate() {
 
             notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
             hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex]
-            if (complexity!=3) {
+            /*if (complexity!=3) {
                 accentedNotes[measureIndex] = timeSignatureNum[measureIndex]
             }
-            else {
-                accentedNotes[measureIndex]= sigPatt
-            }
+            else {*/
+            accentedNotes[measureIndex]= sigPatt
+            //}
             pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
 
             if (pattern[measureIndex]<Math.pow(2, notes[measureIndex])/2){
                 pattern[measureIndex]=pattern[measureIndex]+Math.pow(2, notes[measureIndex])/2
             }
         } else {
-            if (complexity == 1 || complexity == 3 || complexity==4) {
+            if (complexity <=2) {
                 if (measureIndex == 3) {
                     notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
                     pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
@@ -456,7 +456,7 @@ function generate() {
                     notes[measureIndex] = notes[0];
                     pattern[measureIndex] = pattern[0];
                 }
-            } else if (complexity == 2 || complexity == 5) {
+            } else if (complexity > 2) {
                 if (measureIndex == 1) {
                     notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
                     pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
@@ -470,7 +470,7 @@ function generate() {
                 }
             }
             hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex];
-            if (complexity!=5){
+            if (complexity!=4){
                 accentedNotes[measureIndex]=accentedNotes[measureIndex-1]
             }
             else{
@@ -630,7 +630,7 @@ function tableIn(){
         cymbal()
         tableMap.get(tableIndex+n+"").get(measureIndex*5 + 1+"").style.backgroundColor = "#0000ff";
     }
-    if(complexity==3 || complexity==2){
+    if(complexity==3){
         if ((accentIndex==0 && count==0) || accentIndex == accentPatternMap.get(0 + "")[count-1]) {
             accent=0.75
 
@@ -675,27 +675,25 @@ function tableIn(){
             accentIndex = 0
         }
     }
-    if (complexity!=3) {
-        if ((tableIndex+1) % (tableNotes[measureIndex] / accentedNotes[measureIndex]) == 0) {
-            accentIndex++
-            if (accentIndex-accentPatternMap.get(measureIndex + "")[count-1]==-1){
-                if ((measureIndex==1 || measureIndex==3) && kickflag==1){
-                    kick()
-                    tableMap.get(tableIndex+n+"").get(measureIndex*5 + 3 + "").style.backgroundColor = "#ffa500"
-                }
-                else if ((measureIndex==2 || measureIndex==3) && kickflag==0){
-                    snare()
-                    tableMap.get(tableIndex+n+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb"
-                    snareflag=1
-                }
+    if ((tableIndex+1) % (tableNotes[measureIndex] / accentedNotes[measureIndex]) == 0) {
+        accentIndex++
+        if (accentIndex-accentPatternMap.get(measureIndex + "")[count-1]==-1){
+            if ((measureIndex==1 || measureIndex==3) && kickflag==1){
+                kick()
+                tableMap.get(tableIndex+n+"").get(measureIndex*5 + 3 + "").style.backgroundColor = "#ffa500"
+            }
+            else if ((measureIndex==2 || measureIndex==3) && kickflag==0){
+                snare()
+                tableMap.get(tableIndex+n+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb"
+                snareflag=1
             }
         }
     }
-    else{
+    /*else{
         if ((tableIndex+1) % (tableNotes[measureIndex] / timeSignatureDen[measureIndex]) == 0) {
             accentIndex++
         }
-    }
+    }*/
 
     let patternBinary = pattern[measureIndex].toString(2);
 
@@ -723,20 +721,18 @@ function tableIn(){
         if (measureIndex == 4) {
             measureIndex = 0
         }
-        if (complexity!=3){
-            clearInterval(refreshIntervalIdb)
-            setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.25}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
-            accentIndex=0
-            kickflag=0
-            if (count>1){
-                count = 0
-            }
+        clearInterval(refreshIntervalIdb)
+        setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.25}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
+        accentIndex=0
+        kickflag=0
+        if (count>1){
+            count = 0
         }
-        else{
+        /*else{
             if (!accentPatternMap.get(measureIndex + "")[count]){
                 accentIndex=0;
             }
-        }
+        }*/
         clearInterval(refreshIntervalId)
         refreshIntervalId = setInterval(tableIn, 240000 / (BPM * tableNotes[measureIndex]))
     }
