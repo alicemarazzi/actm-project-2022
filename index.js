@@ -52,23 +52,23 @@ function construct() {
         drumkit.appendChild(drumEl);
         if (key == '1') {
             drumEl.id = 'kick';
-            drumEl.src = 'https://imgur.com/c91KDb5.png';
+            drumEl.src = 'photo_4_2023-02-02_11-53-57.jpg';
         }
         else if (key == '2') {
             drumEl.id = 'cymbal';
-            drumEl.src = 'https://imgur.com/KBvRsYL.png';
+            drumEl.src = 'photo_2_2023-02-02_11-53-57.jpg';
         }
         else if (key == '3') {
             drumEl.id = 'snare';
-            drumEl.src = 'https://imgur.com/VZaoOpw.png';
+            drumEl.src = 'photo_9_2023-02-02_11-53-57.jpg';
         }
         else if (key == '4') {
             drumEl.id = 'ghostsnare';
-            drumEl.src = 'https://imgur.com/VmbVify.png';
+            drumEl.src = 'photo_8_2023-02-02_11-53-57.jpg';
         }
         else if (key == '5') {
             drumEl.id = 'hat';
-            drumEl.src = 'https://imgur.com/w7yDSQ4.png';
+            drumEl.src = 'photo_5_2023-02-02_11-53-57.jpg';
         }
 
 
@@ -101,7 +101,7 @@ function playDrum(key, click) {
             data[key].el.style.animation = 'drum-animation 0.3s';
             data[key].el.addEventListener('animationend', removeAnimation);
         }
-        audio.play();
+        if (refreshIntervalId == 0) audio.play();
     }
     else {
         if (key == '4') {
