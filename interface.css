@@ -37,6 +37,10 @@
     overflow: auto;
 }
 
+.container::-webkit-scrollbar {
+    display: None;
+}
+
 .scrollerC {
     border:2px lightgrey;
 
@@ -518,6 +522,12 @@ th, td {
 #measureFour {
     left: 8%;
     top: 85%;
+    position: absolute;
+}
+
+#titleSub {
+    top: 3%;
+    left: 4%;
     position: absolute;
 }
 
