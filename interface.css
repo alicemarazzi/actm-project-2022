@@ -367,7 +367,7 @@ th, td {
 }
 
 .BPM {
-    top: 20%;
+    top: 16%;
     left: 70%;
     position: absolute;
     display: inline-block;
@@ -375,7 +375,7 @@ th, td {
 }
 
 .Complexity {
-    top: 25%;
+    top: 21%;
     left: 70%;
     position: absolute;
     z-index: 2;
@@ -387,14 +387,14 @@ th, td {
 }
 
 .TSTitle {
-    top: 20%;
+    top: 17%;
     left: 50%;
     position: absolute;
     font-family: customFonts;
 }
 
 .TimeSignatureNum {
-    top: 25%;
+    top: 21%;
     left: 50%;
     position: absolute;
     border-radius: 5%;
@@ -403,7 +403,7 @@ th, td {
 }
 
 .TimeSignatureDen {
-    top: 30%;
+    top: 26%;
     left: 50%;
     position: absolute;
     border-radius: 5%;
@@ -542,7 +542,7 @@ th, td {
 #start {
     position: absolute;
     right: 5%;
-    top: 20%;
+    top: 16%;
     width: 180px;
     height: 50px;
     border-radius: 15px;
@@ -552,12 +552,13 @@ th, td {
 #refresh {
     position: absolute;
     right: 5%;
-    top: 28%;
+    top: 23%;
     width: 180px;
     height: 50px;
     border-radius: 15px;
     cursor: pointer;
     opacity: 0;
+    background-color: #9383C8;
 }
 
 #title {
@@ -568,16 +569,16 @@ th, td {
 }
 
 .green {
-    background-color: #4c9a2a;
+    background-color: #5D7CD8;
     animation-name: startBeat;
     animation-duration: 4s;
     animation-iteration-count: infinite;
 }
 
 @keyframes startBeat {
-    0%   {background-color: #4c9a2a;}
-    50%   {background-color: #1e5631;}
-    100%   {background-color: #4c9a2a;}
+    0%   {background-color: #5D7CD8;}
+    50%   {background-color: #3754BD;}
+    100%   {background-color: #5D7CD8;}
 }
 
 .redOn {

@@ -526,6 +526,9 @@ function toggleOn(e) {
 
     play();
 
+    var refreshButton = document.getElementById("refresh");
+    refreshButton.style.opacity = "100";
+
     if(e.target.parentElement.classList.contains("green")) {
         e.target.parentElement.classList.toggle("redOn");
     } else {
