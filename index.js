@@ -31,20 +31,20 @@ var tableMap = new Map()
 var flagM = 0
 var tableNotes = new Array(4).fill(0)
 var kickflag=0
-var kickType=9
+var kickType=8
 var snareType=25
-var hatType=9
+var hatType=12
 var openType=1
 
 // ALI DRUMS SCHEME
 
 
 var data = {
-    '1': { name: 'Kick', sound: 'Kick (9).wav'},
-    '2': { name: 'Cymbal', sound: 'Openhat (1).wav'},
-    '3': { name: 'Snare', sound: 'Snare (25).wav'},
-    '4': { name: 'Ghost Snare', sound: 'ghoul_snare.wav'},
-    '5': { name: 'hat', sound: 'Hat (7).wav'}
+    '1': { name: 'Kick'},
+    '2': { name: 'Cymbal'},
+    '3': { name: 'Snare'},
+    '4': { name: 'Ghost Snare'},
+    '5': { name: 'hat'}
 };
 
 var drumkit = document.getElementById('drumkit');
@@ -90,22 +90,29 @@ function construct() {
         });
     }
 
-};
+}
 
 function playDrum(key, click) {
     if (click) {
-        var audio = new Audio();
+        // var audio = new Audio();
         if (key == '4') {
-            audio.src = data[3].sound;
+            // audio.src = data[3].sound;
             data[3].el.style.animation = 'drum-animation 0.3s';
             data[3].el.addEventListener('animationend', removeAnimation);
         }
         else {
-            audio.src = data[key].sound;
+            // audio.src = data[key].sound;
             data[key].el.style.animation = 'drum-animation 0.3s';
             data[key].el.addEventListener('animationend', removeAnimation);
         }
-        if (refreshIntervalId == 0) audio.play();
+        if (refreshIntervalId == 0) {
+            if (key == '1') kick();
+            else if (key == '2') cymbal();
+            else if (key == '3') snare();
+            else if (key == '4') ghostSnare();
+            else if (key == '5') hat();
+            // audio.play();
+        }
     }
     else {
         if (key == '4') {
@@ -154,8 +161,8 @@ function kick() {
 }
 
 function cymbal(){
-    var audio = new Audio('Openhat ('+openType+'.wav');
-    playDrum('2', 0);
+    var audio = new Audio('Openhat ('+openType+').wav');
+    if (refreshIntervalId != 0) playDrum('2', 0);
     audio.play();
 }
 
@@ -174,9 +181,10 @@ function ghostSnare(){
 }
 
 function hat(){
+    console.log("HAT");
     var audio = new Audio('Hat ('+hatType+').wav');
     audio.volume = Math.random()*accent;
-    playDrum('5', 0);
+    if (refreshIntervalId != 0) playDrum('5', 0);
     audio.play();
 }
 

@@ -5,7 +5,7 @@
     min-height: 700px;
     border-radius: 1%;
     border: 3px solid black;
-    background-image: url("nicholas-green-rAsESO5Puqw-unsplash.jpg");
+    background-image: url("background.jfif");
     background-size: 100% 100%;
     left: 50%;
     top: 50%;
@@ -19,7 +19,7 @@
     min-width: 1000px;
     min-height: 700px;
     border-radius: 1%;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(1px);
 }
 
 /* width */
@@ -500,7 +500,7 @@ th, td {
 }
 
 #box-system {
-    /*background-color: lightgrey;*/
+    /*background-color: lightblue;*/
     border-radius: 1%;
     position: absolute;
     width: 40%;
@@ -510,25 +510,25 @@ th, td {
 }
 
 #measureOne {
-    left: 8%;
+    left: 7%;
     top: 12%;
     position: absolute;
 }
 
 #measureTwo {
-    left: 8%;
+    left: 7%;
     top: 37%;
     position: absolute;
 }
 
 #measureThree {
-    left: 8%;
+    left: 7%;
     top: 60%;
     position: absolute;
 }
 
 #measureFour {
-    left: 8%;
+    left: 7%;
     top: 85%;
     position: absolute;
 }
@@ -557,6 +557,7 @@ th, td {
     height: 50px;
     border-radius: 15px;
     cursor: pointer;
+    opacity: 0;
 }
 
 #title {
@@ -612,13 +613,18 @@ th, td {
     border: 5px solid black;
     border-radius: 7%;
     position: absolute;
-    width: 770px;
-    height: 425px;
+    max-width: 770px;
+    max-height: 425px;
+    width: 100%;
+    height: 56%;
     bottom: 5%;
     right: 3%;
     z-index: 1;
     background-image: url("photo_2023-02-03_11-20-16.jpg");
-    box-shadow: 10px 10px lightblue;
+    box-shadow: 0 0 5px #34c0eb;
+    -moz-box-shadow: 0 0 5px #34c0eb;
+    -webkit-box-shadow: 0 0 5px #34c0eb;
+    -o-box-shadow: 0 0 5px #34c0eb;
 }
 
 #drumblur {
