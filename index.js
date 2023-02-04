@@ -1,10 +1,3 @@
-var c = new AudioContext();
-var cmp = c.createDynamicsCompressor();
-cmp.connect(c.destination);
-// var a = c.createAnalyser();
-var bs = c.createBufferSource();
-bs.loop = true;
-
 var BPM = 120
 var timeSignatureNum = new Array(4)
 var timeSignatureDen = new Array(4)
@@ -75,8 +68,6 @@ function construct() {
             drumEl.id = 'hat';
             drumEl.src = 'photo_5_2023-02-02_11-53-57.jpg';
         }
-
-
 
         var h2 = document.createElement('h2');
         h2.textContent = key;
@@ -219,6 +210,7 @@ function play() {
         accentIndex = 0
         count = 0
         tableIndex=0
+        kickflag = 0;
 
         // Per cancellare il pattern con STOP
         /*pattern.fill(0)
@@ -514,9 +506,6 @@ function generate() {
 
     measureIndex=0;
 
-
-    insertTableNotes();
-
     table()
 }
 
@@ -565,6 +554,8 @@ function toggleOn(e) {
 function table(){
 
     if (flagM == 0) {
+        insertTableNotes();
+
         for (measureIndex=0; measureIndex<4; measureIndex++){
 
             for (let s=0; s<tableNotes[measureIndex]; s++){
@@ -658,7 +649,7 @@ function table(){
                 }
                 var n=0
                 for (let i=0; i<measureIndex; i++){
-                    n=n+tableNotes[measureIndex]
+                    n=n+tableNotes[i]
                 }
                 tableMap.set(s+n + "", arrayMap);
 
@@ -679,7 +670,7 @@ function tableIn(){
     snareflag=0
     var n=0
     for (let i=0; i<measureIndex; i++){
-        n=n+tableNotes[measureIndex]
+        n=n+tableNotes[i]
     }
     if(tableIndex==0){
         cymbal()
