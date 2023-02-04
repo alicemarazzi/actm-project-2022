@@ -368,7 +368,7 @@ th, td {
 
 .BPM {
     top: 16%;
-    left: 70%;
+    left: 67%;
     position: absolute;
     display: inline-block;
     z-index: 2;
@@ -376,7 +376,7 @@ th, td {
 
 .Complexity {
     top: 21%;
-    left: 70%;
+    left: 67%;
     position: absolute;
     z-index: 2;
 }
