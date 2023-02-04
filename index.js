@@ -63,10 +63,11 @@ function construct() {
             drumEl.src = 'photo_2_2023-02-02_11-53-57.jpg';
         }
         else if (key == '3') {
-            drumEl.id = 'snare';
+            drumEl.classList.add('snare');
             drumEl.src = 'photo_9_2023-02-02_11-53-57.jpg';
         }
         else if (key == '4') {
+            drumEl.classList.add('snare');
             drumEl.id = 'ghostsnare';
             drumEl.src = 'photo_8_2023-02-02_11-53-57.jpg';
         }
@@ -156,7 +157,7 @@ function changeComplexity() {
 function kick() {
     var audio = new Audio('Kick ('+kickType+').wav');
     audio.volume = 0.75
-    playDrum('1', 0);
+    if (refreshIntervalId != 0) playDrum('1', 0);
     audio.play();
 }
 
@@ -169,19 +170,18 @@ function cymbal(){
 function snare(){
     var audio = new Audio('Snare ('+snareType+').wav');
     audio.volume = 0.6
-    playDrum('3', 0);
+    if (refreshIntervalId != 0) playDrum('3', 0);
     audio.play();
 }
 
 function ghostSnare(){
     var audio = new Audio('ghoul_snare.wav')
     audio.volume = Math.random()*0.3
-    playDrum('4', 0);
+    if (refreshIntervalId != 0) playDrum('4', 0);
     audio.play()
 }
 
 function hat(){
-    console.log("HAT");
     var audio = new Audio('Hat ('+hatType+').wav');
     audio.volume = Math.random()*accent;
     if (refreshIntervalId != 0) playDrum('5', 0);
