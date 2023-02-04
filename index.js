@@ -678,7 +678,7 @@ function tableIn(){
                 kickflag=1
 
             } else {
-                snare();
+                setTimeout(snare, Math.random()*6+1)
                 tableMap.get(tableIndex+n+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb";
                 snareflag=1
                 kickflag=0
@@ -702,7 +702,7 @@ function tableIn(){
 
 
             } else {
-                snare();
+                setTimeout(snare, Math.random()*6+1)
                 tableMap.get(tableIndex+n+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb";
                 snareflag=1
                 kickflag=0
@@ -735,14 +735,14 @@ function tableIn(){
     let patternBinary = pattern[measureIndex].toString(2);
 
     if (snareflag==0 && tableIndex!=0 && patternBinary.charAt(tableIndex*(tableNotes[measureIndex]/notes[measureIndex]) - '0')!=0){
-        ghostSnare();
+        setTimeout(ghostSnare, Math.random()*14+1)
         tableMap.get(tableIndex+n+"").get(measureIndex*5 + 5 + "").style.backgroundColor = "#4c9a2a";
     }
 
 
 
     if (tableIndex%(tableNotes[measureIndex]/hatNotes[measureIndex])==0){
-        hat()
+        setTimeout(hat, Math.random()*14+1)
         tableMap.get(tableIndex+n+"").get(measureIndex*5 + 4 + "").style.backgroundColor = "#8b0000"
     }
 
