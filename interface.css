@@ -352,16 +352,16 @@ th, td {
 }
 
 .BPM {
-    right: 5%;
-    bottom: 25%;
+    top: 20%;
+    left: 70%;
     position: absolute;
     display: inline-block;
     z-index: 2;
 }
 
 .Complexity {
-    bottom: 5%;
-    right: 5%;
+    top: 25%;
+    left: 70%;
     position: absolute;
     z-index: 2;
 }
@@ -372,15 +372,15 @@ th, td {
 }
 
 .TSTitle {
-    top: 45%;
-    right: 5%;
+    top: 20%;
+    left: 50%;
     position: absolute;
     font-family: customFonts;
 }
 
 .TimeSignatureNum {
-    top: 50%;
-    right: 5%;
+    top: 25%;
+    left: 50%;
     position: absolute;
     border-radius: 5%;
     display: inline-block;
@@ -388,18 +388,11 @@ th, td {
 }
 
 .TimeSignatureDen {
-    top: 55%;
-    right: 5%;
+    top: 30%;
+    left: 50%;
     position: absolute;
     border-radius: 5%;
     display: inline-block;
-    z-index: 2;
-}
-
-.Key {
-    bottom: 5%;
-    left: 5%;
-    position: absolute;
     z-index: 2;
 }
 
@@ -601,15 +594,16 @@ th, td {
 }
 
 .drumkit {
-    border: 5px solid whitesmoke;
+    border: 5px solid black;
     border-radius: 7%;
     position: absolute;
     width: 770px;
     height: 425px;
-    top: 20%;
-    left: 30%;
+    bottom: 5%;
+    right: 3%;
     z-index: 1;
     background-image: url("photo_2023-02-03_11-20-16.jpg");
+    box-shadow: 10px 10px lightblue;
 }
 
 .drum {
