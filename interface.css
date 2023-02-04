@@ -5,11 +5,22 @@
     min-height: 700px;
     border-radius: 1%;
     border: 3px solid black;
-    background-color: lightgrey;
+    /*background-color: lightgrey;*/
+    background-image: url("nicholas-green-rAsESO5Puqw-unsplash.jpg");
+    background-size: 100% 100%;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     position: absolute;
+}
+
+.blur {
+    width: 100%;
+    height: 100%;
+    min-width: 1000px;
+    min-height: 700px;
+    border-radius: 1%;
+    backdrop-filter: blur(2px);
 }
 
 .scrollerGS {
@@ -351,10 +362,16 @@ th, td {
     z-index: 2;
 }
 
+@font-face {
+    font-family: customFonts;
+    src: url("LiquidCrystal-Normal.otf");
+}
+
 .TSTitle {
     top: 45%;
     right: 5%;
     position: absolute;
+    font-family: customFonts;
 }
 
 .TimeSignatureNum {
@@ -471,7 +488,7 @@ th, td {
 }
 
 #box-system {
-    background-color: lightgrey;
+    /*background-color: lightgrey;*/
     border-radius: 1%;
     position: absolute;
     width: 40%;
@@ -540,13 +557,15 @@ th, td {
 }
 
 .drumkit {
+    border: 5px solid whitesmoke;
+    border-radius: 7%;
     position: absolute;
     width: 770px;
     height: 425px;
     top: 20%;
     left: 30%;
     z-index: 1;
-    background-image: url("https://imgur.com/fHxrNxy.png");
+    background-image: url("photo_2023-02-03_11-20-16.jpg");
 }
 
 .drum {
