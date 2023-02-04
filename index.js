@@ -109,10 +109,8 @@ function playDrum(key, click) {
         if (refreshIntervalId == 0) {
             if (key == '1') kick();
             else if (key == '2') cymbal();
-            else if (key == '3') snare();
-            else if (key == '4') ghostSnare();
             else if (key == '5') hat();
-            // audio.play();
+            else snare();
         }
     }
     else {
