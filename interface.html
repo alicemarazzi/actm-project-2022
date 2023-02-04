@@ -251,7 +251,7 @@
 
     </div>
 
-    <h1 id = "title" style="font-family: Impact"> ACTM PROJECT 2022 </h1>
+    <h1 id = "title" style="font-family: customFonts"> ACTM PROJECT 2022 </h1>
 
     <button id = "start" class = "green" onclick="play()">
         <p class = "STitle" id="StartStop">START</p>
@@ -261,11 +261,11 @@
     </button>
 
     <div class = "BPM">
-        <label for="bpmvalue" style="font-family: Helvetica"><span class="bolded">CHOOSE A BPM:</span></label>
-        <textarea id="bpmvalue" name="freeform" rows="1" cols="3" style="font-family: Helvetica; resize: None" value="120" oninput="changeBPM()">120</textarea>
+        <label for="bpmvalue" style="font-family: customFonts"><span class="bolded">CHOOSE A BPM:</span></label>
+        <textarea id="bpmvalue" name="freeform" rows="1" cols="3" style="font-family: customFonts; resize: None" value="120" oninput="changeBPM()">120</textarea>
     </div>
 
-    <div class = "Complexity" style="font-family: Helvetica"> <span class="bolded">COMPLEXITY:</span>
+    <div class = "Complexity" style="font-family: customFonts"> <span class="bolded">COMPLEXITY:</span>
         <div class="slidecontainer">
             <input type="range" min="1" max="4" value="1" class="slider" id="complex" onchange="changeComplexity()">
             <datalist id="cmarks">
@@ -279,15 +279,15 @@
     </div>
 
 <!--    <div class = "TSTitle" style="font-family: Helvetica"> <span class="bolded">TIME SIGNATURE</span> </div>-->
-    <div class = "TSTitle"> <span class="bolded">TIME SIGNATURE</span> </div>
+    <div class = "TSTitle" style="font-family: customFonts"> <span class="bolded">TIME SIGNATURE</span> </div>
 
     <div class = "TimeSignatureNum">
-        <label for="timesignum" style="font-family: Helvetica"><span class="bolded">CHOOSE A NUMERATOR:</span></label>
-        <textarea id="timesignum" name="freeform" rows="1" cols="3" style="font-family: Menlo; resize: None" value="4" oninput="createTimeSignatureNum()">4</textarea>
+        <label for="timesignum" style="font-family: customFonts"><span class="bolded">CHOOSE A NUMERATOR:</span></label>
+        <textarea id="timesignum" name="freeform" rows="1" cols="3" style="font-family: customFonts; resize: None" value="4" oninput="createTimeSignatureNum()">4</textarea>
     </div>
 
     <div class = "TimeSignatureDen">
-        <label for="timesigden" style="font-family: Helvetica"><span class="bolded">CHOOSE A DENOMINATOR:</span></label>
+        <label for="timesigden" style="font-family: customFonts"><span class="bolded">CHOOSE A DENOMINATOR:</span></label>
         <select name="denominator" id="timesigden" onchange="createTimeSignatureDen()">
             <option value="2">2</option>
             <option value="4" selected>4</option>
