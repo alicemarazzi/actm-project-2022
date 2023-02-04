@@ -17,6 +17,11 @@
         <div class="rotate3"> 3rd measure </div>
         <div class="rotate4"> 4th measure </div>
 
+        <div id="measureOne"> </div>
+        <div id="measureTwo"> </div>
+        <div id="measureThree"> </div>
+        <div id="measureFour"> </div>
+
         <body>
         <div class="scrollerGS">
             <table id = "tableGS" class="search-table inner">
@@ -250,7 +255,7 @@
 
     <div class = "BPM">
         <label for="bpmvalue" style="font-family: Helvetica"><span class="bolded">CHOOSE A BPM:</span></label>
-        <textarea id="bpmvalue" name="freeform" rows="1" cols="3" style="font-family: Helvetica" value="120" oninput="changeBPM()">120</textarea>
+        <textarea id="bpmvalue" name="freeform" rows="1" cols="3" style="font-family: Helvetica; resize: None" value="120" oninput="changeBPM()">120</textarea>
     </div>
 
     <div class = "Complexity" style="font-family: Helvetica"> <span class="bolded">COMPLEXITY:</span>
@@ -272,7 +277,7 @@
 
     <div class = "TimeSignatureNum">
         <label for="timesignum" style="font-family: Helvetica"><span class="bolded">CHOOSE A NUMERATOR:</span></label>
-        <textarea id="timesignum" name="freeform" rows="1" cols="3" style="font-family: Menlo" value="4" oninput="createTimeSignatureNum()">4</textarea>
+        <textarea id="timesignum" name="freeform" rows="1" cols="3" style="font-family: Menlo; resize: None" value="4" oninput="createTimeSignatureNum()">4</textarea>
     </div>
 
     <div class = "TimeSignatureDen">
@@ -284,6 +289,7 @@
             <option value="16">16</option>
         </select>
     </div>
+
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vexflow@4.0.3/build/cjs/vexflow.js">
 </script>
