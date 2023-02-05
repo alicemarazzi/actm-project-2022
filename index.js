@@ -14,7 +14,7 @@ var refreshIntervalId = 0
 var refreshIntervalIdb = 0
 var complexity = 1
 var measureIndex = 0
-var pattern = new Array(4).fill(0)
+var patternBinary = new Array(4).fill(0)
 var accentPatternMap = new Map()
 var accentIndex=0
 var tableIndex=0
@@ -28,6 +28,7 @@ var kickType=8
 var snareType=25
 var hatType=12
 var openType=1
+var replayFlag = 0;
 
 var data = {
     '1': { name: 'Kick'},
@@ -38,6 +39,48 @@ var data = {
 };
 
 var drumkit = document.getElementById('drumkit');
+
+construct();
+start.onclick = toggleOn;
+
+/** The following functions associate to a variable a wav file dependent on the selected sound, they modulate
+ * the volume, and they play the sound. If they are called inside the loop they will also animate the drum. **/
+
+function kick() {
+    var audio = new Audio('Kick ('+kickType+').wav');
+    audio.volume = 0.75
+    if (refreshIntervalId != 0) playDrum('1', 0);
+    audio.play();
+}
+
+function cymbal(){
+    var audio = new Audio('Openhat ('+openType+').wav');
+    if (refreshIntervalId != 0) playDrum('2', 0);
+    audio.play();
+}
+
+function snare(){
+    var audio = new Audio('Snare ('+snareType+').wav');
+    audio.volume = 0.6
+    if (refreshIntervalId != 0) playDrum('3', 0);
+    audio.play();
+}
+
+function ghostSnare(){
+    var audio = new Audio('ghoul_snare.wav')
+    audio.volume = Math.random()*0.3
+    if (refreshIntervalId != 0) playDrum('4', 0);
+    audio.play()
+}
+
+function hat(){
+    var audio = new Audio('Hat ('+hatType+').wav');
+    audio.volume = Math.random()*accent;
+    if (refreshIntervalId != 0) playDrum('5', 0);
+    audio.play();
+}
+
+/** This function creates graphic elements of the instruments. **/
 
 function construct() {
 
@@ -82,6 +125,9 @@ function construct() {
     }
 }
 
+/** The following functions animate the graphic elements when the instruments are played by clicking on them or by
+ * creating a pattern. **/
+
 function playDrum(key, click) {
 
     if (click) {
@@ -122,7 +168,7 @@ function removeAnimation(event) {
     event.currentTarget.style.animation = 'none';
 }
 
-construct();
+/** The following functions take the input of the user and change the variables accordingly. **/
 
 function createTimeSignatureNum() {
     timeSignatureNum[0] = parseInt(document.getElementById('timesignum').value);
@@ -161,39 +207,32 @@ function changeComplexity() {
     complexity = parseInt(document.getElementById('complex').value);
 }
 
-function kick() {
-    var audio = new Audio('Kick ('+kickType+').wav');
-    audio.volume = 0.75
-    if (refreshIntervalId != 0) playDrum('1', 0);
-    audio.play();
+/** This function calls play function and toggles the start/stop button and enables the refresh button. **/
+
+function toggleOn(e) {
+
+    play();
+
+    var refreshButton = document.getElementById("refresh");
+    refreshButton.style.opacity = "100";
+
+    if(e.target.parentElement.classList.contains("green")) {
+        e.target.parentElement.classList.toggle("redOn");
+    } else {
+        e.target.classList.toggle("redOn");
+    }
+
+    if(document.getElementById("StartStop").innerHTML == "START") {
+        document.getElementById("StartStop").innerHTML = "STOP";
+    } else {
+        document.getElementById("StartStop").innerHTML = "START";
+    }
+
 }
 
-function cymbal(){
-    var audio = new Audio('Openhat ('+openType+').wav');
-    if (refreshIntervalId != 0) playDrum('2', 0);
-    audio.play();
-}
-
-function snare(){
-    var audio = new Audio('Snare ('+snareType+').wav');
-    audio.volume = 0.6
-    if (refreshIntervalId != 0) playDrum('3', 0);
-    audio.play();
-}
-
-function ghostSnare(){
-    var audio = new Audio('ghoul_snare.wav')
-    audio.volume = Math.random()*0.3
-    if (refreshIntervalId != 0) playDrum('4', 0);
-    audio.play()
-}
-
-function hat(){
-    var audio = new Audio('Hat ('+hatType+').wav');
-    audio.volume = Math.random()*accent;
-    if (refreshIntervalId != 0) playDrum('5', 0);
-    audio.play();
-}
+/** This function checks whether the loop is in motion, and if it is it stops everything; if it isn't it either calls
+ * the generate function or it starts the loop based on a variable that checks whether the pattern was already
+ * generated or not. **/
 
 function play() {
 
@@ -210,10 +249,18 @@ function play() {
         tableIndex=0
         kickflag = 0;
 
-    } else {
+    } else if (replayFlag==0) {
         generate()
     }
+    else{
+        refreshIntervalId = setInterval(tableIn, 240000 / (BPM * tableNotes[measureIndex]))
+        setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.15}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]))
+    }
 }
+
+/** This function generates the main elements of the loop: the accent pattern, the evolution of the time
+ * signatures, the subdivision for each measure and for each element, and the pattern of ghost snare. It then calls
+ * the table function. **/
 
 function generate() {
 
@@ -397,14 +444,18 @@ function generate() {
         // It determines the number of notes and the pattern for the kick for each measure
         if (measureIndex == 0) {
 
+            var pattern
+
             notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
             hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex]
             accentedNotes[measureIndex]= sigPatt;
-            pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
+            pattern = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
 
-            if (pattern[measureIndex]<Math.pow(2, notes[measureIndex])/2){
-                pattern[measureIndex]=pattern[measureIndex]+Math.pow(2, notes[measureIndex])/2
+            if (pattern<Math.pow(2, notes[measureIndex])/2){
+                pattern=pattern+Math.pow(2, notes[measureIndex])/2
             }
+
+            patternBinary[measureIndex] = pattern.toString(2);
 
         } else {
 
@@ -412,30 +463,34 @@ function generate() {
 
                 if (measureIndex == 3) {
                     notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
-                    pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
+                    pattern = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
 
-                    if (pattern[measureIndex]<Math.pow(2, notes[measureIndex])/2) {
-                        pattern[measureIndex]=pattern[measureIndex]+Math.pow(2, notes[measureIndex])/2
+                    if (pattern<Math.pow(2, notes[measureIndex])/2) {
+                        pattern=pattern+Math.pow(2, notes[measureIndex])/2
                     }
+
+                    patternBinary[measureIndex] = pattern.toString(2);
 
                 } else {
                     notes[measureIndex] = notes[0];
-                    pattern[measureIndex] = pattern[0];
+                    patternBinary[measureIndex] = patternBinary[0];
                 }
 
             } else if (complexity > 2) {
 
                 if (measureIndex == 1) {
                     notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
-                    pattern[measureIndex] = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
+                    pattern = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
 
-                    if (pattern[measureIndex]<Math.pow(2, notes[measureIndex])/2){
-                        pattern[measureIndex]=pattern[measureIndex]+Math.pow(2, notes[measureIndex])/2
+                    if (pattern<Math.pow(2, notes[measureIndex])/2){
+                        pattern=pattern+Math.pow(2, notes[measureIndex])/2
                     }
+
+                    patternBinary[measureIndex] = pattern.toString(2);
 
                 } else {
                     notes[measureIndex] = notes[measureIndex-2];
-                    pattern[measureIndex] = pattern[measureIndex-2];
+                    patternBinary[measureIndex] = patternBinary[measureIndex-2];
                 }
             }
 
@@ -454,46 +509,13 @@ function generate() {
     }
 
     measureIndex=0;
+    replayFlag = 1;
     table()
 }
 
-start.onclick = toggleOn;
+/** The following functions generate the table on which the drum pattern is displayed. **/
 
-function insertTableNotes() {
-
-    var paragraph = document.getElementById("measureOne");
-
-    paragraph.textContent += tableNotes[0];
-    paragraph = document.getElementById("measureTwo");
-    paragraph.textContent += tableNotes[1];
-    paragraph = document.getElementById("measureThree");
-    paragraph.textContent += tableNotes[2];
-    paragraph = document.getElementById("measureFour");
-    paragraph.textContent += tableNotes[3];
-}
-
-function toggleOn(e) {
-
-    play();
-
-    var refreshButton = document.getElementById("refresh");
-    refreshButton.style.opacity = "100";
-
-    if(e.target.parentElement.classList.contains("green")) {
-        e.target.parentElement.classList.toggle("redOn");
-    } else {
-        e.target.classList.toggle("redOn");
-    }
-
-    if(document.getElementById("StartStop").innerHTML == "START") {
-        document.getElementById("StartStop").innerHTML = "STOP";
-    } else {
-        document.getElementById("StartStop").innerHTML = "START";
-    }
-
-}
-
-function table(){
+function table() {
 
     if (flagM == 0) {
 
@@ -614,6 +636,22 @@ function table(){
     setTimeout(function(){refreshIntervalIdb = setInterval(function(){accent=0.15}, 80000 / (BPM * timeSignatureDen[measureIndex]))}, 80000 / (BPM * timeSignatureDen[measureIndex]));
 }
 
+function insertTableNotes() {
+
+    var paragraph = document.getElementById("measureOne");
+
+    paragraph.textContent += tableNotes[0];
+    paragraph = document.getElementById("measureTwo");
+    paragraph.textContent += tableNotes[1];
+    paragraph = document.getElementById("measureThree");
+    paragraph.textContent += tableNotes[2];
+    paragraph = document.getElementById("measureFour");
+    paragraph.textContent += tableNotes[3];
+}
+
+/** This function is called as a loop with a set interval based on the smallest subdivision, it checks based on the
+ * various patterns whether a specified element should be played at a certain time. **/
+
 function tableIn(){
 
     snareflag=0;
@@ -696,9 +734,7 @@ function tableIn(){
         }
     }
 
-    let patternBinary = pattern[measureIndex].toString(2);
-
-    if (snareflag==0 && tableIndex!=0 && patternBinary.charAt(tableIndex*(tableNotes[measureIndex]/notes[measureIndex]) - '0')!=0){
+    if (snareflag==0 && tableIndex!=0 && patternBinary[measureIndex].charAt(tableIndex*(tableNotes[measureIndex]/notes[measureIndex]) - '0')!=0){
         setTimeout(ghostSnare, Math.random()*14+1)
         tableMap.get(tableIndex+n+"").get(measureIndex*5 + 5 + "").style.backgroundColor = "#4c9a2a";
     }
@@ -732,6 +768,8 @@ function tableIn(){
         refreshIntervalId = setInterval(tableIn, 240000 / (BPM * tableNotes[measureIndex]))
     }
 }
+
+/** The following functions calculate the greatest common divider and least common multiple. **/
 
 function gcd(x, y) {
     x = Math.abs(x);
