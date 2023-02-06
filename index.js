@@ -459,11 +459,12 @@ function generate() {
 
         } else {
 
+
             if (complexity <=2) {
 
                 if (measureIndex == 3) {
                     notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
-                    pattern = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
+                    var pattern = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
 
                     if (pattern<Math.pow(2, notes[measureIndex])/2) {
                         pattern=pattern+Math.pow(2, notes[measureIndex])/2
@@ -475,12 +476,14 @@ function generate() {
                     notes[measureIndex] = notes[0];
                     patternBinary[measureIndex] = patternBinary[0];
                 }
+                hatNotes[measureIndex]=hatNotes[measureIndex-1]
 
-            } else if (complexity > 2) {
+            } else if (complexity == 3) {
+
 
                 if (measureIndex == 1) {
                     notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
-                    pattern = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
+                    var pattern = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
 
                     if (pattern<Math.pow(2, notes[measureIndex])/2){
                         pattern=pattern+Math.pow(2, notes[measureIndex])/2
@@ -492,9 +495,29 @@ function generate() {
                     notes[measureIndex] = notes[measureIndex-2];
                     patternBinary[measureIndex] = patternBinary[measureIndex-2];
                 }
+                hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex];
+            }
+            else if (complexity == 4) {
+
+
+                if (measureIndex == 1) {
+                    notes[measureIndex] = notes[measureIndex-1];
+                    var pattern = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
+
+                    if (pattern<Math.pow(2, notes[measureIndex])/2){
+                        pattern=pattern+Math.pow(2, notes[measureIndex])/2
+                    }
+
+                    patternBinary[measureIndex] = pattern.toString(2);
+
+                } else {
+                    notes[measureIndex] = notes[measureIndex-2];
+                    patternBinary[measureIndex] = patternBinary[measureIndex-2];
+                }
+                hatNotes[measureIndex]=hatNotes[measureIndex-1]
             }
 
-            hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex];
+
 
             if (complexity!=4){
                 accentedNotes[measureIndex]=accentedNotes[measureIndex-1]
