@@ -153,18 +153,23 @@ function playDrum(key, click) {
 
     } else if (click == 2) {
         if (refreshIntervalId == 0) {
-            if (key == '1') kick();
-            else if (key == '2') cymbal();
-            else if (key == '5') hat();
-            else if (key == '3') snare();
-            else if (key == '4') ghostSnare();
+            if (key == 'K') kick();
+            else if (key == 'C') cymbal();
+            else if (key == 'H') hat();
+            else if (key == 'S') snare();
+            else if (key == 'G') ghostSnare();
         }
-        if (key == '4') {
+        if (key == 'G') {
+            key = 4;
             data[key].el.style.animation = 'drum-animation-ghostsnare 0.3s';
             data[3].el.style.animation = 'disappear 0.3s';
             data[key].el.addEventListener('animationend', removeAnimation);
             data[3].el.addEventListener('animationend', removeAnimation);
         } else {
+            if (key == 'C') key = '2';
+            else if (key == 'S') key = '3';
+            else if (key == 'H') key = '5';
+            else if (key == 'K') key = '1';
             data[key].el.style.animation = 'drum-animation 0.3s';
             data[key].el.addEventListener('animationend', removeAnimation);
         }
@@ -182,7 +187,7 @@ function playDrum(key, click) {
 }
 
 function handleKeyEvents(event) {
-    playDrum(event.key.toString(), 2);
+    playDrum(event.key.toUpperCase(), 2);
 }
 
 function removeAnimation(event) {
