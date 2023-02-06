@@ -5,13 +5,24 @@
     <link rel = "stylesheet" href = "interface.css">
     <meta charset="UTF-8">
     <title>DRUM PATTERN GENERATOR</title>
+    <!--
+    AUTHORS:
+    Brusca Alfredo
+    Marazzi Alice
+    Pomarico Riccardo
+     -->
 </head>
 
 <body>
+
 <div class = "rectangle">
-    <div class = "blur"></div>
+
+    <div class = "blur"> </div>
+
     <div id="box-system">
+
         <div id="box-wallpaper">
+
             <div class="rotate1" style="font-family: customFonts"> 1st measure </div>
             <div class="rotate2" style="font-family: customFonts"> 2nd measure </div>
             <div class="rotate3" style="font-family: customFonts"> 3rd measure </div>
@@ -24,6 +35,7 @@
             <div id="measureFour" style="font-family: customFonts"> </div>
 
             <body>
+
             <div class="scrollerGS">
                 <table id = "tableGS" class="search-table inner">
                     <thead>
@@ -245,9 +257,10 @@
                     </tbody>
                 </table>
             </div>
-            </body>
-        </div>
 
+            </body>
+
+        </div>
 
     </div>
 
@@ -257,15 +270,17 @@
         <p class = "STitle" id="StartStop">START</p>
     </button>
 
-    <button id = "refresh" onclick="location.reload()"> RESET
-    </button>
+    <button id = "refresh" onclick="location.reload()">RESET</button>
 
     <div class = "BPM">
-        <label for="bpmvalue" style="font-family: customFonts"><span class="bolded">CHOOSE A BPM:</span></label>
+        <label for="bpmvalue" style="font-family: customFonts">
+            <span class="bolded">CHOOSE A BPM:</span>
+        </label>
         <textarea id="bpmvalue" name="freeform" rows="1" cols="3" style="font-family: customFonts; resize: None" value="120" oninput="changeBPM()">120</textarea>
     </div>
 
-    <div class = "Complexity" style="font-family: customFonts"> <span class="bolded">COMPLEXITY:</span>
+    <div class = "Complexity" style="font-family: customFonts">
+        <span class="bolded">COMPLEXITY:</span>
         <div class="slidecontainer">
             <input type="range" min="1" max="4" value="1" class="slider" id="complex" onchange="changeComplexity()">
             <datalist id="cmarks">
@@ -278,16 +293,21 @@
         <label>1<span class="tab">2</span><span class="tab">3</span><span class="tab">4</span></label>
     </div>
 
-<!--    <div class = "TSTitle" style="font-family: Helvetica"> <span class="bolded">TIME SIGNATURE</span> </div>-->
-    <div class = "TSTitle" style="font-family: customFonts"> <span class="bolded">TIME SIGNATURE</span> </div>
+    <div class = "TSTitle" style="font-family: customFonts">
+        <span class="bolded">TIME SIGNATURE</span>
+    </div>
 
     <div class = "TimeSignatureNum">
-        <label for="timesignum" style="font-family: customFonts"><span class="bolded">CHOOSE A NUMERATOR:</span></label>
+        <label for="timesignum" style="font-family: customFonts">
+            <span class="bolded">CHOOSE A NUMERATOR:</span>
+        </label>
         <textarea id="timesignum" name="freeform" rows="1" cols="3" style="font-family: customFonts; resize: None" value="4" oninput="createTimeSignatureNum()">4</textarea>
     </div>
 
     <div class = "TimeSignatureDen">
-        <label for="timesigden" style="font-family: customFonts"><span class="bolded">CHOOSE A DENOMINATOR:</span></label>
+        <label for="timesigden" style="font-family: customFonts">
+            <span class="bolded">CHOOSE A DENOMINATOR:</span>
+        </label>
         <select name="denominator" id="timesigden" onchange="createTimeSignatureDen()">
             <option value="2">2</option>
             <option value="4" selected>4</option>
@@ -297,11 +317,11 @@
     </div>
 
 </div>
-<script src="https://cdn.jsdelivr.net/npm/vexflow@4.0.3/build/cjs/vexflow.js">
+
+<script src="index.js"></script>
+
 </script>
-<script src="index.js">
-</script>
-</script>
+
     <div id="drumkit" class="drumkit">
         <div id="drumblur"></div>
         <div class = "kicktype">
