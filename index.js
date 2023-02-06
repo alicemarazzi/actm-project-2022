@@ -92,24 +92,24 @@ function construct() {
         drumkit.appendChild(drumEl);
         if (key == '1') {
             drumEl.id = 'kick';
-            drumEl.src = 'photo_2023-02-06_18-14-17.jpg';
+            drumEl.src = 'kick.jpg';
         }
         else if (key == '2') {
             drumEl.id = 'cymbal';
-            drumEl.src = 'photo_2023-02-06_18-14-20.jpg';
+            drumEl.src = 'cymbal.jpg';
         }
         else if (key == '3') {
             drumEl.classList.add('snare');
-            drumEl.src = 'photo_2023-02-06_18-14-19.jpg';
+            drumEl.src = 'snare.jpg';
         }
         else if (key == '4') {
             drumEl.classList.add('snare');
             drumEl.id = 'ghostsnare';
-            drumEl.src = 'photo_2023-02-06_18-14-22.jpg';
+            drumEl.src = 'ghostsnare.jpg';
         }
         else if (key == '5') {
             drumEl.id = 'hat';
-            drumEl.src = 'photo_2023-02-06_18-14-21.jpg';
+            drumEl.src = 'hat.jpg';
         }
 
         var h2 = document.createElement('h2');
