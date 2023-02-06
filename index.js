@@ -41,6 +41,7 @@ var data = {
 var drumkit = document.getElementById('drumkit');
 
 construct();
+window.addEventListener('keydown', handleKeyEvents);
 start.onclick = toggleOn;
 
 /** The following functions associate to a variable a wav file dependent on the selected sound, they modulate
@@ -91,24 +92,24 @@ function construct() {
         drumkit.appendChild(drumEl);
         if (key == '1') {
             drumEl.id = 'kick';
-            drumEl.src = 'photo_4_2023-02-02_11-53-57.jpg';
+            drumEl.src = 'photo_2023-02-06_18-14-17.jpg';
         }
         else if (key == '2') {
             drumEl.id = 'cymbal';
-            drumEl.src = 'photo_2_2023-02-02_11-53-57.jpg';
+            drumEl.src = 'photo_2023-02-06_18-14-20.jpg';
         }
         else if (key == '3') {
             drumEl.classList.add('snare');
-            drumEl.src = 'photo_9_2023-02-02_11-53-57.jpg';
+            drumEl.src = 'photo_2023-02-06_18-14-19.jpg';
         }
         else if (key == '4') {
             drumEl.classList.add('snare');
             drumEl.id = 'ghostsnare';
-            drumEl.src = 'photo_8_2023-02-02_11-53-57.jpg';
+            drumEl.src = 'photo_2023-02-06_18-14-22.jpg';
         }
         else if (key == '5') {
             drumEl.id = 'hat';
-            drumEl.src = 'photo_5_2023-02-02_11-53-57.jpg';
+            drumEl.src = 'photo_2023-02-06_18-14-21.jpg';
         }
 
         var h2 = document.createElement('h2');
@@ -127,10 +128,9 @@ function construct() {
 
 /** The following functions animate the graphic elements when the instruments are played by clicking on them or by
  * creating a pattern. **/
-
 function playDrum(key, click) {
 
-    if (click) {
+    if (click == 1) {
 
         // var audio = new Audio();
 
@@ -151,6 +151,23 @@ function playDrum(key, click) {
             else snare();
         }
 
+    } else if (click == 2) {
+        if (refreshIntervalId == 0) {
+            if (key == '1') kick();
+            else if (key == '2') cymbal();
+            else if (key == '5') hat();
+            else if (key == '3') snare();
+            else if (key == '4') ghostSnare();
+        }
+        if (key == '4') {
+            data[key].el.style.animation = 'drum-animation-ghostsnare 0.3s';
+            data[3].el.style.animation = 'disappear 0.3s';
+            data[key].el.addEventListener('animationend', removeAnimation);
+            data[3].el.addEventListener('animationend', removeAnimation);
+        } else {
+            data[key].el.style.animation = 'drum-animation 0.3s';
+            data[key].el.addEventListener('animationend', removeAnimation);
+        }
     } else {
         if (key == '4') {
             data[key].el.style.animation = 'drum-animation-ghostsnare 0.3s';
@@ -162,6 +179,10 @@ function playDrum(key, click) {
             data[key].el.addEventListener('animationend', removeAnimation);
         }
     }
+}
+
+function handleKeyEvents(event) {
+    playDrum(event.key.toString(), 2);
 }
 
 function removeAnimation(event) {
