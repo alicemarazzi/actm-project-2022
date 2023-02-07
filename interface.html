@@ -276,7 +276,7 @@
         <label for="bpmvalue" style="font-family: customFonts">
             <span class="bolded">CHOOSE A BPM:</span>
         </label>
-        <textarea id="bpmvalue" name="freeform" rows="1" cols="3" style="font-family: customFonts; resize: None" value="120" oninput="changeBPM()">120</textarea>
+        <textarea id="bpmvalue" name="freeform" rows="1" cols="3" style="font-family: customFonts; resize: None" value="100" oninput="changeBPM()">100</textarea>
     </div>
 
     <div class = "Complexity" style="font-family: customFonts">
@@ -326,23 +326,23 @@
         <div id="drumblur"></div>
         <div class = "kicktype">
             <select name="kt" id="kick_type" onchange="createKickType()">
-                <option value="1">1</option>
+                <option value="1" selected>1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
                 <option value="6">6</option>
                 <option value="7">7</option>
-                <option value="8" selected>8</option>
+                <option value="8">8</option>
             </select>
         </div>
         <div class = "opentype">
             <select name="ct" id="open_type" onchange="createOpenType()">
                 <option value="1">1</option>
                 <option value="2">2</option>
-                <option value="3">3</option>
+                <option value="3" selected>3</option>
                 <option value="4">4</option>
-                <option value="5" selected>5</option>
+                <option value="5">5</option>
             </select>
         </div>
         <div class = "hattype">
@@ -386,11 +386,11 @@
                 <option value="20">20</option>
                 <option value="21">21</option>
                 <option value="22">22</option>
-                <option value="23">23</option>
+                <option value="23" selected>23</option>
                 <option value="24">24</option>
                 <option value="25">25</option>
                 <option value="26">26</option>
-                <option value="27" selected>27</option>
+                <option value="27">27</option>
             </select>
         </div>
     </div>
