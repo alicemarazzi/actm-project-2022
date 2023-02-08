@@ -297,7 +297,7 @@ function generate() {
 
         if (measureIndex == 0) { // Generate first accent pattern
 
-            if (timeSignatureNum[measureIndex]>=8){
+            if (timeSignatureDen[measureIndex]>=8){
                 sigPatt = timeSignatureNum[measureIndex]
             } else {
                 sigPatt = timeSignatureNum[measureIndex]*2
@@ -427,7 +427,7 @@ function generate() {
 
                 sub[measureIndex] = sub[measureIndex - 1]
 
-                if (complexity == 3) {
+                /*if (complexity == 3) {
 
                     if (measureIndex == 1) {
 
@@ -439,7 +439,7 @@ function generate() {
                         sub[measureIndex] = sub[measureIndex - 2]
                     }
 
-                } else if (complexity==4){
+                } /else if (complexity==4){
 
                     if (measureIndex == 1) {
 
@@ -450,7 +450,7 @@ function generate() {
                     } else if (measureIndex!=0) {
                         sub[measureIndex] = sub[measureIndex - 2]
                     }
-                }
+                }*/
             }
         }
 
@@ -511,10 +511,17 @@ function generate() {
 
             } else if (complexity == 3) {
 
-
                 if (measureIndex == 1) {
-                    notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
-                    var pattern = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
+                    notes[measureIndex] = notes[measureIndex-1]
+                    for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++) {
+                        notes[measureIndex]++
+                    }
+                    sub[measureIndex]=notes[measureIndex]*timeSignatureDen[measureIndex]/timeSignatureNum[measureIndex]
+                    while(Math.round(sub[measureIndex])-sub[measureIndex]!=0){
+                        notes[measureIndex]++
+                        sub[measureIndex]=notes[measureIndex]*timeSignatureDen[measureIndex]/timeSignatureNum[measureIndex]
+                    }
+                    var pattern = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]))
 
                     if (pattern<Math.pow(2, notes[measureIndex])/2) {
                         pattern = pattern+Math.pow(2, notes[measureIndex])/2;
@@ -525,9 +532,11 @@ function generate() {
                 } else {
 
                     notes[measureIndex] = notes[measureIndex-2];
+                    sub[measureIndex]=sub[measureIndex-2]
                     patternBinary[measureIndex] = patternBinary[measureIndex-2];
 
                 }
+                hatsub[measureIndex] = sub[measureIndex]
                 hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex];
             }
             else if (complexity == 4) {
@@ -535,6 +544,11 @@ function generate() {
 
                 if (measureIndex == 1) {
                     notes[measureIndex] = notes[measureIndex-1];
+                    sub[measureIndex] = notes[measureIndex]*timeSignatureDen[measureIndex]/timeSignatureNum[measureIndex]
+                    while(Math.round(sub[measureIndex])-sub[measureIndex]!=0){
+                        notes[measureIndex]++
+                        sub[measureIndex]=notes[measureIndex]*timeSignatureDen[measureIndex]/timeSignatureNum[measureIndex]
+                    }
                     var pattern = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
 
                     if (pattern<Math.pow(2, notes[measureIndex])/2){
@@ -542,21 +556,18 @@ function generate() {
                     }
 
                     patternBinary[measureIndex] = pattern.toString(2);
+                    sub[measureIndex] = notes[measureIndex]*timeSignatureDen[measureIndex]/timeSignatureNum[measureIndex]
 
                 } else {
                     notes[measureIndex] = notes[measureIndex-2];
+                    sub[measureIndex] = sub[measureIndex-2];
                     patternBinary[measureIndex] = patternBinary[measureIndex-2];
                 }
                 hatNotes[measureIndex]=hatNotes[measureIndex-1]
             }
+            hatsub[measureIndex] = sub[measureIndex]
+            accentedNotes[measureIndex] = timeSignatureNum[measureIndex];
 
-
-
-            if (complexity!=4){
-                accentedNotes[measureIndex]=accentedNotes[measureIndex-1];
-            } else{
-                accentedNotes[measureIndex] = timeSignatureNum[measureIndex];
-            }
         }
 
         tableNotes[measureIndex]=lcm(lcm(hatNotes[measureIndex], notes[measureIndex]), accentedNotes[measureIndex]);
