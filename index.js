@@ -23,12 +23,14 @@ var accent=1
 var tableMap = new Map()
 var flagM = 0
 var tableNotes = new Array(4).fill(0)
+var tableSub = new Array(4).fill(0)
 var kickflag=0
 var kickType=8
 var snareType=25
 var hatType=12
 var openType=1
 var replayFlag = 0;
+
 
 var data = {
     '1': { name: 'Kick'},
@@ -478,7 +480,7 @@ function generate() {
             var pattern
 
             notes[measureIndex] = timeSignatureNum[measureIndex] * sub[measureIndex] / timeSignatureDen[measureIndex];
-            hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex];
+            hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex]
             accentedNotes[measureIndex]= sigPatt;
             pattern = Math.floor(Math.random() * Math.pow(2, notes[measureIndex]));
 
@@ -563,14 +565,15 @@ function generate() {
                     sub[measureIndex] = sub[measureIndex-2];
                     patternBinary[measureIndex] = patternBinary[measureIndex-2];
                 }
-                hatNotes[measureIndex]=hatNotes[measureIndex-1]
             }
             hatsub[measureIndex] = sub[measureIndex]
+            hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex]
             accentedNotes[measureIndex] = timeSignatureNum[measureIndex];
 
         }
 
         tableNotes[measureIndex]=lcm(lcm(hatNotes[measureIndex], notes[measureIndex]), accentedNotes[measureIndex]);
+        tableSub[measureIndex]=lcm(lcm(hatsub[measureIndex], sub[measureIndex]), timeSignatureDen[measureIndex])
     }
 
     measureIndex=0;
@@ -705,13 +708,13 @@ function insertTableNotes() {
 
     var paragraph = document.getElementById("measureOne");
 
-    paragraph.textContent += tableNotes[0];
+    paragraph.textContent += tableSub[0];
     paragraph = document.getElementById("measureTwo");
-    paragraph.textContent += tableNotes[1];
+    paragraph.textContent += tableSub[1];
     paragraph = document.getElementById("measureThree");
-    paragraph.textContent += tableNotes[2];
+    paragraph.textContent += tableSub[2];
     paragraph = document.getElementById("measureFour");
-    paragraph.textContent += tableNotes[3];
+    paragraph.textContent += tableSub[3];
 }
 
 /** This function is called as a loop with a set interval based on the smallest subdivision, it checks based on the
@@ -719,7 +722,7 @@ function insertTableNotes() {
 
 function tableIn(){
 
-    snareflag=0;
+    snareflag=0
 
     var n=0;
 
@@ -744,12 +747,12 @@ function tableIn(){
                 kickflag=1
 
             } else {
+
                 setTimeout(snare, Math.random()*6+1)
                 tableMap.get(tableIndex+n+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb";
-                snareflag=1
                 kickflag=0
             }
-
+            snareflag=1
             count++;
             accentIndex = 0;
         }
@@ -773,10 +776,10 @@ function tableIn(){
             } else {
                 setTimeout(snare, Math.random()*6+1)
                 tableMap.get(tableIndex+n+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb";
-                snareflag=1
                 kickflag=0
 
             }
+            snareflag=1
             count++
             accentIndex = 0
         }
@@ -791,6 +794,7 @@ function tableIn(){
             if ((measureIndex==1 || measureIndex==3) && kickflag==1){
                 kick()
                 tableMap.get(tableIndex+n+"").get(measureIndex*5 + 3 + "").style.backgroundColor = "#ffa500"
+                snareflag=1
             } else if ((measureIndex==2 || measureIndex==3) && kickflag==0){
                 snare()
                 tableMap.get(tableIndex+n+"").get(measureIndex*5 + 2 + "").style.backgroundColor = "#ffc0cb"
@@ -799,12 +803,12 @@ function tableIn(){
         }
     }
 
-    if (snareflag==0 && tableIndex!=0 && patternBinary[measureIndex].charAt(tableIndex*(tableNotes[measureIndex]/notes[measureIndex]) - '0')!=0){
+    if (snareflag==0 && patternBinary[measureIndex].charAt(tableIndex*(tableNotes[measureIndex]/notes[measureIndex]) - '0')!=0){
         setTimeout(ghostSnare, Math.random()*14+1)
         tableMap.get(tableIndex+n+"").get(measureIndex*5 + 5 + "").style.backgroundColor = "#4c9a2a";
     }
 
-    if (tableIndex%(tableNotes[measureIndex]/hatNotes[measureIndex])==0){
+    if ((BPM*hatsub[measureIndex]>=1700 && tableIndex%(tableNotes[measureIndex]/hatNotes[measureIndex]*2)==0) || (BPM*hatsub[measureIndex]<1700 && tableIndex%(tableNotes[measureIndex]/hatNotes[measureIndex])==0)){
         setTimeout(hat, Math.random()*14+1)
         tableMap.get(tableIndex+n+"").get(measureIndex*5 + 4 + "").style.backgroundColor = "#8b0000"
     }
