@@ -326,7 +326,7 @@ function generate() {
                         i = Math.ceil(sigPatt / 2);
                     } else {
                         // Caso in cui anche sommando 2 andiamo oltre il totale e andiamo a modificare il penultimo elemento
-                        sum -= accentPattern[i - 1];
+                        sum -= accentPattern[i - 1]
 
                         // Se è uguale a 3 inseriamo 2
                         if (accentPattern[i - 1] == 3) {
