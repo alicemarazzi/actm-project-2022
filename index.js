@@ -429,30 +429,6 @@ function generate() {
 
                 sub[measureIndex] = sub[measureIndex - 1]
 
-                /*if (complexity == 3) {
-
-                    if (measureIndex == 1) {
-
-                        for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
-                            sub[measureIndex]++;
-                        }
-
-                    } else {
-                        sub[measureIndex] = sub[measureIndex - 2]
-                    }
-
-                } /else if (complexity==4){
-
-                    if (measureIndex == 1) {
-
-                        for (let i=0; accentPatternMap.get(measureIndex + "")[i]; i++){
-                            sub[measureIndex]--;
-                        }
-
-                    } else if (measureIndex!=0) {
-                        sub[measureIndex] = sub[measureIndex - 2]
-                    }
-                }*/
             }
         }
 
