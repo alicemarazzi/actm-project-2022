@@ -541,9 +541,10 @@ function generate() {
                     sub[measureIndex] = sub[measureIndex-2];
                     patternBinary[measureIndex] = patternBinary[measureIndex-2];
                 }
+                hatsub[measureIndex] = sub[measureIndex]
+                hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex]
+
             }
-            hatsub[measureIndex] = sub[measureIndex]
-            hatNotes[measureIndex] = timeSignatureNum[measureIndex] * hatsub[measureIndex] / timeSignatureDen[measureIndex]
             accentedNotes[measureIndex] = timeSignatureNum[measureIndex];
 
         }
