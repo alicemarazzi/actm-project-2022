@@ -94,24 +94,24 @@ function construct() {
         drumkit.appendChild(drumEl);
         if (key == '1') {
             drumEl.id = 'kick';
-            drumEl.src = 'kick.jpg';
+            drumEl.src = '/images/kick.jpg';
         }
         else if (key == '2') {
             drumEl.id = 'cymbal';
-            drumEl.src = 'cymbal.jpg';
+            drumEl.src = '/images/cymbal.jpg';
         }
         else if (key == '3') {
             drumEl.classList.add('snare');
-            drumEl.src = 'snare.jpg';
+            drumEl.src = '/images/snare.jpg';
         }
         else if (key == '4') {
             drumEl.classList.add('snare');
             drumEl.id = 'ghostsnare';
-            drumEl.src = 'ghostsnare.jpg';
+            drumEl.src = '/images/ghostsnare.jpg';
         }
         else if (key == '5') {
             drumEl.id = 'hat';
-            drumEl.src = 'hat.jpg';
+            drumEl.src = '/images/hat.jpg';
         }
 
         var h2 = document.createElement('h2');

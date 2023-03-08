@@ -5,7 +5,7 @@
     min-height: 700px;
     border-radius: 1%;
     border: 3px solid black;
-    background-image: url("background.jfif");
+    background-image: url("images/background.jfif");
     background-size: 100% 100%;
     left: 50%;
     top: 50%;
@@ -597,7 +597,7 @@ th, td {
     bottom: 5%;
     right: 7%;
     z-index: 1;
-    background-image: url("drumperspective.jpg");
+    background-image: url("images/drumperspective.jpg");
     background-size: contain;
     -moz-box-shadow:  0 0 10px 3px #3754BD;
     -webkit-box-shadow: 0 0 10px 3px #3754BD;
@@ -625,7 +625,7 @@ th, td {
     left: 38%;
     width: 140px;
     height: 100px;
-    cursor: url(immagine_2023-02-04_111524358.png), pointer;
+    cursor: url(images/immagine_2023-02-04_111524358.png), pointer;
 }
 
 #cymbal {
@@ -634,7 +634,7 @@ th, td {
     width: 210px;
     height: 166px;
     rotate: 14deg;
-    cursor: url(immagine_2023-02-04_111501041.png), pointer;
+    cursor: url(images/immagine_2023-02-04_111501041.png), pointer;
 }
 
 .snare {
@@ -642,7 +642,7 @@ th, td {
     top: 47%;
     width: 109px;
     height: 101px;
-    cursor: url(immagine_2023-02-04_111501041.png), pointer;
+    cursor: url(images/immagine_2023-02-04_111501041.png), pointer;
 }
 
 #ghostsnare {
@@ -655,7 +655,7 @@ th, td {
     width: 131px;
     height: 105px;
     rotate: -28deg;
-    cursor: url(immagine_2023-02-04_111501041.png), pointer;
+    cursor: url(images/immagine_2023-02-04_111501041.png), pointer;
 }
 
 .snaretype {
