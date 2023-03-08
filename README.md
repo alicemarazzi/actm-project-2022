@@ -8,7 +8,7 @@ When we decided to develop the Drum Pattern Generator we all had in mind the goa
 
 It can automatically generate new patterns through the aid of elements such as kick, snare, high hat, and cymbal. We also added what we called ghost snare, which is the snare playing the ghost notes. The user can continue creating new patterns, by setting some parameters such as the BPM, the level of complexities and the time signature, until a liking pattern is provided.
 
-![INPUT_SETTING](https://user-images.githubusercontent.com/79704727/223760160-bb19cedc-20e1-4a5d-9802-1c1ff78ab7b3.jpg)
+![INPUT](https://user-images.githubusercontent.com/79704727/223820722-dcedafee-e454-4977-829a-f8e664df1987.jpg)
 
 We added an interactive drum kit that can be played either by clicking on the instruments or using the corresponding keys on the keyboard and that can help the user to visualize the pattern created by the generator, playing it as it is generated. Using the interactive drum kit the user can also choose how the different instrument sound, picking what they prefer among several samples in the database, creating a variety of sound combinations.
 
