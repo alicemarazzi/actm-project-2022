@@ -50,34 +50,34 @@ start.onclick = toggleOn;
  * the volume, and they play the sound. If they are called inside the loop they will also animate the drum. **/
 
 function kick() {
-    var audio = new Audio('Kick ('+kickType+').wav');
+    var audio = new Audio('/sounds/Kick ('+kickType+').wav');
     audio.volume = 0.75
     if (refreshIntervalId != 0) playDrum('1', 0);
     audio.play();
 }
 
 function cymbal(){
-    var audio = new Audio('Openhat ('+openType+').wav');
+    var audio = new Audio('/sounds/Openhat ('+openType+').wav');
     if (refreshIntervalId != 0) playDrum('2', 0);
     audio.play();
 }
 
 function snare(){
-    var audio = new Audio('Snare ('+snareType+').wav');
+    var audio = new Audio('/sounds/Snare ('+snareType+').wav');
     audio.volume = 0.6
     if (refreshIntervalId != 0) playDrum('3', 0);
     audio.play();
 }
 
 function ghostSnare(){
-    var audio = new Audio('ghoul_snare.wav')
+    var audio = new Audio('/sounds/ghoul_snare.wav')
     audio.volume = Math.random()*0.3
     if (refreshIntervalId != 0) playDrum('4', 0);
     audio.play()
 }
 
 function hat(){
-    var audio = new Audio('Hat ('+hatType+').wav');
+    var audio = new Audio('/sounds/Hat ('+hatType+').wav');
     audio.volume = Math.random()*accent;
     if (refreshIntervalId != 0) playDrum('5', 0);
     audio.play();
