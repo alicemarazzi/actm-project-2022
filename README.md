@@ -14,7 +14,7 @@ It can automatically generate new patterns through the aid of elements such as k
 
 We added an interactive drum kit that can be played either by clicking on the instruments or using the corresponding keys on the keyboard and that can help the user to visualize the pattern created by the generator, playing it as it is generated. Using the interactive drum kit the user can also choose how the different instrument sound, picking what they prefer among several samples in the database, creating a variety of sound combinations.
 
-![DRUM](https://user-images.githubusercontent.com/79704727/223760287-ca76a411-89fb-48b8-802e-059c4ceaeea6.jpg)
+![drum 2](https://user-images.githubusercontent.com/79704727/223996591-19db26ce-ae93-437f-8709-58e6176a1b22.jpg)
 
 The user can decide either to pause the pattern (and eventually restart the same one) or to stop it and generate a new one.
 
