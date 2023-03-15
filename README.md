@@ -4,9 +4,9 @@ AUTHORS: Brusca Alfredo, Marazzi Alice, Pomarico Riccardo
 
 Hosted version: http://drumpatterngenerator.surge.sh
 
-[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://drive.google.com/file/d/1RamvheQ2qauE4e8biaGi4b3V-Xp8s8ik/view?usp=sharing)
 
-Video demo: https://drive.google.com/file/d/1RamvheQ2qauE4e8biaGi4b3V-Xp8s8ik/view?usp=sharing
+https://user-images.githubusercontent.com/79702678/225343175-0dfce6ba-b4bf-4ad8-a6f1-1f2309211867.mp4
+
 
 When we decided to develop the Drum Pattern Generator we all had in mind the goal of this software: provide the user with an effective tool that could help with the writing process of a new musical piece. 
 
