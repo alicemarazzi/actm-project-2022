@@ -4,7 +4,7 @@ AUTHORS: Brusca Alfredo, Marazzi Alice, Pomarico Riccardo
 
 Hosted version: http://drumpatterngenerator.surge.sh
 
-[![Video]({})]({https://drive.google.com/file/d/1RamvheQ2qauE4e8biaGi4b3V-Xp8s8ik/view?usp=sharing} "Video Demo")
+[![Video]({https://user-images.githubusercontent.com/79704727/223760063-e43629c4-6f72-49e5-a715-b66f2a167163.jpg})]({https://drive.google.com/file/d/1RamvheQ2qauE4e8biaGi4b3V-Xp8s8ik/view?usp=sharing} "Video Demo")
 
 Video demo: https://drive.google.com/file/d/1RamvheQ2qauE4e8biaGi4b3V-Xp8s8ik/view?usp=sharing
 
